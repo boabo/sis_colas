@@ -31,8 +31,17 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		
-		
+
+        {
+            //configuracion del componente
+            config:{
+                labelSeparator:'',
+                inputType:'hidden',
+                name: 'id_usuario_sucursal'
+            },
+            type:'Field',
+            form:true
+        },
 		
 		{
 			config:{
@@ -54,7 +63,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'ficha.sigla',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:false
 		},
 		{
 			config:{
@@ -191,11 +200,118 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		}
-	],
+		},
+
+        {
+            config: {
+                name: 'id_sucursal',
+                fieldLabel: 'Sucursal',
+                allowBlank: true,
+                emptyText: 'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_colas/control/Sucursal/listarSucursal',
+                    id: 'id_sucursal',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_sucursal', 'nombre', 'codigo'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'sucur.nombre#sucur.codigo'}
+                }),
+                valueField: 'id_sucursal',
+                displayField: 'nombre',
+                gdisplayField: 'nombre_sucur',
+                hiddenName: 'id_sucursal',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '100%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['nombre_sucur']);
+                }
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'sucur.nombre_sucur',type: 'string'},
+            grid: false,
+            form: true
+        },
+
+        {
+            config:{
+                name: 'numero_ventanilla',
+                fieldLabel: 'Número Ventanilla',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:5
+            },
+            type:'TextField',
+            filters:{pfiltro:'ususuc.numero_ventanilla',type:'string'},
+            id_grupo:1,
+            grid:false,
+            form:true
+        },
+
+        {
+            config:{
+                name:'ids_prioridad',
+                fieldLabel:'Prioridades',
+                allowBlank:false,
+                emptyText:'Prioridades...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_colas/control/Prioridad/listarPrioridad',
+                    id: 'id_prioridad',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_prioridad','nombre'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams:{par_filtro:'nombre'}
+
+                }),
+                valueField: 'id_prioridad',
+                displayField: 'nombre',
+                forceSelection:true,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:10,
+                queryDelay:1000,
+                width:350,
+                gwidth: 400,
+                minChars:2,
+                enableMultiSelect:true,
+
+                renderer:function(value, p, record){return String.format('{0}', record.data['nombres_prioridad']);}
+
+            },
+            type:'AwesomeCombo',
+            id_grupo:0,
+            grid:false,
+            form:true
+        },
+
+
+
+    ],
 	tam_pag:50,	
 	title:'Fichas',
-	ActSave:'../../sis_colas/control/Ficha/insertarFicha',
+        ActSave:'../../sis_colas/control/UsuarioSucursal/modificarUsuarioSucursalAtencion', //aca modificamos la configuracion del usuario
 	ActDel:'../../sis_colas/control/Ficha/eliminarFicha',
 	ActList:'../../sis_colas/control/Ficha/listarFicha',
 	id_store:'id_ficha',

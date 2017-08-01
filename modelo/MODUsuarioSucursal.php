@@ -41,7 +41,8 @@ class MODUsuarioSucursal extends MODbase{
 		$this->captura('nombres_prioridad','varchar');
 		$this->captura('ids_servicio','varchar');
 		$this->captura('nombres_servicio','varchar');
-		
+		$this->captura('servidor_remoto','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -105,6 +106,25 @@ class MODUsuarioSucursal extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_usuario_sucursal','id_usuario_sucursal','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	function modificarUsuarioSucursalAtencion(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='cola.ft_usuario_sucursal_ime';
+		$this->transaccion='COLA_USUSUCATE_MOD';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para la funcion
+		$this->setParametro('id_usuario_sucursal','id_usuario_sucursal','int4');
+		$this->setParametro('id_sucursal','id_sucursal','int4');
+		$this->setParametro('ids_prioridad','ids_prioridad','varchar');
+		$this->setParametro('numero_ventanilla','numero_ventanilla','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -211,7 +211,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fields: ['id_usuario', 'desc_persona'],
                         // turn on remote sorting
                         remoteSort: true,
-                        baseParams: {par_filtro: 'desc_persona'}
+                        baseParams: {par_filtro: 'desc_persona',filtro_usuario:'diferente'}
 
                     }),
                     valueField: 'id_usuario',

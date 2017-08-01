@@ -67,11 +67,13 @@ Phx.vista.FichaAtencion = {
 
 
 
-        this.addButton('archivo', {
-            argument: {imprimir: 'archivo'},
-            text: '<i class="fa fa-file-video-o  fa-2x"></i> Videos', /*iconCls:'' ,*/
+
+
+        this.addButton('configurar', {
+            argument: {imprimir: 'configurar'},
+            text: '<i class="fa fa-cog  fa-2x"></i> CONFIG', /*iconCls:'' ,*/
             disabled: false,
-            handler: this.archivo
+            handler: this.onButtonNew
         });
 
 
@@ -106,6 +108,7 @@ Phx.vista.FichaAtencion = {
    iniciarEventos : function () {
    		this.cmbSucursal.store.load({params:{start:0,limit:this.tam_pag},
            callback : function (r) {
+   		    console.log('r',r)
            		if (r.length == 1 ) {
            			this.cmbSucursal.setValue(r[0].data.id_sucursal);
            			this.cmbSucursal.fireEvent('select',this.cmbSucursal, this.cmbSucursal.store.getById(r[0].data.id_sucursal));
@@ -171,22 +174,22 @@ Phx.vista.FichaAtencion = {
 				emptyText:'Sucursal...',
 				store:new Ext.data.JsonStore(
 				{
-					url: '../../sis_colas/control/Sucursal/listarSucursal',
+					url: '../../sis_colas/control/UsuarioSucursal/listarUsuarioSucursal',
 					id: 'id_sucursal',
 					root: 'datos',
 					sortInfo:{
-						field: 'nombre',
+						field: 'suc.nombre',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_sucursal','nombre','servidor_remoto'],
+					fields: ['id_sucursal','nombre_sucursal','servidor_remoto'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'nombre',filtroUsuario:'si'}
+					baseParams:{par_filtro:'suc.nombre',filtro_usuario:'igual'}
 				}),
 				valueField: 'id_sucursal',
 				triggerAction: 'all',
-				displayField: 'nombre',
+				displayField: 'nombre_sucursal',
 			    hiddenName: 'id_sucursal',
     			mode:'remote',
 				pageSize:50,
@@ -275,6 +278,29 @@ Phx.vista.FichaAtencion = {
 
         this.liberaMenu(n)
 
+    },
+
+
+    onButtonNew: function () {
+        Phx.vista.FichaAtencion.superclass.onButtonNew.call(this);
+
+        this.Cmp.id_sucursal.store.baseParams.id_sucursal = this.cmbSucursal.store.data.items[0].json.id_sucursal;
+        this.Cmp.id_sucursal.modificado = true;
+
+        this.Cmp.id_usuario_sucursal.setValue(this.cmbSucursal.store.data.items[0].json.id_usuario_sucursal);
+        this.Cmp.id_sucursal.setValue(this.cmbSucursal.store.data.items[0].json.id_sucursal);
+        this.Cmp.id_sucursal.setRawValue(this.cmbSucursal.store.data.items[0].json.nombre_sucursal);
+
+
+
+        this.Cmp.ids_prioridad.setValue(this.cmbSucursal.store.data.items[0].json.ids_prioridad);
+        this.Cmp.ids_prioridad.setRawValue(this.cmbSucursal.store.data.items[0].json.nombres_prioridad);
+
+        this.getComponente('numero_ventanilla').setValue(this.cmbSucursal.store.data.items[0].json.numero_ventanilla);
+
+        console.log(this.cmbSucursal.store.data.items[0].json)
+        console.log(this);
+        //this.getComponente('id_sucursal').setValue(this.maestro.id_sucursal);
     },
 
 };

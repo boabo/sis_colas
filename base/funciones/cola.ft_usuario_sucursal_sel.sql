@@ -65,14 +65,15 @@ BEGIN
                         array_to_string(ususuc.prioridades,'','')::varchar as ids_prioridad,
                         (select pxp.list(p.nombre) from cola.tprioridad p where p.id_prioridad =ANY(ususuc.prioridades))::varchar as nombres_prioridad,
                          array_to_string(ususuc.servicios,'','')::varchar as ids_servicio,
-                        (select pxp.list(s.nombre) from cola.tservicio s where s.id_servicio =ANY(ususuc.servicios))::varchar as nombres_servicio
+                        (select pxp.list(s.nombre) from cola.tservicio s where s.id_servicio =ANY(ususuc.servicios))::varchar as nombres_servicio,
+                        suc.servidor_remoto
                         from cola.tusuario_sucursal ususuc
                         inner join cola.tsucursal suc on suc.id_sucursal = ususuc.id_sucursal
                         inner join segu.vusuario vusu on vusu.id_usuario = ususuc.id_usuario
                         inner join cola.ttipo_ventanilla tipven on tipven.id_tipo_ventanilla = ususuc.id_tipo_ventanilla
 						inner join segu.tusuario usu1 on usu1.id_usuario = ususuc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ususuc.id_usuario_mod
-				        where ususuc.id_usuario != '||p_id_usuario||' and ';
+				        where ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -101,7 +102,7 @@ BEGIN
                         inner join cola.ttipo_ventanilla tipven on tipven.id_tipo_ventanilla = ususuc.id_tipo_ventanilla
 						inner join segu.tusuario usu1 on usu1.id_usuario = ususuc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ususuc.id_usuario_mod
-					    where ususuc.id_usuario != '||p_id_usuario||'  and ';
+					    where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

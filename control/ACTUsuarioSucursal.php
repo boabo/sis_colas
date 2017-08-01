@@ -13,6 +13,19 @@ class ACTUsuarioSucursal extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_usuario_sucursal');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+
+
+		//filtro_usuario
+        if($this->objParam->getParametro('filtro_usuario')=='diferente'){
+            //ususuc.id_usuario != '||p_id_usuario||'
+            $this->objParam->addFiltro("ususuc.id_usuario != ".$_SESSION["ss_id_usuario"]." ");
+        }
+
+        if($this->objParam->getParametro('filtro_usuario')=='igual'){
+            $this->objParam->addFiltro("ususuc.id_usuario = ".$_SESSION["ss_id_usuario"]." ");
+        }
+
+
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODUsuarioSucursal','listarUsuarioSucursal');
@@ -37,6 +50,11 @@ class ACTUsuarioSucursal extends ACTbase{
 	function eliminarUsuarioSucursal(){
 			$this->objFunc=$this->create('MODUsuarioSucursal');	
 		$this->res=$this->objFunc->eliminarUsuarioSucursal($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	function modificarUsuarioSucursalAtencion(){
+			$this->objFunc=$this->create('MODUsuarioSucursal');
+		$this->res=$this->objFunc->modificarUsuarioSucursalAtencion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

@@ -141,7 +141,36 @@ BEGIN
             return v_resp;
 
 		end;
-         
+
+	/*********************************
+ 	#TRANSACCION:  'COLA_USUSUCATE_MOD'
+ 	#DESCRIPCION:	Modifica la parametrizacion de un usuario de dicha sucursal
+ 	#AUTOR:		favio figueroa
+ 	#FECHA:		22-07-2016 01:55:47
+	***********************************/
+
+	elsif(p_transaccion='COLA_USUSUCATE_MOD')then
+
+		begin
+			--Sentencia de la eliminacion
+			update cola.tusuario_sucursal set
+				prioridades = string_to_array (v_parametros.ids_prioridad,',')::INTEGER[],
+				numero_ventanilla = v_parametros.numero_ventanilla,
+				id_usuario_mod = p_id_usuario,
+				fecha_mod = now(),
+				id_usuario_ai = v_parametros._id_usuario_ai,
+				usuario_ai = v_parametros._nombre_usuario_ai
+			where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
+
+			--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal modificado(a)');
+			v_resp = pxp.f_agrega_clave(v_resp,'id_usuario_sucursal',v_parametros.id_usuario_sucursal::varchar);
+
+			--Devuelve la respuesta
+			return v_resp;
+
+		end;
+
 	else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;

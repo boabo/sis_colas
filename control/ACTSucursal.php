@@ -16,6 +16,10 @@ class ACTSucursal extends ACTbase{
 		if($this->objParam->getParametro('filtroUsuario')=='si'){
              $this->objParam->addFiltro("(sucur.id_sucursal in  ( select id_sucursal from cola.tusuario_sucursal where id_usuario = " . $_SESSION["ss_id_usuario"]. " and estado_reg=''activo''))");
         }
+
+		if($this->objParam->getParametro('id_sucursal')!=''){
+             $this->objParam->addFiltro("sucur.id_sucursal = ".$this->objParam->getParametro('id_sucursal')." ");
+        }
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
