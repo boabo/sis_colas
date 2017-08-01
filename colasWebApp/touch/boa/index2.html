@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html  ng-app="TriagemTouch" manifest="pagina.manifest">
+    <head>
+        <title>BoA</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="./css/style.css" media="screen" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/blueberry.css" />
+
+
+
+    </head>
+    <body ng-controller="TriagemCtrl">
+        <div id="div_main">
+            <div class="font_central">BOLIVIANA DE AVIACIÓN TE RECUERDA</div>
+            <div class="slider">
+                <div id="doc">
+                    <div id="content">
+                        <div class="blueberry">
+                            <ul class="slides">
+                                <li><img src="img/slider1.png" /></li>
+                                <li><img src="img/slider2.png" /></li>
+                                <li><img src="img/slider1.png" /></li>
+                                <li><img src="img/slider2.png" /></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="contenedor_principal">
+                <div class="datos">
+                    <div ng-click="distribuiNormal()" class="contenedor_ticket left">
+                        <div class="font_ticket"><center>TICKET#</center></div>
+                        <div class="font_numero"><center><b id="numero_ticket">A328</b></center></div>
+                        <div class="font_hora" ><center><span id="ticket_fecha"></span></center></div>
+                    </div>
+                    <div class="contenedor_btn left">
+                        <div ng-click="distribuiNormal()" id="btn_atencion" class="datos_btn"></div>
+                        <div ng-click="distribuiSenha(prioridades[2].id,1)" id="btn_preferencial" class="datos_btn"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <iframe id="frame-impressao" width="300" height="150" style="display:none"></iframe>
+		
+		<script src="js/jquery.min.js"></script>
+        <script src="js/jquery.blueberry.js"></script>
+        <script type="text/javascript">
+            $(window).load(function () {
+                $('.blueberry').blueberry();
+            });
+        </script>
+
+
+        <script type="text/javascript" src="../js/angular.min.js"></script>
+
+
+        <script type="text/javascript" src="../js/triagem-touch.js"></script>
+        <script src="../js/angular-block-ui-master/dist/angular-block-ui.min.js"></script>
+
+    </body>
+</html>

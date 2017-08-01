@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BoA</title>
+    <link href="../touch/boa/css/fonts.css" media="screen" rel="stylesheet" type="text/css"/>
+
+
+    <script src="../js/jquery-3.0.0.min.js"></script>
+
+    <style>
+
+
+        body {
+            font-family: 'FuturaStd-Medium';
+        }
+
+        .contenedor_cajas {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            background-color: #0055a3;
+            font-family: 'FuturaStd-Medium';
+            /*opacity: 0.8;*/
+            height: auto;
+        }
+
+        .contenedor_cajas div:first-child {
+            background-color: #002744 !important;
+            color: yellow !important;
+
+        }
+
+        .contenedor_cajas div {
+            background-color: #0055a3 !important;
+
+        }
+
+        .caja_panel {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+            width: 33%;
+            float: left;
+            color: #ffffff;
+            /*border-color: white;*/
+            /*border-style: solid;*/
+            /*border-width: 1.5px;*/
+            font-size: 3em;
+        }
+
+        .llamado {
+            color: white;
+
+        }
+
+        #texto_contenido marquee {
+            color: #f0ad4e !important;
+            font-size: 2em;
+            font-family: 'FuturaStd-Medium' !important;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<audio id="alert" style="display: none;"></audio>
+<div>
+
+    <div style="position: fixed;top: 0; right: 0; ">
+        <!--
+                <img style="width: 200px; opacity: 0.5;" src="../img/elfec.png" />
+        -->
+    </div>
+    <div id="imagenes">
+
+    </div>
+    <video width="100%" id="reproductor" onerror="panel.errorVideo(event)"></video>
+</div>
+<div style="position: fixed; bottom: 0; height: auto; width: 100%; display: block;">
+
+    <div id="texto_contenido"
+         style="color: #f0ad4e; width: 100%; display: block; position:static; background-color: #001a31;font-size: 2em;">
+
+    </div>
+    <div class="contenedor_cajas">
+
+
+    </div>
+</div>
+
+
+<script src="../config.js"></script>
+
+<script src="../pxpRestWeb/mcrypt.js"></script>
+<script src="../pxpRestWeb/rijndael.js"></script>
+<script src="../pxpRestWeb/base64.js"></script>
+<script src="../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../pxpRestWeb/ajax.js"></script>
+
+<script src="js/buzz.js"></script>
+<script src="js/panel.js"></script>
+
+<script>
+
+    //cargamos media de videos imagenes y mensajes
+    (function ($) {
+        /*panel.MediaVideosImagenes();
+        panel.mensajes();*/
+
+
+
+        videos = {
+
+            mp4:[],
+
+
+            ruta_videos: '../../../uploaded_files/videos/',
+
+
+
+            iniciar : function(){
+
+                alert('asd')
+                videos.cargarVideos();
+            },
+            cargarVideos : function () {
+
+
+
+                var self = this;
+
+
+                var reproductor = $("#reproductor"),
+                    videos = this.media;
+                console.log(this.media)
+
+                //info = document.getElementById("info2");
+
+                //info.innerHTML = "Vídeo: " + videos[0];
+                console.log($("#reproductor"));
+                //$("#reproductor").attr("src", "media/videos/" + videos[0]);
+                $("#reproductor").attr("src", videos.ruta_videos + videos[0]);
+                $("#reproductor").get(0).play();
+                $("#reproductor").get(0).volume = panel.volumenVideo/15;
+
+                self.nombreActualReproducido = videos[0];
+
+                var actual_;
+
+                $('#reproductor').on('ended', function () {
+
+                    if(panel.nueva_peticion == 'no'){
+                        var nombreActual = self.nombreActualReproducido;
+                        var actual = videos.indexOf(nombreActual);
+                        console.log(actual);
+                        actual = actual == videos.length - 1 ? 0 : actual + 1;
+                        //this.src = "media/videos/" + videos[actual];
+                        this.src = videos.ruta_videos + videos[actual];
+                        this.type = "video/mp4";
+                        self.nombreActualReproducido = videos[actual];
+
+                        actual_ = actual;
+
+                        this.play();
+                    }else{
+                        //cuando existe nuva peticion para hacer
+                        panel.nueva_peticion = 'no'; //lo volvemos a poner en no para que siga el ciclo
+                        console.log('nueva carga de videos');
+                        panel.MediaVideosImagenes();
+
+                    }
+
+
+
+                });
+
+                $('#reproductor').on('error', function (e) {
+
+                    console.log(e)
+                    console.log(this)
+                    //alert("ocurrio un error con el video");
+
+                    console.log('video que no reproducio' , videos[actual_]);
+                    console.log('videoS' , videos);
+
+                    var nombreActual = self.nombreActualReproducido;
+                    var actual = videos.indexOf(nombreActual);
+                    console.log(actual);
+                    actual = actual == videos.length - 1 ? 0 : actual + 1;
+                    //this.src = "media/videos/" + videos[actual];
+                    this.src = panel.ruta_videos + videos[actual];
+                    this.type = "video/mp4";
+                    self.nombreActualReproducido = videos[actual];
+
+
+                    this.play();
+
+                });
+
+
+
+
+
+
+            },
+
+        };
+
+        imagenes = {
+
+            img : '',
+
+            iniciar :function () {
+
+                imagenes.colaDeImagenes();
+            },
+            colaDeImagenes : function () {
+              console.log(imagenes);
+
+                var siguiente = imagenes.img.shift();
+                $("#imagenes").html('<img src="'+panel.ruta_videos+siguiente.Path+'" width="100%" />');
+                imagenes.img.push(siguiente);
+
+                setTimeout(imagenes.colaDeImagenes,10000);
+
+            }
+
+        };
+
+
+        function listarMensajesVideosBoa() {
+            $.ajax({
+                url: 'http://sms.obairlines.bo/PantallasBOA/api/CTO/2', // si es la paz cambiar a 3
+                dataType: 'json',
+                type: 'GET',
+                contentType: 'application/xml; charset=utf-8', // aca esta la cuestion
+                crossDomain: true,
+
+                success: function( data, textStatus, jQxhr ){
+
+
+
+
+                    console.log( data );
+                    var m = '<marquee  style="color: #ffffff; font-family: RobotoRegular;"  scrollamount="5" loop="infinite">';
+
+                    $.each(data.ListaTexto,function (k,v) {
+                        console.log(v);
+                        m+=v;
+                        m+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                        m+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                        m+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                    });
+                    m+='</marquee>';
+                    $("#texto_contenido").html(m);
+                    /**/
+
+
+                    console.log('es video' , data.EsVideo);
+                    //si es video inicia los videos
+
+                    if(data.EsVideo){
+
+                       /* var videosPrueba = [{
+                            "Path": "adulto_mayor.mp4",
+                        },{
+                            "Path": "Video-20160729175510(20160504).mp4",
+                        }];
+
+                        $.each(videosPrueba,function (k,v) {
+
+                        panel.media[k] = v.Path;
+                        });
+
+                        */
+
+
+                        $.each(data.ListaRecurso,function (k,v) {
+                            panel.media[k] = v.Path;
+                        });
+                        console.log(panel)
+
+
+
+                        panel.cargarVideos();
+
+                    }else{
+
+                        imagenes.img = data.ListaRecurso;
+
+                        //no son video son imagenes
+
+                        imagenes.iniciar();
+                    }
+
+
+
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                    console.log('er', textStatus );
+                }
+            });
+
+
+            setTimeout(function () {
+                panel.nueva_peticion = 'si';
+            }, panel.tiempoActualizarMensaje*60000);
+
+        }
+
+        listarMensajesVideosBoa();
+
+
+
+    })(jQuery);
+
+</script>
+
+
+</body>
+</html>

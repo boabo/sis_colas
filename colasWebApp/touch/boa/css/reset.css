@@ -1,0 +1,74 @@
+@import url('fonts.css');
+
+/*
+ * Reset Styles
+ */
+
+
+:focus 
+{ 
+	outline: 0;
+}
+ 
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, ul, li, form
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	vertical-align: baseline;
+}
+
+body, input, select
+{
+	font: Conv_kval-26;
+}
+
+ol, ul 
+{ 
+	list-style: none; 
+}
+
+a 
+{ 
+	text-decoration: none;
+}
+
+input, button, img
+{
+	border: none;
+}
+
+textarea
+{
+	resize: none;
+}
+
+.clearfix
+{
+	clear: both;
+	line-height: 0px;
+}
+
+.left
+{
+	float: left;
+}
+
+.right
+{
+	float: right;
+}
+
+.main-appFB{
+    height: 640px;	
+    width: 760px;    
+}
+
+.main-tabFB{
+    width: 810px;
+    height: 640px;	
+}
+
+
+/* --- [END Reset Styles] --- */

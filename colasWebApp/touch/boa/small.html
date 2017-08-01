@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BoA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="./css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="./css/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/blueberry.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.blueberry.js"></script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('.blueberry').blueberry();
+        });
+    </script>
+
+</head>
+<body  >
+<div id="div_main" style="width: 1280px; height: 772px;">
+    <div class="img_logo"></div>
+    <div class="font_central"></div>
+
+    <div class="contenedor_principal" style="top: 100px; width: 1080px;">
+        <div class="cabecera_tiket" style="width: 1080px;">
+            <div class="font_contenedor">PRESIONA EL BOTÓN CORRESPONDIENTE PARA SER ATENDIDO</div>
+        </div>
+        <div class="datos">
+            <div  class="contenedor_ticket left" style="width: 362px; margin-left: 35px;">
+                <div class="font_ticket" style="font-size: 60px;">TICKET#</div>
+                <div class="font_numero" id="siglaNum">A328</div>
+                <div class="font_hora" id="fecha_ficha" style="margin-left: 88px;">17:23</div>
+            </div>
+            <div class="contenedor_btn left">
+                <div onclick="touch.ficha(1,1)" id="btn_atencion" class="datos_btn">
+                    <div class="ico_atencion left"></div>
+                    <div class="font_btn left">ATENCIÓN GENERAL</div>
+                </div>
+                <div onclick="touch.ficha(1,2)" id="btn_mujer" class="datos_btn">
+                    <div class="ico_mujer left"></div>
+                    <div class="font_btn left">ATENCÍON PRIORITARIA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="pie"  style="width: 1280px;">
+    <div class="contenedor_redes_sociales left">
+        <div class="btn_facebook left"></div>
+        <div class="btn_twitter left"></div>
+       <a href="javascript:void(0)" ng-click="fullscreen()"><div class="btn_youtube left"></div></a>
+    </div>
+    <div class="contenedor_datos_llamadas left">
+        <div class="font_pie">Call center BO</div>
+        <div class="font_pie_telf">901 105010</div>
+    </div>
+    <div class="barra left"></div>
+    <div class="contenedor_datos_llamadas left">
+        <div class="font_pie">Web Check in</div>
+        <div class="font_pie_telf">WWW.BOA.BO</div>
+    </div>
+    <div  class="logo_boa right" style="margin-right: 80px;"></div>
+</div>
+
+<div id="imprimir" style="display: none;" ></div>
+
+<script src="../../config.js"></script>
+
+<script src="../../pxpRestWeb/mcrypt.js"></script>
+<script src="../../pxpRestWeb/rijndael.js"></script>
+<script src="../../pxpRestWeb/base64.js"></script>
+<script src="../../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../../pxpRestWeb/ajax.js"></script>
+<script src="../js/touch.js"></script>
+
+
+</body>
+
+<script>
+   // document.mozFullScreen;
+
+
+   var elem = document.body;
+   console.log(elem)
+   if (elem.requestFullScreen) {
+       elem.requestFullScreen();
+   }
+   if (elem.webkitRequestFullScreen) {
+       elem.webkitRequestFullScreen();
+   }
+   if (elem.mozRequestFullScreen) {
+       elem.mozRequestFullScreen();
+   }
+   if (elem.msRequestFullScreen) {
+       elem.msRequestFullScreen();
+   }
+
+
+
+    function exitFullScreen(){
+
+        document.webkitExitFullscreen();
+        document.mozCancelFullScreen();
+        document.msExitFullscreen();
+        document.exitFullscreen();
+
+    }
+
+    /* $('.btn_youtube').click(function () {
+     alert('asd')
+     document.webkitExitFullscreen();
+     document.mozCancelFullScreen();
+     document.msExitFullscreen();
+     document.exitFullscreen();
+     });*/
+
+    $('.btn_youtube').click(function () {
+
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+        else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+
+        /*alert('asd')
+
+        self.close();
+
+        var el = document.documentElement
+         , rfs = // for newer Webkit and Firefox
+         el.requestFullScreen
+         || el.webkitRequestFullScreen
+         || el.mozRequestFullScreen
+         || el.msRequestFullScreen
+         ;
+         if(typeof rfs!="undefined" && rfs){
+
+         rfs.call(el);
+         } else if(typeof window.ActiveXObject!="undefined"){
+         // for Internet Explorer
+         var wscript = new ActiveXObject("WScript.Shell");
+         if (wscript!=null) {
+         wscript.SendKeys("{F11}");
+         }
+         }*/
+
+    });
+    function cerrar() {
+        var popup = window.open(location, '_self', '');
+        popup.close();
+    }
+    function fullscreen() {
+
+
+        var el = document.documentElement
+                , rfs = // for newer Webkit and Firefox
+                        el.requestFullScreen
+                        || el.webkitRequestFullScreen
+                        || el.mozRequestFullScreen
+                        || el.msRequestFullScreen
+                ;
+        if(typeof rfs!="undefined" && rfs){
+
+            rfs.call(el);
+        } else if(typeof window.ActiveXObject!="undefined"){
+            // for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript!=null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+
+
+
+    }
+</script>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config</title>
+
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script src="../jquery/jquery-ui.min.js"></script>
+
+    <link type="text/css" href="../jquery/jquery-ui.min.css"/>
+
+</head>
+<body style="background-color: #fafbfc;">
+
+<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0"
+       style="border-collapse:collapse;border-spacing:0;width:90%;color:rgb(51,51,51);font-size:12px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+    <tbody>
+    <tr height="50" style="background-color:#F5F5F5">
+        <td colspan="2" align="center">CONFIG - Touch/Panel</td>
+
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Tipo</td>
+        <td width="50%" align="left">
+            <select id="tipo_host">
+
+
+                <option value="">Seleccionar el tipo</option>
+                <option value="IP">IP</option>
+                <option value="DOMINIO">DOMINIO</option>
+            </select>
+
+        </td>
+    </tr>
+
+
+    <tr class="host_ip" height="24" style="background-color:#F5F5F5; display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">Host/IP</td>
+        <td width="50%" align="left">
+            <input id="host_ip" type="text">
+        </td>
+    </tr>
+    <tr class="carpeta" height="24" style="background-color:#F5F5F5;display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">carpeta</td>
+        <td width="50%" align="left">
+            <input id="carpeta" type="text">
+        </td>
+    </tr>
+    <tr class="host_dominio" height="24" style="background-color:#F5F5F5;display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">Host/DOMINIO</td>
+        <td width="50%" align="left">
+            <input id="host_dominio" type="text">
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Usuario</td>
+        <td width="50%" align="left">
+            <input id="usuario" type="text">
+        </td>
+    </tr>
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Contraseña</td>
+        <td width="50%" align="left">
+            <input id="contra" type="password">
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Inicia Sesion</td>
+        <td width="50%" align="left">
+
+            <input id="sesion" type="button" name="sesion" value="Iniciar"/>
+        </td>
+    </tr>
+
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Sucursal</td>
+        <td width="50%" align="left">
+            <select id="sucursal">
+
+            </select>
+
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Tiempo Espera Peticion</td>
+        <td width="50%" align="left">
+            <select id="tiempo_espera_peticion">
+                <option value="1">1 seg</option>
+                <option value="2">2 seg</option>
+                <option value="3">3 seg</option>
+                <option value="4">4 seg</option>
+                <option value="5">5 seg</option>
+                <option value="6">6 seg</option>
+                <option value="7">7 seg</option>
+                <option value="8">8 seg</option>
+                <option value="9">9 seg</option>
+                <option value="10">10 seg</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Tiempo nueva peticion Panel</td>
+        <td width="50%" align="left">
+            <select id="tiempo_nueva_peticion_panel">
+                <option value="1">1 seg</option>
+                <option value="2">2 seg</option>
+                <option value="3">3 seg</option>
+                <option value="4">4 seg</option>
+                <option value="5">5 seg</option>
+                <option value="6">6 seg</option>
+                <option value="7">7 seg</option>
+                <option value="8">8 seg</option>
+                <option value="9">9 seg</option>
+                <option value="10">10 seg</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr class="sonido_llamado_tono" height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Sonido LLamado Tono</td>
+        <td width="50%" align="left">
+            <select id="sonido_llamado_tono">
+                <option value="si">si</option>
+                <option value="no">no</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr class="volumen_sonido_llamado_tono" height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Volumen Sonido LLamado Tono</td>
+        <td width="50%" align="lef">
+            <select id="volumen_sonido_llamado_tono">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr class="sonido_llamado_voz" height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Sonido llamado Voz </td>
+        <td width="50%" align="left">
+            <select id="sonido_llamado_voz">
+                <option value="si">si</option>
+                <option value="no">no</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr class="volumen_sonido_llamado_voz" height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Volumen Sonido LLamado voz</td>
+        <td width="50%" align="lef">
+            <select id="volumen_sonido_llamado_voz">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Volumen Video</td>
+        <td width="50%" align="lef">
+            <select id="volumen_video">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="2">
+            <hr />
+        </td>
+    </tr>
+
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Tiempo de Actualizacion Mensajes Y Videos(Minutos)</td>
+        <td width="50%" align="lef">
+            <select id="tiempo_actualizar_mensaje">
+                <option value="1">1</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+                <option value="60">60</option>
+
+            </select>
+
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Ruta Videos</td>
+        <td width="50%" align="lef">
+           <input type="text" width="100%" id="ruta_videos">
+
+        </td>
+    </tr>
+
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Guardar Config</td>
+        <td width="50%" align="left">
+
+            <input id="guardar" type="button" name="guardar" value="guardar"/>
+        </td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+<script src="../config.js"></script>
+
+<script src="../pxpRestWeb/md5.js"></script>
+<script src="../pxpRestWeb/mcrypt.js"></script>
+<script src="../pxpRestWeb/rijndael.js"></script>
+<script src="../pxpRestWeb/base64.js"></script>
+<script src="../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../pxpRestWeb/ajax.js"></script>
+
+
+<script>
+
+    console.log('asd', localStorage)
+    verSesion();
+    config.IP.ip = $("#host_ip").val();
+    console.log(config.IP)
+
+
+    $("#tipo_host").change(function () {
+
+        console.log($(this).val())
+
+        if ($(this).val() == "IP") { // es ip
+
+            $(".host_ip").show();
+            $(".carpeta").show();
+            $(".host_dominio").hide();
+        } else if ($(this).val() == "DOMINIO") { // es DOMINIO
+            $(".host_ip").hide();
+            $(".carpeta").hide();
+            $(".host_dominio").show();
+        } else {
+            $(".host_ip").hide();
+            $(".carpeta").hide();
+            $(".host_dominio").hide();
+            return;
+        }
+    });
+
+    //$(".volumen_sonido_llamado_tono").hide();
+    $("#sonido_llamado_tono").change(function () {
+
+        console.log($(this).val())
+
+        if ($(this).val() == "si") {
+
+            $(".volumen_sonido_llamado_tono").show();
+
+        } else if ($(this).val() == "no") {
+            $(".volumen_sonido_llamado_tono").hide();
+        }
+    });
+    //$(".volumen_sonido_llamado_voz").hide();
+    $("#sonido_llamado_voz").change(function () {
+
+        console.log($(this).val())
+
+        if ($(this).val() == "si") {
+
+            $(".volumen_sonido_llamado_voz").show();
+
+        } else if ($(this).val() == "no") {
+            $(".volumen_sonido_llamado_voz").hide();
+        }
+    });
+
+    $("#sesion").click(function () {
+
+
+        console.log('usuario',$("#usuario").val());
+        console.log('contra',$("#contra").val());
+        console.log('contramd5',md5('ana.luisa'));
+        console.log('contramd5',md5($("#contra").val()));
+        var contra_primer_nivel =$("#contra").val();
+        contra_primer_nivel = md5(contra_primer_nivel);
+        console.log('contra_primer_nivel',contra_primer_nivel)
+
+
+        clientRestPxp.setCredentialsPxp($("#usuario").val(), contra_primer_nivel);
+        clientRestPxp.genHeaders();
+
+        var contra = clientRestPxp._user;
+
+
+        if ($("#tipo_host").val() == "IP") { // es ip
+
+            config.tipo_ruta = "IP";
+            config.IP.ip = $("#host_ip").val();
+            config.IP.carpeta = $("#carpeta").val();
+            config.init();
+
+        } else if ($("#tipo_host").val() == "DOMINIO") { //es dominio
+            config.tipo_ruta = "DOMINIO";
+            config.DOMINIO.url = $("#host_dominio").val();
+            config.init();
+        } else {
+            return;
+        }
+
+
+        //'/seguridad/Auten/verificarCredenciales',
+        ajax_dyd.data = {usuario: $("#usuario").val(), contrasena: contra};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/seguridad/Auten/verificarCredenciales';
+        ajax_dyd.dataType = 'html';
+        ajax_dyd.async = true;
+        ajax_dyd.sesionPXP(function (callback) {
+
+            var data = eval('(' + callback+ ')');
+            console.log(data.id_usuario)
+
+            /*Guardando los datos en el LocalStorage*/
+            localStorage.setItem("userPXP_panel", $("#usuario").val());
+            localStorage.setItem("contraPXP_panel", md5($("#contra").val()));
+            localStorage.setItem("hostPXP_panel", $("#host_ip").val());
+            localStorage.setItem("carpetaPxp_panel", $("#carpeta").val());
+            localStorage.setItem("dominioPXP_panel", $("#host_dominio").val());
+            localStorage.setItem("tipoHost_panel", $("#tipo_host").val());
+            localStorage.setItem("id_usuario", data.id_usuario);
+            localStorage.setItem("nombre_usuario", data.nombre_usuario);
+
+            console.log('asd', localStorage)
+
+            verSesion();
+        });
+    });
+
+    function verSesion() {
+
+        var tipoHost_panel = localStorage.getItem("tipoHost_panel");
+        var user = localStorage.getItem("userPXP_panel");
+        var contra = localStorage.getItem("contraPXP_panel");
+        var host = localStorage.getItem("hostPXP_panel");
+        var carpetaPxp_panel = localStorage.getItem("carpetaPxp_panel");
+        var dominioPXP_panel = localStorage.getItem("dominioPXP_panel");
+
+        var sonidoLLamadoTono = localStorage.getItem("sonidoLLamadoTono");
+        var sonidoLLamadoVoz = localStorage.getItem("sonidoLLamadoVoz");
+        var volumenLLamadoTono = localStorage.getItem("volumenLLamadoTono");
+        var volumenLLamadoVoz = localStorage.getItem("volumenLLamadoVoz");
+        var volumenVideo = localStorage.getItem("volumenVideo");
+        var tiempoNuevo_panel = localStorage.getItem("tiempoNuevo_panel");
+        var tiempoEspera_panel = localStorage.getItem("tiempoEspera_panel");
+        var tiempoActualizarMensaje = localStorage.getItem("tiempoActualizarMensaje");
+        var ruta_videos = localStorage.getItem("ruta_videos");
+
+
+        console.log(user)
+        if ((user == null) || (contra == null) || (host == null)) {
+
+            alert('no tienes SESION GUARDADO ')
+        } else {
+
+            $("#tipo_host").val(tipoHost_panel);
+            $("#usuario").val(user);
+            $("#contra").val(contra);
+            $("#host_ip").val(host);
+            $("#carpeta").val(carpetaPxp_panel);
+            $("#host_dominio").val(dominioPXP_panel);
+
+            $("#sonido_llamado_tono").val(sonidoLLamadoTono);
+            $("#sonido_llamado_voz").val(sonidoLLamadoVoz);
+            $("#volumen_video").val(volumenVideo);
+            $("#tiempo_espera_peticion").val(tiempoEspera_panel);
+            $("#tiempo_nueva_peticion_panel").val(tiempoNuevo_panel);
+            $("#tiempo_actualizar_mensaje").val(tiempoActualizarMensaje);
+            $("#ruta_videos").val(ruta_videos);
+
+            if (tipoHost_panel == "IP") { // es ip
+
+                $(".host_ip").show();
+                $(".carpeta").show();
+                $(".host_dominio").hide();
+            } else if (tipoHost_panel == "DOMINIO") { // es DOMINIO
+                $(".host_ip").hide();
+                $(".carpeta").hide();
+                $(".host_dominio").show();
+            } else {
+                $(".host_ip").hide();
+                $(".carpeta").hide();
+                $(".host_dominio").hide();
+                return;
+            }
+
+            if(sonidoLLamadoVoz =="no"){
+                $(".volumen_sonido_llamado_voz").hide();
+            }else{
+                $("#volumen_sonido_llamado_voz").val(volumenLLamadoVoz);
+            }
+
+
+            if(sonidoLLamadoTono =="no"){
+                $(".volumen_sonido_llamado_voz").hide();
+            }else{
+                $("#volumen_sonido_llamado_tono").val(volumenLLamadoTono);
+            }
+
+            config.usPxp = user;
+            config.pwdPxp = contra;
+            config.IP.ip = host;
+            config.DOMINIO.url = dominioPXP_panel;
+            config.init();
+
+            clientRestPxp.setCredentialsPxp(config.usPxp, config.pwdPxp);
+            clientRestPxp.genHeaders();
+
+            comboSucursal();
+
+        }
+
+
+    }
+
+    function comboSucursal() {
+
+        $("#sucursal").empty();
+
+        ajax_dyd.data = {start: "0", limit: "50", sort: 'id_sucursal'};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Sucursal/listarSucursal';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            var sucursal = localStorage.getItem("sucursal");
+            var m = '';
+            $.each(callback.datos, function (k, v) {
+
+                m += '<option value="' + v.id_sucursal + '">' + v.nombre + '</option>';
+
+            });
+
+            $("#sucursal").append(m);
+
+            if (sucursal != null) {
+                $("#sucursal").val(sucursal);
+            }
+
+        });
+    }
+
+    $("#guardar").click(function () {
+
+        console.log($("#sucursal").val())
+        localStorage.setItem("sucursal_panel", $("#sucursal").val());
+
+        localStorage.setItem("tiempoEspera_panel", $("#tiempo_espera_peticion").val());
+        localStorage.setItem("tiempoNuevo_panel", $("#tiempo_nueva_peticion_panel").val());
+        localStorage.setItem("sonidoLLamadoTono", $("#sonido_llamado_tono").val());
+        localStorage.setItem("volumenLLamadoTono", $("#volumen_sonido_llamado_tono").val());
+        localStorage.setItem("sonidoLLamadoVoz", $("#sonido_llamado_voz").val());
+        localStorage.setItem("volumenLLamadoVoz", $("#volumen_sonido_llamado_voz").val());
+        localStorage.setItem("volumenVideo", $("#volumen_video").val());
+        localStorage.setItem("tiempoActualizarMensaje", $("#tiempo_actualizar_mensaje").val());
+        localStorage.setItem("ruta_videos", $("#ruta_videos").val());
+
+        window.location.href = "index.html";
+
+
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

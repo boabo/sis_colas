@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html ng-app="TriagemTouch" manifest="pagina.manifest">
+    <head>
+        <title>BoA</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="./css/style.css" media="screen" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/blueberry.css" />
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.blueberry.js"></script>
+        <script type="text/javascript">
+            $(window).load(function () {
+                $('.blueberry').blueberry();
+            });
+        </script>
+        <script type="text/javascript" src="../js/angular.min.js"></script>
+        <script type="text/javascript" src="../js/triagem-touch.js"></script>
+        <script src="../js/angular-block-ui-master/dist/angular-block-ui.min.js"></script>
+    </head>
+    <body ng-controller="TriagemCtrl">
+        <div id="div_main">
+            <div class="img_logo"></div>
+            <div class="font_central">BOLIVIANA DE AVIACIÓN TE RECUERDA</div>
+            <div class="slider">
+                <div id="doc">
+                    <div id="content" style="margin-left: 30px;">
+                    	<img src="img/1006062015.png" />
+                        <!--<div class="blueberry">
+                            <ul class="slides">
+                            	<li><img src="img/touch-advertencia.png" /></li>
+                                <li><img src="img/slider1.png" /></li>
+                                <li><img src="img/slider2.png" /></li>
+                                <li><img src="img/slider1.png" /></li>
+                                <li><img src="img/slider2.png" /></li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="contenedor_principal">
+                <div class="cabecera_tiket">
+                    <div class="font_contenedor">PRESIONA EL BOTÓN CORRESPONDIENTE PARA SER ATENDIDO</div>
+                </div>
+                <div class="datos">
+                    <div  ng-click="distribuiNormal()" class="contenedor_ticket left">
+                        <div class="font_ticket">TICKET#</div>
+                        <div class="font_numero" id="numero_ticket">A328</div>
+                        <div class="font_hora" id="ticket_fecha">17:23</div>
+                    </div>
+                    <div class="contenedor_btn left">
+                        <div ng-click="distribuiNormal()" id="btn_atencion" class="datos_btn">
+                            <div class="ico_atencion left"></div>
+                            <div class="font_btn left">ATENCIÓN GENERAL</div>
+                        </div>
+                        <div ng-click="distribuiSenha(prioridades[1].id,1)" id="btn_mujer" class="datos_btn">
+                            <div class="ico_mujer left"></div>
+                            <div class="font_btn left">ATENCÍON PRIORITARIA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pie">
+            <div class="contenedor_redes_sociales left">
+                <div class="btn_facebook left"></div>
+                <div class="btn_twitter left"></div>
+                <div class="btn_youtube left"></div>
+            </div>
+            <div class="contenedor_datos_llamadas left">
+                <div class="font_pie">Call center BO</div>
+                <div class="font_pie_telf">901 105010</div>
+            </div>
+            <div class="barra left"></div>
+            <div class="contenedor_datos_llamadas left">
+                <div class="font_pie">Web Check in</div>
+                <div class="font_pie_telf">WWW.BOA.BO</div>
+            </div>
+            <div  class="logo_boa left"></div>
+        </div>
+
+
+        <iframe id="frame-impressao" width="300" height="150" style="display:none"></iframe>
+
+    <script>
+
+    </script>
+    </body>
+
+<script>
+
+    function exitFullScreen(){
+
+        document.webkitExitFullscreen();
+        document.mozCancelFullScreen();
+        document.msExitFullscreen();
+        document.exitFullscreen();
+
+    }
+
+   /* $('.btn_youtube').click(function () {
+        alert('asd')
+        document.webkitExitFullscreen();
+        document.mozCancelFullScreen();
+        document.msExitFullscreen();
+        document.exitFullscreen();
+    });*/
+    
+    $('.btn_youtube').click(function () {
+
+            self.close();
+
+        /*var el = document.documentElement
+                , rfs = // for newer Webkit and Firefox
+                        el.requestFullScreen
+                        || el.webkitRequestFullScreen
+                        || el.mozRequestFullScreen
+                        || el.msRequestFullScreen
+                ;
+        if(typeof rfs!="undefined" && rfs){
+
+            rfs.call(el);
+        } else if(typeof window.ActiveXObject!="undefined"){
+            // for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript!=null) {
+                wscript.SendKeys("{F11}");
+            }
+        }*/
+
+    });
+    function cerrar() {
+        var popup = window.open(location, '_self', '');
+        popup.close();
+    }
+    function fullscreen() {
+
+
+        var el = document.documentElement
+                , rfs = // for newer Webkit and Firefox
+                        el.requestFullScreen
+                        || el.webkitRequestFullScreen
+                        || el.mozRequestFullScreen
+                        || el.msRequestFullScreen
+                ;
+        if(typeof rfs!="undefined" && rfs){
+
+            rfs.call(el);
+        } else if(typeof window.ActiveXObject!="undefined"){
+            // for Internet Explorer
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript!=null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+
+
+
+    }
+</script>
+</html>

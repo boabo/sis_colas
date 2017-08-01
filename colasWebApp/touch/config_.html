@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config</title>
+
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script src="../jquery/jquery-ui.min.js"></script>
+
+    <link type="text/css" href="../jquery/jquery-ui.min.css" />
+
+</head>
+<body style="background-color: #fafbfc;">
+
+<table  align="center" width="100%" border="0" cellpadding="0" cellspacing="0"
+        style="border-collapse:collapse;border-spacing:0;width:90%;color:rgb(51,51,51);font-size:12px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+    <tbody>
+    <tr height="50" style="background-color:#F5F5F5">
+        <td  colspan="2" align="center">CONFIG - Touch/Panel</td>
+
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Tipo</td>
+        <td width="50%"  align="left">
+            <select id="tipo_host">
+
+
+                <option value="">Seleccionar el tipo</option>
+                <option value="IP">IP</option>
+                <option value="DOMINIO">DOMINIO</option>
+            </select>
+
+        </td>
+    </tr>
+
+
+    <tr class="host_ip" height="24" style="background-color:#F5F5F5; display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">Host/IP</td>
+        <td width="50%"  align="left">
+            <input id="host_ip" type="text"  >
+        </td>
+    </tr>
+    <tr class="carpeta" height="24" style="background-color:#F5F5F5;display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">carpeta</td>
+        <td width="50%"  align="left">
+            <input id="carpeta" type="text" >
+        </td>
+    </tr>
+    <tr class="host_dominio" height="24" style="background-color:#F5F5F5;display: none;">
+        <td width="50%" style="padding-right: 10px;" align="right">Host/DOMINIO</td>
+        <td width="50%"  align="left">
+            <input id="host_dominio" type="text">
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Usuario</td>
+        <td width="50%"  align="left">
+            <input id="usuario" type="text" >
+        </td>
+    </tr>
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Contraseña</td>
+        <td width="50%"  align="left">
+            <input id="contra" type="password" >
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Inicia Sesion</td>
+        <td width="50%"  align="left">
+
+            <input id="sesion" type="button" name="sesion" value="Iniciar"  />
+        </td>
+    </tr>
+
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Sucursal</td>
+        <td width="50%"  align="left">
+            <select id="sucursal">
+
+            </select>
+
+        </td>
+    </tr>
+
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Guardar Config</td>
+        <td width="50%"  align="left">
+
+            <input id="guardar" type="button" name="guardar" value="guardar"  />
+        </td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+<script src="../config.js"></script>
+
+<script src="../pxpRestWeb/md5.js"></script>
+<script src="../pxpRestWeb/mcrypt.js"></script>
+<script src="../pxpRestWeb/rijndael.js"></script>
+<script src="../pxpRestWeb/base64.js"></script>
+<script src="../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../pxpRestWeb/ajax.js"></script>
+
+
+<script>
+
+    console.log('asd',localStorage)
+    verSesion();
+    config.IP.ip = $("#host_ip").val();
+    console.log(config.IP)
+
+
+
+    $("#tipo_host").change(function () {
+
+       console.log($(this).val())
+
+        if($(this).val() == "IP"){ // es ip
+
+            $(".host_ip").show();
+            $(".carpeta").show();
+            $(".host_dominio").hide();
+        }else if ($(this).val() == "DOMINIO"){ // es DOMINIO
+            $(".host_ip").hide();
+            $(".carpeta").hide();
+            $(".host_dominio").show();
+        }else {
+            $(".host_ip").hide();
+            $(".carpeta").hide();
+            $(".host_dominio").hide();
+            return;
+        }
+    });
+
+    $("#sesion").click(function () {
+
+
+        clientRestPxp.setCredentialsPxp($("#usuario").val(), md5($("#contra").val()));
+        clientRestPxp.genHeaders();
+
+        var contra = clientRestPxp._user;
+
+
+        if($("#tipo_host").val() == "IP"){ // es ip
+
+            config.tipo_ruta = "IP";
+            config.IP.ip = $("#host_ip").val();
+            config.IP.carpeta = $("#carpeta").val();
+            config.init();
+
+        }else if($("#tipo_host").val() == "DOMINIO"){ //es dominio
+            config.tipo_ruta = "DOMINIO";
+            config.DOMINIO.url = $("#host_dominio").val();
+            config.init();
+        }else {
+            return;
+        }
+
+
+        //'/seguridad/Auten/verificarCredenciales',
+        ajax_dyd.data = {usuario: $("#usuario").val(), contrasena:contra};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/seguridad/Auten/verificarCredenciales';
+        ajax_dyd.dataType = 'html';
+        ajax_dyd.async = true;
+        ajax_dyd.sesionPXP(function (callback) {
+
+            console.log('callback',callback)
+
+            /*Guardando los datos en el LocalStorage*/
+            localStorage.setItem("userPXP", $("#usuario").val());
+            localStorage.setItem("contraPXP",  md5($("#contra").val()) );
+            localStorage.setItem("hostPXP", $("#host_ip").val());
+            localStorage.setItem("carpetaPxp", $("#carpeta").val());
+            localStorage.setItem("dominioPXP", $("#host_dominio").val());
+            localStorage.setItem("tipoHost", $("#tipo_host").val());
+            console.log('asd',localStorage)
+
+            verSesion();
+        });
+    });
+
+    function verSesion (){
+
+        var user = localStorage.getItem("userPXP");
+        var contra = localStorage.getItem("contraPXP");
+        var host = localStorage.getItem("hostPXP");
+
+
+
+        console.log(user)
+        if ((user == null) || (contra == null) || (host == null)){
+
+            alert('no tienes SESION GUARDADO ')
+        }else{
+
+            $("#usuario").val(user);
+            $("#contra").val(contra);
+            $("#host_ip").val(host);
+
+            config.usPxp = user;
+            config.pwdPxp = contra;
+            config.IP.ip = host;
+            config.init();
+            clientRestPxp.setCredentialsPxp(config.usPxp, config.pwdPxp);
+            clientRestPxp.genHeaders();
+            comboSucursal();
+
+        }
+
+
+    }
+
+    function comboSucursal(){
+
+        $("#sucursal").empty();
+
+        ajax_dyd.data = {start: "0", limit: "50",sort:'id_sucursal'};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Sucursal/listarSucursal';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            var sucursal = localStorage.getItem("sucursal");
+            var m = '';
+            $.each(callback.datos,function (k,v) {
+
+                m+='<option value="'+v.id_sucursal+'">'+v.nombre+'</option>';
+
+            });
+
+            $("#sucursal").append(m);
+
+            if(sucursal != null){
+                $("#sucursal").val(sucursal);
+            }
+
+        });
+    }
+
+    $("#guardar").click(function () {
+
+        console.log($("#sucursal").val())
+        localStorage.setItem("sucursal", $("#sucursal").val());
+
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+
+body{
+    color:#fff;
+}
+#div_main {
+    background:#10437c;       
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 1080px;
+    height: 1903px;
+    color:#fff;
+    font-family: 'FuturaStd-Medium';
+}
+.img_logo{
+    position: absolute;
+    left: 1px;
+    top: 133px;
+    background: url('../img/logos.png') top left no-repeat;  
+    width: 55px;
+    height: 935px;
+}
+.contenedor_principal{
+    background: #002744;  
+    width: 945px;
+    height: 529px;
+    position: absolute;
+    left:80px;
+    top:965px;
+}
+.cabecera_tiket{
+    background: #001a31;  
+    width: 945px;
+    height: 83px;
+}
+.datos {
+    width: 900px;
+    margin-left: 90px;
+    margin-top: 44px;
+}
+.font_ticket{
+    font-family: 'FuturaStd-Medium';
+    font-size: 56px;
+    margin-top: 19px;
+    margin-left: 41px;
+}
+.font_numero{
+    font-family: 'Conv_FuturaStd-Heavy';
+    font-size: 109px;
+    margin-top: 5px;
+}
+.font_hora{
+    font-family: 'Conv_FuturaStd-CondensedBold';
+    font-size: 42px;
+    margin-left: 58px;
+}
+.font_btn{
+    font-family: 'Conv_FuturaStd-Heavy';
+    font-size: 32px;
+    margin-top: 20px;
+    margin-left: 30px;
+    color:#002844;
+    width: 100px;
+}
+.font_btn1{
+    font-family: 'Conv_FuturaStd-Heavy';
+    font-size: 32px;
+    margin-left: 30px;
+    color:#002844;
+    width: 250px;
+}
+.contenedor_ticket{
+    width: 262px;
+}
+.datos_btn{
+    margin-top: 10px;
+    background: #fff;
+    width: 441px;
+    height: 117px;    
+    cursor:pointer;
+    display: block;
+}
+.font_contenedor{
+    font-family: 'FuturaStd-Medium';
+    font-size: 31px;
+    padding-top: 25px;
+    margin-left: 25px;
+    width: 892px;
+}
+.ico_atencion{
+    margin-left: 20px;
+    background: url('../img/persona_natural.png') top left no-repeat;
+    width: 134px;
+    height: 94px;
+    color: #002844;
+    margin-top: 10px;
+}
+.ico_mujer{
+    margin-left: 20px;
+    background: url('../img/prioridad.png') top left no-repeat;
+    width: 134px;
+    height: 94px;
+    color: #002844;
+    margin-top: 10px;
+}
+#btn_atencion{
+    background: #fff;
+    z-index: -1;
+}
+#btn_atencion:active{
+    background:#ffc100;
+
+}
+#btn_mujer{
+    background: #fff;
+    z-index: -1;
+}
+
+#btn_mujer:active{
+    background:#ffc100;
+}
+
+.contenedor_btn{
+    margin-left: 40px;
+    margin-top: 14px;
+}
+.font_central{
+    position: absolute;
+    font-family: 'FuturaStd-Book';
+    font-size: 42px;
+    margin-top: 42px;
+    margin-left: 133px;
+}
+.slider{
+    margin-top: 115px;
+    margin-left: 55px;
+    width: 940px;
+    height: 780px;
+}
+/*Estilos del slider*/
+#doc { margin: 74px 0; }
+#content {
+    margin: 0 auto;
+    min-width: 934px;
+    max-width: 592px;
+}
+.blueberry { max-width: 934px; }
+
+/*estilos del pie de pagina*/
+.pie{
+    background: #002844; 
+    position: fixed;
+    width:1080px;
+    height: 252px;
+    bottom: 0;
+    left: 0;
+}
+.contenedor_redes_sociales{
+    width: 220px;
+    margin-top: 100px;
+    margin-left: 54px;
+}
+.btn_facebook{
+    background: url('../img/btn_facebook.png') top left no-repeat;  
+    width: 54px;
+    height: 56px;
+    margin-left: 14px;
+    display: block;
+    cursor: pointer;
+}
+.btn_twitter{
+    background: url('../img/btn_twitter.png') top left no-repeat;  
+    width: 54px;
+    height: 56px;
+    margin-left: 14px;
+    display: block;
+    cursor: pointer;
+}
+.btn_youtube{
+    background: url('../img/btn_youtube.png') top left no-repeat;  
+    width: 54px;
+    height: 56px;
+    margin-left: 14px;
+    display: block;
+    cursor: pointer;
+}
+.contenedor_datos_llamadas{
+    width: 160px;
+    margin-top: 98px;
+    margin-left: 10px;
+}
+.font_pie{
+    font-family: 'FuturaStd-Medium';
+    font-size: 22px; 
+}
+.font_pie_telf{
+    font-family: 'Conv_FuturaStd-Heavy';
+    font-size: 28px;
+}
+.barra{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 102px;
+    width: 3px;
+    height: 53px;
+    background: #fff;
+}
+.logo_boa{
+    background: url('../img/logo_boa.png') top left no-repeat;  
+    width: 264px;
+    height: 154px; 
+    margin-top: 45px;
+    margin-left: 91px;
+}

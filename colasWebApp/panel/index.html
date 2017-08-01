@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/jquery-3.0.0.min.js"></script>
+
+    <style>
+
+        @font-face {
+            font-family: RobotoThinItalic;
+            src: url('../fonts/Roboto/Roboto-ThinItalic.ttf');
+        }
+        @font-face {
+            font-family: RobotoThin;
+            src: url('../fonts/Roboto/Roboto-Thin.ttf');
+        }
+
+        @font-face {
+            font-family: RobotoBold;
+            src: url('../fonts/Roboto/Roboto-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: RobotoBlack;
+            src: url('../fonts/Roboto/Roboto-Black.ttf');
+        }
+        @font-face {
+            font-family: RobotoRegular;
+            src: url('../fonts/Roboto/Roboto-Regular.ttf');
+        }
+
+        .contenedor_cajas {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            background-color: #19468D;
+            font-family: RobotoRegular;
+            opacity: 0.8;
+            height: auto;
+        }
+        .contenedor_cajas div:first-child{
+            background-color: #19468D !important;
+            
+        }
+        .contenedor_cajas div {
+            background-color: #1C75BC !important;
+        }
+        .caja_panel {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+            width: 33%; float: left;
+            color: yellow;
+            border-color: white;
+			border-style: solid;
+			border-width: 1.5px;
+            font-size: 3em;
+        }
+        .llamado {
+            color: white;
+         
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<audio id="alert" style="display: none;"></audio>
+<div>
+
+    <div style="position: fixed;top: 0; right: 0; ">
+<!--
+        <img style="width: 200px; opacity: 0.5;" src="../img/elfec.png" />
+-->
+    </div>
+    <video width="100%" id="reproductor" onerror="panel.errorVideo(event)" ></video>
+</div>
+<div style="position: fixed; bottom: 0; height: auto; width: 100%; display: block;">
+
+    <div id="texto_contenido" style="width: 100%; display: block; position:static; background-color: #19468D;font-size: 2em;">
+
+    </div>
+    <div class="contenedor_cajas">
+
+
+
+    </div>
+</div>
+
+
+
+<script src="../config.js"></script>
+
+<script src="../pxpRestWeb/mcrypt.js"></script>
+<script src="../pxpRestWeb/rijndael.js"></script>
+<script src="../pxpRestWeb/base64.js"></script>
+<script src="../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../pxpRestWeb/ajax.js"></script>
+
+<script src="js/buzz.js"></script>
+<script src="js/panel.js"></script>
+
+<script>
+
+    //cargamos media de videos imagenes y mensajes
+    (function ($) {
+        panel.MediaVideosImagenes();
+        panel.mensajes();
+
+
+
+    })(jQuery);
+
+</script>
+
+</body>
+</html>

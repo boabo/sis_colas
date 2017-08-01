@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script src="../jquery/jquery-ui.min.js"></script>
+
+    <link type="text/css" href="../jquery/jquery-ui.min.css" />
+    <style>
+
+        /*1280 1024*/
+        @font-face {
+            font-family: RobotoThinItalic;
+            src: url('../fonts/Roboto/Roboto-ThinItalic.ttf');
+        }
+        @font-face {
+            font-family: RobotoThin;
+            src: url('../fonts/Roboto/Roboto-Thin.ttf');
+        }
+
+        @font-face {
+            font-family: RobotoBold;
+            src: url('../fonts/Roboto/Roboto-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: RobotoBlack;
+            src: url('../fonts/Roboto/Roboto-Black.ttf');
+        }
+
+        #contenedor {
+            width: 100%;
+            height: 1050px;
+            background-color: #1C75BC;
+        }
+
+        #main {
+            width: 100%;
+            /*height: 865px;*/
+            height: 80%;
+            position: relative;
+        }
+
+        #main .caja1 {
+            /*width: 1250px;*/
+            width: 80%;
+            /*height: 750px;*/
+            height: 80%;
+            position: absolute;
+            background-color: #19468D;
+            top: 10%;
+            left: 10%;
+        }
+
+        #main .caja1 .header {
+            /*width: 1250px;*/
+            width: 100%;
+            /*height: 85px;*/
+            height: 10%;
+        }
+
+        #main .caja1 .header :first-child {
+
+            width: 5%;
+            height: 100%;
+            background-color: #E32726;
+            float: left;
+            position: relative;
+            z-index: 5000;
+        }
+
+        #main .caja1 .header :last-child {
+            width: 5%;
+            height: 100%;
+            background-color: #007A40;
+            float: right;
+            position: relative;
+            z-index: 5000;
+        }
+
+        #main .caja1 .header .medio {
+            background-color: #FEDF00;
+            position: absolute;
+            width: 100%;
+            height: 10%;
+            float: left;
+        }
+
+        #main .caja1 .main2 {
+
+            width: 100%;
+            /*height: 665px;*/
+            height: 90%;
+        }
+
+        #main .caja1 .main2 .contenedor_ {
+
+            width: 50%;
+            /*height: 665px;*/
+            height: 90%;
+            float: left;
+            position: relative;
+
+        }
+
+        #main .caja1 .main2 .contenedor_ .textos {
+            position: absolute;
+            top: 30%;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+
+        }
+
+        /*#left-drawer-menu {
+            width: 90%;
+            height: 70%;
+
+            !*list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+
+            display: -webkit-flex;
+            -webkit-flex-direction: column;
+
+            display: flex;
+            flex-direction: column;*!
+        }
+
+        #left-drawer-menu li {
+            margin-top: 20px;
+            background-color: white;
+            text-align: center;
+            flex-grow: 1;
+            vertical-align: middle;
+            cursor: pointer;
+
+
+        }*/
+
+
+        .botones{
+            font-family: RobotoBold; font-size: 40px;
+        }
+
+
+
+        #footer {
+            /*width: 1400px;*/
+            width: 100%;
+            /*height: 185px;*/
+            height: 20%;
+            background-color: #19468D;
+        }
+        #footer:first-child{
+            float: left;
+        }
+        #footer:last-child{
+            float: left;
+            /*height: 185px;*/
+            height: 20%;
+            background-image: url("../img/elfec.png");
+            background-repeat: no-repeat;
+
+
+
+    </style>
+
+    <style>
+        .contenedor_ {
+
+            width: 50%;
+            /*height: 665px;*/
+            height: 95%;
+            float: left;
+            position: relative;
+
+        }
+
+        .contenedor_ .textos {
+            position: absolute;
+            top: 30%;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+
+        }
+
+        .flex-container {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            /*border: 1px solid silver;*/
+            -ms-box-orient: horizontal;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -moz-flex;
+            display: -webkit-flex;
+            display: flex;
+            height: 70%;
+
+            -webkit-flex-direction: row; /*para internet explorer*/
+            -ms-flex: 0;
+
+            display: flexbox;
+        }
+
+        .column {
+            flex-direction: column;
+        }
+        .row{
+            flex-direction: row;
+
+            /*!* flexbox setup *!*/
+            /*display: -webkit-flex;*/
+            /*-webkit-flex-direction: row;*/
+
+            /*display: flex;*/
+            /*flex-direction: row;*/
+
+            /*flex-flow: row nowrap;*/
+
+        }
+
+        .nowrap  {
+            -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+        }
+
+        .wrap    {
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+        .wrap li {
+            /*background: gold;*/
+            background-color: aliceblue;
+            margin-top: 5px;
+            text-align: center;
+            cursor: pointer;
+            color:black;
+            font-family: RobotoThin;
+        }
+
+        .wrap-reverse         {
+            -webkit-flex-wrap: wrap-reverse;
+            flex-wrap: wrap-reverse;
+        }
+        .wrap-reverse li {
+            background: deepskyblue;
+        }
+
+        .flex-item {
+            background: tomato;
+            padding: 5px;
+            /*width: 100px;*/
+            /*height: 100px;*/
+            margin: 10px;
+
+            /*line-height: 100px;*/
+            color: white;
+            /*font-weight: bold;*/
+            font-size: 2em;
+            text-align: center;
+            /*flex-grow: 1;*/
+            font-family: RobotoBold;
+
+        }
+        *{
+            min-width: 0;
+            min-height: 0;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div id="contenedor"  >
+
+    <div id="main">
+
+        <div class="caja1">
+            <div class="header">
+
+                <div></div>
+                <div class="medio"></div>
+                <div></div>
+            </div>
+
+            <div class="main2">
+
+                <div class="contenedor_" style="width: 30%;">
+                    <div class="textos">
+
+                        <span style="display: block; font-size: 2.5em; color: #ffffff;  font-family: RobotoBold; line-height: 15px;">TICKET#</span>
+                        <span id="siglaNum" style="display: block; font-size: 3em; color: #ffffff; font-family: RobotoBlack; ">A220</span>
+                        <span id="fecha_ficha" style="display: block; font-size: 1em; color: #ffffff;  font-family: RobotoThinItalic; line-height: 10px;">09:00 AM</span>
+                    </div>
+                </div>
+
+                <!--aca van los botones-->
+                <div class="contenedor_" style="padding-top: 30px; width: 70%;" >
+
+
+                    <ul id="left-drawer-menu" class="flex-container wrap">
+
+                    </ul>
+
+                    <div  style="margin-top: 20px; text-align: center; cursor: pointer; width: 100%; font-family: RobotoBlack; font-size:1em; background-color: #ffffff;" id="atras">
+                        VOLVER
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="footer">
+
+        <div style="width: 50%; padding-top: 50px; float: left;">
+            <div style="float: right; margin-left: 10px; "><img src="../img/yt.png" width="33%" /></div>
+            <div style="float: right; margin-left: 10px;"><img src="../img/tw.png" width="33%"  /></div>
+            <div style="float: right; margin-left: 10px;"><img src="../img/fb.png" width="33%"  /></div>
+
+        </div>
+        <div style="float: right; width: 50%;">
+            <img src="../img/elfec.png" width="30%"  />
+        </div>
+
+    </div>
+    <div style="position: fixed; z-index: 6000; bottom: 0;">
+        <img src="../img/ticket_mano.png" width="50%"  />
+    </div>
+    <div id="imprimir" style="display: none;" ></div>
+</div>
+
+
+<script src="../config.js"></script>
+
+<script src="../pxpRestWeb/mcrypt.js"></script>
+<script src="../pxpRestWeb/rijndael.js"></script>
+<script src="../pxpRestWeb/base64.js"></script>
+<script src="../pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="../pxpRestWeb/ajax.js"></script>
+
+
+<script type="text/javascript">
+
+
+   var ancho = $(window).width(),alto = $(window).height();
+
+   $("#contenedor").css({
+       height:alto+"px"
+   });
+
+    $("#imprimir").hide();
+
+
+
+
+    var sucursal = localStorage.getItem("sucursal");
+    var user = localStorage.getItem("userPXP");
+    var contra = localStorage.getItem("contraPXP");
+
+    config.usPxp = user;
+    config.pwdPxp = contra;
+    config.tipo_ruta  = localStorage.getItem("tipoHost");
+
+    if(localStorage.getItem("tipoHost") == "DOMINIO"){
+        var dominio = localStorage.getItem("dominioPXP");
+
+        config.DOMINIO.url = dominio;
+
+    }else if(localStorage.getItem("tipoHost") == "IP"){
+
+        var host = localStorage.getItem("hostPXP");
+        var carpeta = localStorage.getItem("carpetaPxp");
+
+        config.IP.ip = host;
+        config.IP.carpeta = carpeta;
+
+    }else {
+        alert("hay un error en su configuracion revisa tu configuracion");
+    }
+
+
+
+
+
+
+    config.init();
+
+
+    servicio('','id');
+
+
+    $("#left-drawer-menu").hide();
+
+    function servArb(that){
+
+        $("#atras").show();
+
+        console.log(that);
+        console.log($(that));
+        console.log($(that).data("servicio"));
+
+        ajax_dyd.data = {start: "0", limit: "50",sort:'id_sucursal_servicio',id_servicio_padre:$(that).data("servicio"),id_sucursal:sucursal};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/SucursalServicio/listarSucursalServicio';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            console.log(callback)
+            //nombre_servi
+
+            if(callback.total == 0){
+                console.log("es cero")
+                prioridades($(that).data("servicio"));
+
+            }else{
+                var pading =  (3*10)/ callback.total;
+
+
+                var style_ul = "";
+                var style_li = "";
+                var clase = "";
+                //cuando tiene mas de 5
+                if(callback.total > 5){
+                    style_li = 'width:45%; flex-grow: 0; padding-top:'+pading+'px;';
+                    clase = "row";
+                }else{ //cuando teiene menos de 5
+                    style_li = 'width:95%; flex-grow: 1;';
+
+                    clase = "column";
+
+                }
+
+                if ($("#left-drawer-menu").hasClass("row")){
+                    $("#left-drawer-menu").removeClass("row");
+                }else if ($("#left-drawer-menu").hasClass("column")){
+                    $("#left-drawer-menu").removeClass("column");
+                }
+
+                $("#left-drawer-menu").empty();
+                $("#left-drawer-menu").addClass(clase);
+                var m ='';
+                $.each(callback.datos,function(k,v){
+
+                    console.log(v)
+
+                    m+='<li class="flex-item botones"  onclick="servArb(this)" data-servicio="'+v.id_servicio+'"  style="'+style_li+'" >'+v.nombre_servi+'</li>';
+                });
+
+
+                $("#left-drawer-menu").append(m);
+                $("#left-drawer-menu").show();
+
+
+
+            }
+
+
+        });
+        //servicio($(that).data("servicio"),$(that).data("servicio"));
+    }
+    function servicio(id_servicio,id) {
+
+
+        if(id_servicio == '' && id == 'id'){
+            //primer nivel
+            $("#atras").hide();
+        }
+
+
+
+        $("#left-drawer-menu").hide();
+
+        ajax_dyd.data = {start: "0", limit: "50",sort:'id_servicio',node:''+id+'',id_servicio:id_servicio,vista:"touch",id_sucursal:sucursal};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Servicio/listarServicioArb';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            if(callback.length == 0){
+                console.log("es cero")
+                prioridades(id_servicio);
+
+            }else{
+                var pading =  (3*10)/ callback.length;
+                $("#left-drawer-menu").empty();
+
+                var style_ul = "";
+                var style_li = "";
+                var clase = "";
+                //cuando tiene mas de 5
+                if(callback.total > 5){
+                    style_li = 'width:40%;';
+                    clase = "row";
+                }else{ //cuando teiene menos de 5
+                    style_li = 'width:95%;';
+
+                    clase = "column";
+
+                }
+
+                if ($("#left-drawer-menu").hasClass("row")){
+                    $("#left-drawer-menu").removeClass("row");
+                }else if ($("#left-drawer-menu").hasClass("column")){
+                    $("#left-drawer-menu").removeClass("column");
+                }
+
+                $("#left-drawer-menu").empty();
+                $("#left-drawer-menu").addClass(clase);
+
+                var m ='';
+                $.each(callback,function (k,v) {
+
+
+                    m+='<li class="flex-item botones" onclick="servArb(this)" data-servicio="'+v.id_servicio+'"  style="padding-top: '+pading+'%;">'+v.nombre+'</li>';
+                });
+
+
+
+
+                $("#left-drawer-menu").append(m);
+                $("#left-drawer-menu").show("drop");
+            }
+
+
+        });
+    }
+    function prioridades(id_servicio){
+
+        console.log('servicio',id_servicio)
+        $("#left-drawer-menu").hide();
+        ajax_dyd.data = {start: "0", limit: "50",sort:'id_prioridad'};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Prioridad/listarPrioridad';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+
+            var pading =  (3*10)/ callback.datos.length;
+            $("#left-drawer-menu").empty();
+
+            if ($("#left-drawer-menu").hasClass("row")){
+                $("#left-drawer-menu").removeClass("row");
+            }else if ($("#left-drawer-menu").hasClass("column")){
+                $("#left-drawer-menu").removeClass("column");
+            }
+            $("#left-drawer-menu").addClass("column");
+
+            var m ='';
+            $.each(callback.datos,function (k,v) {
+
+
+
+                m+='<li onclick="ficha('+id_servicio+','+v.id_prioridad+')" data-servicio="'+v.id_servicio+'" data-prioridad="'+v.id_prioridad+'"  style="padding-top: '+pading+'%;" class="flex-item botones" >'+v.nombre+'</li>';
+            });
+
+            $("#left-drawer-menu").append(m);
+
+            $("#left-drawer-menu").show("drop");
+
+        });
+
+
+    }
+    function ficha(id_servicio,id_prioridad){
+
+        console.log('prioridad',id_prioridad)
+        $("#left-drawer-menu").hide();
+
+        ajax_dyd.data = {id_ficha:"",numero:"",id_sucursal:sucursal,sigla:"",id_servicio:id_servicio,id_prioridad:id_prioridad,peso:"1"};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Ficha/insertarFicha';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            console.log(callback.ROOT.datos.v_fecha_reg)
+
+            var time = callback.ROOT.datos.v_fecha_reg.split(" ");
+            console.log(time)
+
+            $("#siglaNum").empty();
+            $("#siglaNum").append(callback.ROOT.datos.sigla);
+
+            $("#fecha_ficha").empty();
+            $("#fecha_ficha").append(time[1]);
+
+            var texto = '<!DOCTYPE html>'+
+                    '<html ng-app="TriagemTouch">'+
+                    '<head>'+
+                    '<title></title>'+
+                    '<link type="text/css" rel="stylesheet" href="css/print/print.css" />'+
+
+                    '<link rel="shortcut icon" href="images/favicon.png" />'+
+                    '</head>'+
+                    ' <body onload="print()">'+
+
+                    '<div id="senha">'+
+                    ' <div id="senha-header">'+
+                    '<center>'+
+                    '<div><center><img src="../img/logo_negro.png" width="150" /></center></div>'+
+                    ''+callback.ROOT.datos.nombre_suc+''+
+
+                    '<div id="senha-body">'+
+                    ''+callback.ROOT.datos.sigla+''+
+                    '<span class="descricao">'+
+                    callback.ROOT.datos.v_fecha_reg+
+                    '</span>'+
+
+
+                    '</div>'+
+                    '<div id="senha-footer">'+
+                    callback.ROOT.datos.mensaje_impresion+
+                    '</div>'+
+                    '</center>'+
+                    '</div>'+
+                    '</body>'+
+                    '</html>';
+
+            var iframes = document.querySelectorAll('iframe');
+            for (var i = 0; i < iframes.length; i++) {
+                iframes[i].parentNode.removeChild(iframes[i]);
+            }
+
+            ifrm = document.createElement("IFRAME");
+            ifrm.name = 'mifr';
+            ifrm.id = 'mifr';
+            //document.body.appendChild(ifrm);
+            $('#imprimir').append(ifrm);
+            var doc = window.frames['mifr'].document;
+            doc.open();
+            doc.write(texto);
+            doc.close();
+
+
+
+
+
+
+            servicio('','id');
+
+
+        });
+
+    }
+
+    $("#atras").click(function () {
+        servicio('','id');
+    });
+
+
+</script>
+
+</body>
+</html>
