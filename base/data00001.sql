@@ -159,14 +159,13 @@ select pxp.f_insert_tgui ('Cuadro II y III', 'Cuadro II y III', 'REPCUAII', 'si'
 select pxp.f_insert_testructura_gui ('REPCUAII', 'REPCOL');
 
 /***********************************F-DAT-JRR-COLA-0-05/09/2016****************************************/
-<<<<<<< HEAD
+
 /***********************************I-DAT-JMH-COLA-0-15/03/2017****************************************/
 update segu.tprocedimiento SET habilita_log= 'no' where codigo='COLA_ficha_SEL';
 update segu.tprocedimiento SET habilita_log= 'no' where codigo='COLA_ficha_CONT';
 update segu.tprocedimiento SET habilita_log= 'no' where codigo='COLA_llapan_SEL';
 /***********************************F-DAT-JMH-COLA-0-15/03/2017****************************************/
 
-=======
 
 /***********************************I-DAT-FFP-COLA-0-17/05/2017****************************************/
 
@@ -181,4 +180,4 @@ INSERT INTO param.ttipo_archivo (id_usuario_reg, id_usuario_mod, fecha_reg, fech
 
 
 /***********************************F-DAT-FFP-COLA-0-19/05/2017****************************************/
->>>>>>> 3bea79fc8f0ea38dda89bce0dc515d135b531868
+

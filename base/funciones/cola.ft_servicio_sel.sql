@@ -37,6 +37,8 @@ DECLARE
     v_id_sucursal integer;
 
 	v_array_servicios INTEGER[];
+
+  v_consulta_servicio_aux varchar;
 			    
 BEGIN
 
@@ -255,6 +257,13 @@ BEGIN
 				select pxp.list(servicio_fk.id_servicio_fk::VARCHAR) into v_ids_servicios from cola.tservicio servicio_fk
 				WHERE servicio_fk.id_servicio_fk is NOT NULL;
 
+        IF v_ids_servicios is NULL THEN
+
+          v_consulta_servicio_aux = '';
+          ELSE
+          v_consulta_servicio_aux = ' servi.id_servicio not in('||v_ids_servicios||') and ';
+        END IF;
+
 			v_consulta:='select
 						servi.id_servicio,
 						servi.estado_reg,
@@ -274,7 +283,7 @@ BEGIN
 						from cola.tservicio servi
 						inner join segu.tusuario usu1 on usu1.id_usuario = servi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = servi.id_usuario_mod
-				        where servi.id_servicio not in('||v_ids_servicios||') and  ';
+				        where '||v_consulta_servicio_aux||' ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -301,11 +310,18 @@ BEGIN
 			select pxp.list(servicio_fk.id_servicio_fk::VARCHAR) into v_ids_servicios from cola.tservicio servicio_fk
 			WHERE servicio_fk.id_servicio_fk is NOT NULL;
 
+      IF v_ids_servicios is NULL THEN
+
+        v_consulta_servicio_aux = '';
+      ELSE
+        v_consulta_servicio_aux = ' servi.id_servicio not in('||v_ids_servicios||') and ';
+      END IF;
+
 			v_consulta:='select count(id_servicio)
 					    from cola.tservicio servi
 					    inner join segu.tusuario usu1 on usu1.id_usuario = servi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = servi.id_usuario_mod
-					    where servi.id_servicio not in('||v_ids_servicios||') and ';
+					    where '||v_consulta_servicio_aux||' ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
