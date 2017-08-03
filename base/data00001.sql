@@ -181,3 +181,11 @@ INSERT INTO param.ttipo_archivo (id_usuario_reg, id_usuario_mod, fecha_reg, fech
 
 /***********************************F-DAT-FFP-COLA-0-19/05/2017****************************************/
 
+
+/***********************************I-DAT-FFP-COLA-0-03/08/2017****************************************/
+
+select pxp.f_insert_tgui ('ReporteGraf', 'ReporteGraf', 'RGCOLA', 'si', 1, 'sis_colas/vista/sucursal/ReporteGraf.php', 3, '', 'ReporteGraf', 'COLA');
+
+
+/***********************************F-DAT-FFP-COLA-0-03/08/2017****************************************/
+
