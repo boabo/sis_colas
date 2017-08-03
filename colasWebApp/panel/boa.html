@@ -221,7 +221,8 @@
               console.log(imagenes);
 
                 var siguiente = imagenes.img.shift();
-                $("#imagenes").html('<img src="'+panel.ruta_videos+siguiente.Path+'" width="100%" />');
+                var ruta_imagenes = panel.ruta_videos+'Image/';
+                $("#imagenes").html('<img src="'+ruta_imagenes+siguiente.Path+'" width="100%" />');
                 imagenes.img.push(siguiente);
 
                 setTimeout(imagenes.colaDeImagenes,10000);
@@ -278,7 +279,7 @@
 
 
                         $.each(data.ListaRecurso,function (k,v) {
-                            panel.media[k] = v.Path;
+                            panel.media[k] = 'Video/'+v.Path;
                         });
                         console.log(panel)
 
