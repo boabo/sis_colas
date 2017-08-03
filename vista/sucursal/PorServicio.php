@@ -1,18 +1,18 @@
 <?php
 /**
- *@package pXP
- *@file gen-Depto.php
- *@author  favio figueroa
- *@date 24-11-2017 15:52:20
- *@description grafico
+ * @package pXP
+ * @file gen-Depto.php
+ * @author  favio figueroa
+ * @date 24-11-2017 15:52:20
+ * @description grafico
  */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-    Ext.define('Phx.vista.PorServicio',{
+    Ext.define('Phx.vista.PorServicio', {
         extend: 'Ext.util.Observable',
 
-        constructor: function(config) {
+        constructor: function (config) {
 
             Ext.apply(this, config);
             var me = this;
@@ -21,42 +21,36 @@ header("content-type: text/javascript; charset=UTF-8");
             this.panel = Ext.getCmp(this.idContenedor);
 
 
-
             this.store = new Ext.data['JsonStore']({
                 url: '../../sis_colas/control/Ficha/reporteServicio',
                 id: 'id_ficha',
                 //root: 'datos',
-                sortInfo: {field: 'id_ficha',direction: 'ASC'},
+                sortInfo: {field: 'id_ficha', direction: 'ASC'},
                 totalProperty: 'total',
-                fields:['cantidad_estado','porcentaje_servicio','servicio'],
+                fields: ['cantidad_estado', 'porcentaje_servicio', 'servicio'],
                 remoteSort: true
             });
-            this.store.load({ params: { start: 0, limit: 300}});
-
+            this.store.load({params: {start: 0, limit: 300}});
 
 
             this.tbar = new Ext.Toolbar({
-                items:['Tipo: ',this.cmbTipo]
+                items: ['Tipo: ', this.cmbTipo]
             });
-
-
-
-
 
 
             this.panelTorta = new Ext.Panel({
                 padding: '0 0 0 0',
                 tbar: this.tbar,
-                html:'<div id="map-'+this.idContenedor +'" style="width: 100%; height: 100%; position:absolute;"></div>',
+                html: '<div id="map-' + this.idContenedor + '" style="width: 100%; height: 100%; position:absolute;"></div>',
                 //html:'<div id="map-'+this.idContenedor +'" style="position: absolute;  top: 0; right: 0; bottom: 0; left: 0;border: 15px solid orange"></div>',
-                region:'center',
-                layout:  'fit' });
-
-            this.Border = new Ext.Container({
-                layout:'border',
-                items:[ this.panelTorta]
+                region: 'center',
+                layout: 'fit'
             });
 
+            this.Border = new Ext.Container({
+                layout: 'border',
+                items: [this.panelTorta]
+            });
 
 
             this.panel.add(this.Border);
@@ -64,7 +58,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.addEvents('init');
 
 
-            this.chart = Highcharts.chart('map-'+this.idContenedor, {
+            this.chart = Highcharts.chart('map-' + this.idContenedor, {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -104,52 +98,72 @@ header("content-type: text/javascript; charset=UTF-8");
             });
 
 
-            this.cmbTipo.on('select',function(cm,dat,num){
+            this.cmbTipo.on('select', function (cm, dat, num) {
 
 
-                this.chart.series[0].update({ type: dat.data.field1 });
+                this.chart.series[0].update({type: dat.data.field1});
                 this.chart.redraw();
 
-            },this);
+            }, this);
+
+            var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
+            if (dataPadre) {
+                this.onReloadPage(dataPadre)
+
+            }
+            else {
+                console.log('disbled')
+            }
 
         },
 
-        onReloadPage : function(m){
+        onReloadPage: function (m) {
 
             this.maestro = m;
 
 
-            console.log('maestro',this.maestro)
+            console.log('maestro', this.maestro)
             var padre = Phx.CP.getPagina(this.idContenedorPadre);
-            var desde = padre.campo_fecha_desde.getValue(),
-                hasta = padre.campo_fecha_hasta.getValue();
-            console.log('desde',desde)
-            console.log('hasta',hasta)
+
+            if (padre.campo_fecha_hasta.getValue() != '' && padre.campo_fecha_desde.getValue() != '') {
+                valid = true;
+
+                var desde = padre.campo_fecha_desde.getValue(),
+                    hasta = padre.campo_fecha_hasta.getValue();
+                console.log('desde', desde)
+                console.log('hasta', hasta)
 
 
+                /* this.store.baseParams = { id_sucursal:  this.maestro.id_sucursal};
 
-            /* this.store.baseParams = { id_sucursal:  this.maestro.id_sucursal};
+                 if(desde && hasta){
+                 this.store.baseParams=Ext.apply(this.store.baseParams,{ desde: desde.dateFormat('d/m/Y'),
+                 hasta: hasta.dateFormat('d/m/Y')});
+                 }
 
-             if(desde && hasta){
-             this.store.baseParams=Ext.apply(this.store.baseParams,{ desde: desde.dateFormat('d/m/Y'),
-             hasta: hasta.dateFormat('d/m/Y')});
-             }
-
-             this.store.reload({ params: this.store.baseParams, callback : this.cargarChart, scope: this});*/
-
-
-            Ext.Ajax.request({
-                url:'../../sis_colas/control/Ficha/reporteServicio',
-                params:{'otro':'','id_sucursal':this.maestro.id_sucursal,desde: desde.dateFormat('d/m/Y'),hasta: hasta.dateFormat('d/m/Y')},
-                success: this.cargarChart,
-
-                failure: this.conexionFailure,
-                timeout:this.timeout,
-                scope:this
-            });
+                 this.store.reload({ params: this.store.baseParams, callback : this.cargarChart, scope: this});*/
 
 
+                Ext.Ajax.request({
+                    url: '../../sis_colas/control/Ficha/reporteServicio',
+                    params: {
+                        'otro': '',
+                        'id_sucursal': this.maestro.id_sucursal,
+                        desde: desde.dateFormat('d/m/Y'),
+                        hasta: hasta.dateFormat('d/m/Y')
+                    },
+                    success: this.cargarChart,
 
+                    failure: this.conexionFailure,
+                    timeout: this.timeout,
+                    scope: this
+                });
+
+            } else {
+                valid = false;
+                alert('necesitas seleccionar las fechas')
+
+            }
 
 
         },
@@ -158,42 +172,37 @@ header("content-type: text/javascript; charset=UTF-8");
             name: 'tipo',
             fieldLabel: 'Tipo',
             allowBlank: false,
-            forceSelection : true,
-            emptyText:'Tipo...',
+            forceSelection: true,
+            emptyText: 'Tipo...',
             typeAhead: true,
             triggerAction: 'all',
             lazyRender: true,
             mode: 'local',
             width: 70,
-            store: ['bar','pie','line','column'],
+            store: ['bar', 'pie', 'line', 'column'],
             value: 'column'
         }),
 
 
-
-
-        cargarChart: function(resp){
+        cargarChart: function (resp) {
 
 
             var resul = [];
             var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-            console.log('reg',reg)
-            reg.datos.forEach(function(element) {
-                console.log('ele',element)
+            console.log('reg', reg)
+            reg.datos.forEach(function (element) {
+                console.log('ele', element)
                 resul.push({
 
                     name: element.servicio,
-                    descripcion:element.porcentaje_servicio,
-                    y:parseFloat(element.cantidad_estado)
+                    descripcion: element.porcentaje_servicio,
+                    y: parseFloat(element.cantidad_estado)
                 });
 
             });
 
 
-
-
-
-            console.log('resultado.....',resul)
+            console.log('resultado.....', resul)
             //this.chart.series[0].remove();
             /*this.chart.series[0].setData({ name: 'Brands',
              colorByPoint: true,
@@ -207,16 +216,15 @@ header("content-type: text/javascript; charset=UTF-8");
 
         },
 
-        liberaMenu:function(){
+        liberaMenu: function () {
 
         },
-        preparaMenu: function(){
+        preparaMenu: function () {
 
         },
-        postReloadPage: function(){
+        postReloadPage: function () {
 
         }
-
 
 
     });

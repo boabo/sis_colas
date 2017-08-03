@@ -110,6 +110,17 @@ header("content-type: text/javascript; charset=UTF-8");
 
             },this);
 
+            var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
+            if(dataPadre){
+                this.onReloadPage(dataPadre)
+
+            }
+            else
+            {
+                console.log('disbled')
+            }
+
+
         },
 
         onReloadPage : function(m){
@@ -119,32 +130,49 @@ header("content-type: text/javascript; charset=UTF-8");
 
             console.log('maestro',this.maestro)
             var padre = Phx.CP.getPagina(this.idContenedorPadre);
-            var desde = padre.campo_fecha_desde.getValue(),
-                hasta = padre.campo_fecha_hasta.getValue();
-            console.log('desde',desde)
-            console.log('hasta',hasta)
+
+            var valid = true;
+            console.log('padre.campo_fecha_hasta',padre.campo_fecha_hasta.getValue())
+            //validamos las fechas
+            if (padre.campo_fecha_hasta.getValue() != '' && padre.campo_fecha_desde.getValue() != '') {
+                valid = true;
+
+                console.log('valid',valid)
+
+                var desde = padre.campo_fecha_desde.getValue(),
+                    hasta = padre.campo_fecha_hasta.getValue();
+                console.log('desde',desde)
+                console.log('hasta',hasta)
 
 
 
-           /* this.store.baseParams = { id_sucursal:  this.maestro.id_sucursal};
+                /* this.store.baseParams = { id_sucursal:  this.maestro.id_sucursal};
 
-            if(desde && hasta){
-                this.store.baseParams=Ext.apply(this.store.baseParams,{ desde: desde.dateFormat('d/m/Y'),
-                    hasta: hasta.dateFormat('d/m/Y')});
+                 if(desde && hasta){
+                 this.store.baseParams=Ext.apply(this.store.baseParams,{ desde: desde.dateFormat('d/m/Y'),
+                 hasta: hasta.dateFormat('d/m/Y')});
+                 }
+
+                 this.store.reload({ params: this.store.baseParams, callback : this.cargarChart, scope: this});*/
+
+                if(desde.dateFormat('d/m/Y'))
+                    Ext.Ajax.request({
+                        url:'../../sis_colas/control/Ficha/reporteStatus',
+                        params:{'otro':'','id_sucursal':this.maestro.id_sucursal,desde: desde.dateFormat('d/m/Y'),hasta: hasta.dateFormat('d/m/Y')},
+                        success: this.cargarChart,
+
+                        failure: this.conexionFailure,
+                        timeout:this.timeout,
+                        scope:this
+                    });
+
+            } else {
+                valid = false;
+                alert('necesitas seleccionar las fechas')
+
             }
 
-            this.store.reload({ params: this.store.baseParams, callback : this.cargarChart, scope: this});*/
 
-
-            Ext.Ajax.request({
-                url:'../../sis_colas/control/Ficha/reporteStatus',
-                params:{'otro':'','id_sucursal':this.maestro.id_sucursal,desde: desde.dateFormat('d/m/Y'),hasta: hasta.dateFormat('d/m/Y')},
-                success: this.cargarChart,
-
-                failure: this.conexionFailure,
-                timeout:this.timeout,
-                scope:this
-            });
 
 
 

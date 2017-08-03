@@ -19,6 +19,17 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.init();
                 //this.load({params:{start:0, limit:this.tam_pag}})
 
+                var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
+                if(dataPadre){
+                    this.onReloadPage(dataPadre);
+
+                }
+                else
+                {
+                    console.log('disbled')
+                }
+
+
 
             },
 
