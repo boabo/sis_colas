@@ -53,12 +53,14 @@ BEGIN
   sucmen.id_usuario_mod,
   usu1.cuenta as usr_reg,
   usu2.cuenta as usr_mod,
-  men.titulo as desc_mensaje,
- 	men.mensaje
+  suc.nombre as desc_sucursal,
+  men.titulo as desc_mensaje_titulo
  from cola.tsucursal_mensaje sucmen
   inner join segu.tusuario usu1 on usu1.id_usuario = sucmen.id_usuario_reg
   left join segu.tusuario usu2 on usu2.id_usuario = sucmen.id_usuario_mod
-inner join cola.tmensaje men on men.id_mensaje = sucmen.id_mensaje
+  inner join cola.tsucursal suc on suc.id_sucursal = sucmen.id_sucursal
+  inner join cola.tmensaje men on men.id_mensaje = sucmen.id_mensaje
+
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -85,7 +87,8 @@ inner join cola.tmensaje men on men.id_mensaje = sucmen.id_mensaje
 					    from cola.tsucursal_mensaje sucmen
 					    inner join segu.tusuario usu1 on usu1.id_usuario = sucmen.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sucmen.id_usuario_mod
-					   inner join cola.tmensaje men on men.id_mensaje = sucmen.id_mensaje
+					     inner join cola.tsucursal suc on suc.id_sucursal = sucmen.id_sucursal
+  inner join cola.tmensaje men on men.id_mensaje = sucmen.id_mensaje
 
 					     where ';
 			

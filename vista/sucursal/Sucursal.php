@@ -285,12 +285,7 @@ Phx.vista.Sucursal=Ext.extend(Phx.gridInterfaz,{
 	bdel:true,
 	bsave:true,
 
-    east:{
-        url:'../../../sis_colas/vista/sucursal_mensaje/SucursalMensaje.php',
-        title:'SucursalMensaje',
-        width:300,
-        cls:'SucursalMensaje'
-    },
+
 
 
 
@@ -319,6 +314,14 @@ Phx.vista.Sucursal=Ext.extend(Phx.gridInterfaz,{
                 }, rec, this.idContenedor, 'Archivo');
 
         },
+
+    east:{
+        url:'../../../sis_colas/vista/sucursal_mensaje/SucursalMensajePorSucursal.php',
+        title:'Mensajes',
+        width:300,
+        cls:'SucursalMensajePorSucursal'
+    },
+
 
 
     }

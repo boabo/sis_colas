@@ -167,7 +167,49 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		}
+		},
+        {
+            config:{
+                name:'id_sucursales',
+                fieldLabel:'Sucursales',
+                allowBlank:true,
+                emptyText:'Sucursales...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_colas/control/Sucursal/listarSucursal',
+                    id: 'id_sucursal',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_sucursal','nombre','codigo'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams:{par_filtro:'nombre'}
+
+                }),
+                valueField: 'id_sucursal',
+                displayField: 'nombre',
+                forceSelection:true,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:10,
+                queryDelay:1000,
+                width:250,
+                minChars:2,
+                enableMultiSelect:true
+
+                //renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+            },
+            type:'AwesomeCombo',
+            id_grupo:0,
+            grid:false,
+            form:true
+        }
 	],
 	tam_pag:50,	
 	title:'Mensaje',
@@ -188,14 +230,22 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+		{name:'id_sucursales', type: 'string'},
+
 	],
 	sortInfo:{
 		field: 'id_mensaje',
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+
+    east:{
+        url:'../../../sis_colas/vista/sucursal_mensaje/SucursalMensaje.php',
+        title:'SucursalMensaje',
+        width:300,
+        cls:'SucursalMensaje'
+    },
 	}
 )
 </script>

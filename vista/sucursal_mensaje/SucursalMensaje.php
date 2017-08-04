@@ -36,57 +36,71 @@ Phx.vista.SucursalMensaje=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_sucursal'
+					name: 'id_mensaje'
 			},
 			type:'Field',
 			form:true
 		},
 
-		{
-			config: {
-				name: 'id_mensaje',
-				fieldLabel: 'Titulo Mensaje',
-				allowBlank: true,
-				emptyText: 'Elija una opción...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_colas/control/Mensaje/ListarMensaje',
-					id: 'id_mensaje',
-					root: 'datos',
-					sortInfo: {
-						field: 'titulo',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_mensaje', 'titulo', 'mensaje'],
-					remoteSort: true,
-					baseParams: {par_filtro: 'men.titulo'}
-				}),
-				valueField: 'id_mensaje',
-				displayField: 'titulo',
-				gdisplayField: 'desc_mensaje',
-				hiddenName: 'id_mensaje',
-				forceSelection: true,
-				typeAhead: false,
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 15,
-				queryDelay: 1000,
-				anchor: '100%',
-				gwidth: 150,
-				minChars: 2,
-				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['desc_mensaje']);
-				},
-                tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>{titulo}</b></p><p>Mensaje: {mensaje}</p></div></tpl>',
-
+        {
+            config: {
+                name: 'id_sucursal',
+                fieldLabel: 'Sucursal',
+                allowBlank: false,
+                emptyText: 'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_colas/control/Sucursal/listarSucursal',
+                    id: 'id_sucursal',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_sucursal', 'nombre', 'codigo'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'sucur.nombre#sucur.codigo'}
+                }),
+                valueField: 'id_sucursal',
+                displayField: 'nombre',
+                gdisplayField: 'desc_sucursal',
+                hiddenName: 'id_sucursal',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '100%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['desc_sucursal']);
+                }
             },
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {pfiltro: 'men.titulo',type: 'string'},
-			grid: true,
-			form: true
-		},
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+            grid: true,
+            form: true
+        },
+
+        {
+            config:{
+                name: 'desc_mensaje_titulo',
+                fieldLabel: 'Mensaje Titulo',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:10
+            },
+            type:'TextField',
+            filters:{pfiltro:'sucmen.estado_reg',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -214,7 +228,8 @@ Phx.vista.SucursalMensaje=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_mensaje', type: 'string'},
+		{name:'desc_sucursal', type: 'string'},
+		{name:'desc_mensaje_titulo', type: 'string'},
 
 	],
 	sortInfo:{
@@ -226,15 +241,20 @@ Phx.vista.SucursalMensaje=Ext.extend(Phx.gridInterfaz,{
     preparaMenu: function (tb) {
         // llamada funcion clace padre
         Phx.vista.SucursalMensaje.superclass.preparaMenu.call(this, tb)
+
     },
     onButtonNew: function () {
         Phx.vista.SucursalMensaje.superclass.onButtonNew.call(this);
-        this.getComponente('id_sucursal').setValue(this.maestro.id_sucursal);
+
+        this.getComponente('id_mensaje').setValue(this.maestro.id_mensaje);
     },
     onReloadPage: function (m) {
         this.maestro = m;
         console.log(this.maestro);
-        this.store.baseParams = {id_sucursal: this.maestro.id_sucursal};
+
+        this.store.baseParams = {id_mensaje: this.maestro.id_mensaje};
+
+
         this.load({params: {start: 0, limit: 50}})
     },
 	}

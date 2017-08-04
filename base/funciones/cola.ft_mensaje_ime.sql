@@ -27,6 +27,9 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_mensaje	integer;
+
+	v_record RECORD;
+	v_id_sucursal varchar;
 			    
 BEGIN
 
@@ -43,6 +46,8 @@ BEGIN
 	if(p_transaccion='COLA_MEN_INS')then
 					
         begin
+
+
         	--Sentencia de la insercion
         	insert into cola.tmensaje(
 			titulo,
@@ -68,6 +73,37 @@ BEGIN
 			
 			
 			)RETURNING id_mensaje into v_id_mensaje;
+
+
+					for v_id_sucursal in select regexp_split_to_table(v_parametros.id_sucursales,',') LOOP
+
+						insert into cola.tsucursal_mensaje(
+							id_sucursal,
+							id_mensaje,
+							estado_reg,
+							id_usuario_ai,
+							id_usuario_reg,
+							fecha_reg,
+							usuario_ai,
+							fecha_mod,
+							id_usuario_mod
+						) values(
+							v_id_sucursal::integer,
+							v_id_mensaje,
+							'activo',
+							v_parametros._id_usuario_ai,
+							p_id_usuario,
+							now(),
+							v_parametros._nombre_usuario_ai,
+							null,
+							null
+
+
+
+						);
+
+					END LOOP;
+
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje almacenado(a) con exito (id_mensaje'||v_id_mensaje||')'); 
@@ -97,6 +133,38 @@ BEGIN
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai
 			where id_mensaje=v_parametros.id_mensaje;
+
+			DELETE FROM cola.tsucursal_mensaje where id_mensaje = v_parametros.id_mensaje;
+
+			for v_id_sucursal in select regexp_split_to_table(v_parametros.id_sucursales,',') LOOP
+
+				insert into cola.tsucursal_mensaje(
+					id_sucursal,
+					id_mensaje,
+					estado_reg,
+					id_usuario_ai,
+					id_usuario_reg,
+					fecha_reg,
+					usuario_ai,
+					fecha_mod,
+					id_usuario_mod
+				) values(
+					v_id_sucursal::integer,
+					v_parametros.id_mensaje,
+					'activo',
+					v_parametros._id_usuario_ai,
+					p_id_usuario,
+					now(),
+					v_parametros._nombre_usuario_ai,
+					null,
+					null
+
+
+
+				);
+
+			END LOOP;
+
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje modificado(a)'); 

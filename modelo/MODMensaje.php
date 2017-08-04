@@ -32,7 +32,8 @@ class MODMensaje extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
+		$this->captura('id_sucursales','text');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -51,6 +52,7 @@ class MODMensaje extends MODbase{
 		$this->setParametro('titulo','titulo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('mensaje','mensaje','text');
+		$this->setParametro('id_sucursales','id_sucursales','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -71,6 +73,7 @@ class MODMensaje extends MODbase{
 		$this->setParametro('titulo','titulo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('mensaje','mensaje','text');
+        $this->setParametro('id_sucursales','id_sucursales','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

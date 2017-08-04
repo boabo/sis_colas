@@ -13,8 +13,11 @@ class ACTSucursalMensaje extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_sucursal_mensaje');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+        if ($this->objParam->getParametro('id_mensaje') != '') {
+            $this->objParam->addFiltro("sucmen.id_mensaje = ''" . $this->objParam->getParametro('id_mensaje') . "''");
+        }
         if ($this->objParam->getParametro('id_sucursal') != '') {
-            $this->objParam->addFiltro("sucmen.id_sucursal = ''" . $this->objParam->getParametro('id_sucursal') . "''");
+            $this->objParam->addFiltro("suc.id_sucursal = ''" . $this->objParam->getParametro('id_sucursal') . "''");
         }
 
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

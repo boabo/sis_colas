@@ -52,7 +52,9 @@ BEGIN
 						men.id_usuario_mod,
 						men.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						  (select pxp.list(sumen.id_sucursal::VARCHAR) from cola.tsucursal_mensaje sumen where sumen.id_mensaje = men.id_mensaje) as id_sucursales
+	
 						from cola.tmensaje men
 						inner join segu.tusuario usu1 on usu1.id_usuario = men.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = men.id_usuario_mod
