@@ -78,7 +78,7 @@
                 '<div id="senha">'+
                 ' <div id="senha-header">'+
                 '<center>'+
-                '<div><center><img src="../img/logo_negro.png" width="150" /></center></div>'+
+                '<div><center>BoA</center></div>'+
                 ''+callback.ROOT.datos.nombre_suc+''+
 
                 '<div id="senha-body">'+
