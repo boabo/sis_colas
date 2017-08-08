@@ -359,3 +359,22 @@ ALTER TABLE cola.tsucursal
   ADD COLUMN servidor_remoto VARCHAR(30);
   
 /***********************************F-SCP-JRR-COLA-0-20/05/2017****************************************/
+
+/***********************************I-SCP-FFP-COLA-0-08/08/2017****************************************/
+CREATE TABLE cola.tvideo (
+  id_video SERIAL,
+  descripcion varchar(255),
+  CONSTRAINT tvideo_pkey PRIMARY KEY(id_video)
+) INHERITS (pxp.tbase);
+
+
+CREATE TABLE cola.tsucursal_video (
+  id_sucursal_video SERIAL,
+  id_sucursal INTEGER,
+  id_video INTEGER,
+  CONSTRAINT tsucursal_video_pkey PRIMARY KEY(id_sucursal_video)
+) INHERITS (pxp.tbase);
+
+
+
+/***********************************F-SCP-FFP-COLA-0-08/08/2017****************************************/

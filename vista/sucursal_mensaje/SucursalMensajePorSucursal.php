@@ -18,7 +18,7 @@ header("content-type: text/javascript; charset=UTF-8");
         title: 'Mensajes de la Sucursal',
         nombreVista: 'SucursalMensaje',
 
-       
+
         preparaMenu: function (tb) {
             // llamada funcion clace padre
             Phx.vista.SucursalMensajePorSucursal.superclass.preparaMenu.call(this, tb)
