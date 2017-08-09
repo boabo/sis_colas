@@ -31,49 +31,33 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-			config: {
-				name: 'id_video',
-				fieldLabel: 'id_video',
-				allowBlank: true,
-				emptyText: 'Elija una opción...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_/control/Clase/Metodo',
-					id: 'id_',
-					root: 'datos',
-					sortInfo: {
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_', 'nombre', 'codigo'],
-					remoteSort: true,
-					baseParams: {par_filtro: 'movtip.nombre#movtip.codigo'}
-				}),
-				valueField: 'id_',
-				displayField: 'nombre',
-				gdisplayField: 'desc_video',
-				hiddenName: 'id_video',
-				forceSelection: true,
-				typeAhead: false,
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 15,
-				queryDelay: 1000,
-				anchor: '100%',
-				gwidth: 150,
-				minChars: 2,
-				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['desc_video']);
-				}
-			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {pfiltro: 'movtip.nombre',type: 'string'},
-			grid: true,
-			form: false
-		},
+
+        {
+            //configuracion del componente
+            config:{
+                labelSeparator:'',
+                inputType:'hidden',
+                name: 'id_video'
+            },
+            type:'Field',
+            form:true
+        },
+
+        {
+            config:{
+                name: 'desc_video',
+                fieldLabel: 'Video.',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:10
+            },
+            type:'TextField',
+            filters:{pfiltro:'sucvideo.desc_video',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
 		{
 			config:{
 				name: 'estado_reg',

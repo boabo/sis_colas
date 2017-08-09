@@ -7,12 +7,20 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
-class ACTSucursalVideo extends ACTbase{    
-			
+class ACTSucursalVideo extends ACTbase{
+
 	function listarSucursalVideo(){
 		$this->objParam->defecto('ordenacion','id_sucursal_video');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+
+        if ($this->objParam->getParametro('id_video') != '') {
+            $this->objParam->addFiltro("sucvideo.id_video = ''" . $this->objParam->getParametro('id_video') . "''");
+        }
+        if ($this->objParam->getParametro('id_sucursal') != '') {
+            $this->objParam->addFiltro("suc.id_sucursal = ''" . $this->objParam->getParametro('id_sucursal') . "''");
+        }
+
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODSucursalVideo','listarSucursalVideo');
