@@ -53,6 +53,21 @@
      localStorage.setItem("volumenLLamadoVoz", $("#volumen_sonido_llamado_voz").val());
      */
 
+    var jsonArchivos = {
+        sort: 'tabla.id_video',
+        limit: 500,
+        start: 0,
+        dir: 'asc',
+        tipo_archivo: 'videos',
+        filtros: [
+            {
+                campo: 'suc.id_sucursal',
+                tipo_filtro: 'igual',
+                valor: parseInt(sucursal),
+            }
+        ]
+    };
+    console.log('jsonArchivos',jsonArchivos)
 
     panel = {
         tiempoEspera_panel:localStorage.getItem("tiempoEspera_panel"),
@@ -455,15 +470,30 @@
         nueva_peticion:'no',
         MediaVideosImagenes: function () {
 
+
+            if (jsonArchivos.filtros != undefined) {
+                jsonArchivos.filtros = JSON.stringify(jsonArchivos.filtros);
+            }
+
             var self = this;
-            ajax_dyd.data = {start: "0", limit: "10", sort: "id_ficha", dir: "ASC", tipo: "videos",ruta_videos:panel.ruta_videos};
+            ajax_dyd.data = jsonArchivos;
             ajax_dyd.type = 'POST';
-            ajax_dyd.url = 'pxp/lib/rest/colas/Parametrizacion/verArchivos';
+            ajax_dyd.url = 'pxp/lib/rest/parametros/Archivo/listarArchivoTabla';
             ajax_dyd.dataType = 'json';
             ajax_dyd.async = true;
             ajax_dyd.peticion_ajax(function (callback) {
 
-                self.media = callback.datos;
+                //self.media = callback.datos;
+                $.each(callback.datos,function (k,v) {
+
+                    console.log(v)
+                    console.log(v.extension)
+                    console.log(v.nombre_archivo)
+                    self.media[k] = v.folder + v.nombre_archivo +'.'+v.extension;
+                });
+
+                console.log(self.media)
+
                 self.cargarVideos();
             });
 
@@ -477,7 +507,7 @@
 
 
             var self = this;
-
+            //panel.ruta_videos = './../../../uploaded_files/sis_parametros/Archivo/./../../../uploaded_files/sis_colas//videos//';
 
             var reproductor = $("#reproductor"),
                 videos = this.media;
@@ -488,7 +518,7 @@
             //info.innerHTML = "Vídeo: " + videos[0];
             console.log($("#reproductor"));
             //$("#reproductor").attr("src", "media/videos/" + videos[0]);
-            $("#reproductor").attr("src", panel.ruta_videos + videos[0]);
+            $("#reproductor").attr("src",  videos[0]);
             $("#reproductor").get(0).play();
             $("#reproductor").get(0).volume = panel.volumenVideo/15;
 
@@ -504,7 +534,7 @@
                     console.log(actual);
                     actual = actual == videos.length - 1 ? 0 : actual + 1;
                     //this.src = "media/videos/" + videos[actual];
-                    this.src = panel.ruta_videos + videos[actual];
+                    this.src =  videos[actual];
                     this.type = "video/mp4";
                     self.nombreActualReproducido = videos[actual];
 
@@ -537,7 +567,7 @@
                 console.log(actual);
                 actual = actual == videos.length - 1 ? 0 : actual + 1;
                 //this.src = "media/videos/" + videos[actual];
-                this.src = panel.ruta_videos + videos[actual];
+                this.src = videos[actual];
                 this.type = "video/mp4";
                 self.nombreActualReproducido = videos[actual];
 

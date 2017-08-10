@@ -376,5 +376,4 @@ CREATE TABLE cola.tsucursal_video (
 ) INHERITS (pxp.tbase);
 
 
-
 /***********************************F-SCP-FFP-COLA-0-08/08/2017****************************************/
