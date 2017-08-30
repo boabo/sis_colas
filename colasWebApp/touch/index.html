@@ -390,7 +390,9 @@
 
 
 
-    config.init();
+   config.init();
+   clientRestPxp.setCredentialsPxp(config.usPxp, config.pwdPxp);
+   clientRestPxp.genHeaders();
 
 
     servicio('','id');
