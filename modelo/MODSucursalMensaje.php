@@ -34,6 +34,7 @@ class MODSucursalMensaje extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_sucursal','varchar');
 		$this->captura('desc_mensaje_titulo','varchar');
+		$this->captura('mensaje','text');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

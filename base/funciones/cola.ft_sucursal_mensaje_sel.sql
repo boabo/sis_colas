@@ -54,7 +54,8 @@ BEGIN
   usu1.cuenta as usr_reg,
   usu2.cuenta as usr_mod,
   suc.nombre as desc_sucursal,
-  men.titulo as desc_mensaje_titulo
+  men.titulo as desc_mensaje_titulo,
+  men.mensaje
  from cola.tsucursal_mensaje sucmen
   inner join segu.tusuario usu1 on usu1.id_usuario = sucmen.id_usuario_reg
   left join segu.tusuario usu2 on usu2.id_usuario = sucmen.id_usuario_mod
