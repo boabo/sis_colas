@@ -471,12 +471,14 @@
         MediaVideosImagenes: function () {
 
 
+            var objectJsonArchivo = Object.create(jsonArchivos);
+
             if (jsonArchivos.filtros != undefined) {
-                jsonArchivos.filtros = JSON.stringify(jsonArchivos.filtros);
+                objectJsonArchivo.filtros = JSON.stringify(objectJsonArchivo.filtros);
             }
 
             var self = this;
-            ajax_dyd.data = jsonArchivos;
+            ajax_dyd.data = objectJsonArchivo;
             ajax_dyd.type = 'POST';
             ajax_dyd.url = 'pxp/lib/rest/parametros/Archivo/listarArchivoTabla';
             ajax_dyd.dataType = 'json';
