@@ -9,6 +9,7 @@
     var contra = localStorage.getItem("contraPXP_panel");
     var id_usuario = localStorage.getItem("id_usuario");
     var nombre_usuario = localStorage.getItem("nombre_usuario");
+    var puerto_web_socket = localStorage.getItem("puerto_web_socket");
 
     var hostname;
 
@@ -682,7 +683,7 @@
 
         },
         iniciar: function () {
-            var puerto = 8010;
+            var puerto = puerto_web_socket;
 
             console.log('session',webSocket.obtenerCokie('PHPSESSID'))
             webSocket.conn = new WebSocket('ws://'+hostname+':'+puerto+'?sessionIDPXP='+webSocket.obtenerCokie('PHPSESSID'));

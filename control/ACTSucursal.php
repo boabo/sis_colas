@@ -47,6 +47,10 @@ class ACTSucursal extends ACTbase{
 		$this->res=$this->objFunc->eliminarSucursal($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function verPuerto(){
+
+	    echo $_SESSION['_PUERTO_WEBSOCKET'];
+	}
 			
 }
 

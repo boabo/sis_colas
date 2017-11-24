@@ -458,6 +458,8 @@
 
             comboSucursal();
 
+            puertoWebSocket();
+
         }
 
 
@@ -488,6 +490,21 @@
                 $("#sucursal").val(sucursal);
             }
 
+        });
+    }
+
+    function puertoWebSocket() {
+
+        //sacamos dinamicamente el puerto que esta configurado en nuestro servidor por si el predeterminado esta ocupado
+        //modificacion para presentar
+        ajax_dyd.data = {};
+        ajax_dyd.type = 'POST';
+        ajax_dyd.url = 'pxp/lib/rest/colas/Sucursal/verPuerto';
+        ajax_dyd.dataType = 'json';
+        ajax_dyd.async = true;
+        ajax_dyd.peticion_ajax(function (callback) {
+
+            localStorage.setItem("puerto_web_socket", callback);
         });
     }
 
