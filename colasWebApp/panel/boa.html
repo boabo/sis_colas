@@ -134,15 +134,17 @@
 
 
                 var reproductor = $("#reproductor"),
-                    videos = this.media;
-                console.log(this.media)
+                    videos = panel.media;
+                console.log('videos.ruta_videos',self.ruta_videos)
+
+                self.ruta_videos = panel.ruta_videos;
 
                 //info = document.getElementById("info2");
 
                 //info.innerHTML = "Vídeo: " + videos[0];
-                console.log($("#reproductor"));
+
                 //$("#reproductor").attr("src", "media/videos/" + videos[0]);
-                $("#reproductor").attr("src", videos.ruta_videos + videos[0]);
+                $("#reproductor").attr("src", self.ruta_videos + videos[0]);
                 $("#reproductor").get(0).play();
                 $("#reproductor").get(0).volume = panel.volumenVideo/15;
 
@@ -155,7 +157,6 @@
                     if(panel.nueva_peticion == 'no'){
                         var nombreActual = self.nombreActualReproducido;
                         var actual = videos.indexOf(nombreActual);
-                        console.log(actual);
                         actual = actual == videos.length - 1 ? 0 : actual + 1;
                         //this.src = "media/videos/" + videos[actual];
                         this.src = videos.ruta_videos + videos[actual];
@@ -168,7 +169,6 @@
                     }else{
                         //cuando existe nuva peticion para hacer
                         panel.nueva_peticion = 'no'; //lo volvemos a poner en no para que siga el ciclo
-                        console.log('nueva carga de videos');
                         panel.MediaVideosImagenes();
 
                     }
@@ -179,8 +179,6 @@
 
                 $('#reproductor').on('error', function (e) {
 
-                    console.log(e)
-                    console.log(this)
                     //alert("ocurrio un error con el video");
 
                     console.log('video que no reproducio' , videos[actual_]);
@@ -218,7 +216,6 @@
                 imagenes.colaDeImagenes();
             },
             colaDeImagenes : function () {
-              console.log(imagenes);
 
                 var siguiente = imagenes.img.shift();
                 var ruta_imagenes = panel.ruta_videos+'Image/';
@@ -244,11 +241,9 @@
 
 
 
-                    console.log( data );
                     var m = '<marquee  style="color: #ffffff; font-family: RobotoRegular;"  scrollamount="5" loop="infinite">';
 
                     $.each(data.ListaTexto,function (k,v) {
-                        console.log(v);
                         m+=v;
                         m+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                         m+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -259,9 +254,9 @@
                     /**/
 
 
-                    console.log('es video' , data.EsVideo);
                     //si es video inicia los videos
 
+                    console.log(data.EsVideo)
                     if(data.EsVideo){
 
                        /* var videosPrueba = [{
@@ -281,11 +276,11 @@
                         $.each(data.ListaRecurso,function (k,v) {
                             panel.media[k] = 'Video/'+v.Path;
                         });
-                        console.log(panel)
 
 
 
-                        panel.cargarVideos();
+
+                        videos.cargarVideos();
 
                     }else{
 
