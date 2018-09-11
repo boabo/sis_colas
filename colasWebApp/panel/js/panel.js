@@ -80,6 +80,9 @@
         volumenVideo:localStorage.getItem("volumenVideo"),
         tiempoActualizarMensaje:localStorage.getItem("tiempoActualizarMensaje"),
         ruta_videos:localStorage.getItem("ruta_videos"),
+        /*esta ruta si esta definido en la configuracion usaremos la ruta de configuracion en caso de que no
+        * usaremos la ruta directa que esta en el servidor */
+        ruta_audio_panel:(localStorage.getItem("ruta_audio_panel")!= '')?localStorage.getItem("ruta_audio_panel"):'media',
 
         primera_vez: 'si',
         fecha_ultima_llamada: "",
@@ -113,7 +116,7 @@
 
             play: function (filename) {
                 filename = filename || panel.alert;
-                $("#alert").attr("src", 'media/alert/' + filename);
+                $("#alert").attr("src", panel.ruta_audio_panel+'/alert/' + filename);
                 $("#alert")[0].play();
                 $("#alert")[0].volume = localStorage.getItem("volumenLLamadoTono") / 10;
 
@@ -445,7 +448,7 @@
                     return;
                 }
                 var current = this.queue.shift();
-                var filename = "media/audios/" + current.name; // toque
+                var filename = panel.ruta_audio_panel+"/audios/" + current.name; // toque
 
                 this.playFile(filename);
                 //verificamos si existe

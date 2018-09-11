@@ -235,6 +235,14 @@
         </td>
     </tr>
 
+    <tr height="24" style="background-color:#F5F5F5">
+        <td width="50%" style="padding-right: 10px;" align="right">Ruta Audio Panel</td>
+        <td width="50%" align="lef">
+           <input type="text" width="100%" id="ruta_audio_panel">
+
+        </td>
+    </tr>
+
 
     <tr height="24" style="background-color:#F5F5F5">
         <td width="50%" style="padding-right: 10px;" align="right">Guardar Config</td>
@@ -395,6 +403,7 @@
         var tiempoEspera_panel = localStorage.getItem("tiempoEspera_panel");
         var tiempoActualizarMensaje = localStorage.getItem("tiempoActualizarMensaje");
         var ruta_videos = localStorage.getItem("ruta_videos");
+        var ruta_audio_panel = localStorage.getItem("ruta_audio_panel");
 
 
         console.log(user)
@@ -417,6 +426,7 @@
             $("#tiempo_nueva_peticion_panel").val(tiempoNuevo_panel);
             $("#tiempo_actualizar_mensaje").val(tiempoActualizarMensaje);
             $("#ruta_videos").val(ruta_videos);
+            $("#ruta_audio_panel").val(ruta_audio_panel);
 
             if (tipoHost_panel == "IP") { // es ip
 
@@ -512,7 +522,7 @@
 
     $("#guardar").click(function () {
 
-        console.log($("#sucursal").val())
+        console.log($("#ruta_audio_panel").val())
         localStorage.setItem("sucursal_panel", $("#sucursal").val());
 
         localStorage.setItem("tiempoEspera_panel", $("#tiempo_espera_peticion").val());
@@ -524,6 +534,7 @@
         localStorage.setItem("volumenVideo", $("#volumen_video").val());
         localStorage.setItem("tiempoActualizarMensaje", $("#tiempo_actualizar_mensaje").val());
         localStorage.setItem("ruta_videos", $("#ruta_videos").val());
+        localStorage.setItem("ruta_audio_panel", $("#ruta_audio_panel").val());
 
         window.location.href = "index.html";
 
