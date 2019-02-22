@@ -26,7 +26,7 @@ Phx.vista.FichaAtencion = {
 
      east:{
         url:'../../../sis_colas/vista/fichatotal/FichaTotal.php',
-        title:'Total Fichas',
+        title:'<center style="font-size:12px;">Total Fichas Por Usuario</center>',
         width:300,
         cls:'FichaTotal'
    },
@@ -225,6 +225,9 @@ Phx.vista.FichaAtencion = {
     },
 
 	capturaFiltros:function(combo, record, index){
+   //console.log("PROBANDO",this.store.baseParams);
+
+   Phx.CP.getPagina('docs-FICATE-east').mostrar(this.cmbSucursal.getValue());
 
 		this.desbloquearOrdenamientoGrid();
         this.getParametrosFiltro();

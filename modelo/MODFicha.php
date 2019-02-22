@@ -77,6 +77,7 @@ class MODFicha extends MODbase
         $this->tipo_procedimiento = 'SEL';//tipo de transaccion
         $this->setCount(false);
         //Definicion de la lista del resultado del query
+        $this->setParametro('id_sucursal','id_sucursal','int4');
 
         $this->captura('cantidad', 'int4');
         $this->captura('nombre', 'varchar');
