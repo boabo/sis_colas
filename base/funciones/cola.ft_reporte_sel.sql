@@ -45,7 +45,7 @@ BEGIN
 	if(p_transaccion='COLA_REPTICKATE_SEL')then
      				
     	begin
-        	v_filtro_adi = '';
+				v_filtro_adi = '';
         	if (v_parametros.id_usuario is not null) then
             	v_filtro_adi = v_filtro_adi || ' and atencion.id_usuario_atencion = ' || v_parametros.id_usuario;
             end if;
@@ -58,29 +58,18 @@ BEGIN
               where feh.estado = ''espera'' and ' ||v_parametros.filtro || '
               group by f.id_ficha
               )
-              select f.id_ficha,f.sigla::varchar as ficha, 
-<<<<<<< HEAD
-              	s.nombre::varchar as sucursal,usu.desc_persona::varchar as operador, 
-              ser.nombre::varchar as servicio, tv.nombre::varchar as tipo_ventanilla,
-              llamado.numero_ventanilla::varchar,
-              to_char(f.fecha_reg,''HH24:MI:SS'')::varchar as hora_generacion, 
-<<<<<<< HEAD
-=======
-              to_char(f.fecha_reg,''DD/MM/YYYY'')::varchar as fecha_generacion, 
->>>>>>> ef6be111315729bb35e295d6764350151b492657
-              to_char(llamado.fecha_hora_inicio,''HH24:MI:SS'')::varchar as hora_llamado,
-              to_char(atencion.fecha_hora_inicio,''HH24:MI:SS'')::varchar as hora_inicio_atencion,
-              to_char(atencion.fecha_hora_fin,''HH24:MI:SS'')::varchar as hora_fin_atencion,
-=======
-              	s.nombre::varchar as sucursal,pxp.list(usu.desc_persona)::varchar as operador, 
-              pxp.list(ser.nombre)::varchar as servicio, pxp.list(tv.nombre)::varchar as tipo_ventanilla,
-              pxp.list(llamado.numero_ventanilla)::varchar,
-              pxp.list(to_char(f.fecha_reg,''HH24:MI:SS''))::varchar as hora_generacion, 
-              pxp.list(to_char(f.fecha_reg,''DD/MM/YYYY''))::varchar as fecha_generacion, 
+              select f.id_ficha,
+              f.sigla::varchar as ficha,
+              	s.nombre::varchar as sucursal,
+              	pxp.list(usu.desc_persona)::varchar as operador,
+              pxp.list(ser.nombre)::varchar as servicio,
+              pxp.list(tv.nombre)::varchar as tipo_ventanilla,
+              pxp.list(llamado.numero_ventanilla)::varchar as numero_ventanilla,
+              pxp.list(to_char(f.fecha_reg,''HH24:MI:SS''))::varchar as hora_generacion,
+              pxp.list(to_char(f.fecha_reg,''DD/MM/YYYY''))::varchar as fecha_generacion,
               pxp.list(to_char(llamado.fecha_hora_inicio,''HH24:MI:SS''))::varchar as hora_llamado,
               pxp.list(to_char(atencion.fecha_hora_inicio,''HH24:MI:SS''))::varchar as hora_inicio_atencion,
               pxp.list(to_char(atencion.fecha_hora_fin,''HH24:MI:SS''))::varchar as hora_fin_atencion,
->>>>>>> a2d1bac8c47326f348cf319b4aad280cd42b5a5e
               es.tiempo_espera::varchar, 
               round(sum(extract (epoch from(coalesce(atencion.fecha_hora_fin,now()) - atencion.fecha_hora_inicio))/60)::numeric,0)::varchar as tiempo_atencion,
               actual.estado

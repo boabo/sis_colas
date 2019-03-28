@@ -108,7 +108,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'ComboBox',
                     id_grupo:0,
-                    valorInicial:'total',
+                    valorInicial:'servicioXtiempo',
                     form:true
                 }
                ];
