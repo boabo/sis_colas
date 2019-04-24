@@ -210,7 +210,7 @@ BEGIN
             select usc.servicios, usc.prioridades, usc.numero_ventanilla, usc.id_tipo_ventanilla
             into v_servicios, v_prioridades, v_num_ventanilla, v_tipo_ventanilla
             from cola.tusuario_sucursal usc
-            where usc.id_usuario = p_id_usuario;
+            where usc.id_usuario = p_id_usuario AND usc.id_sucursal = v_parametros.id_sucursal;
 
       --BUSCA SI LE ALGUIEN DERIVO A UN USUARIO DETERMINADO
             select ficest.id_ficha, ficest.estado into v_id_ficha, v_estado

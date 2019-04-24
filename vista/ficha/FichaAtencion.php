@@ -287,21 +287,24 @@ Phx.vista.FichaAtencion = {
     onButtonNew: function () {
         Phx.vista.FichaAtencion.superclass.onButtonNew.call(this);
 
-        this.Cmp.id_sucursal.store.baseParams.id_sucursal = this.cmbSucursal.store.data.items[0].json.id_sucursal;
+        console.log('this.cmbSucursal.getValue()',this.cmbSucursal.getValue());
+        var dataSucSeleccionado = this.cmbSucursal.store.data.map[this.cmbSucursal.getValue()];
+
+        this.Cmp.id_sucursal.store.baseParams.id_sucursal = dataSucSeleccionado.id;
         this.Cmp.id_sucursal.modificado = true;
 
-        this.Cmp.id_usuario_sucursal.setValue(this.cmbSucursal.store.data.items[0].json.id_usuario_sucursal);
-        this.Cmp.id_sucursal.setValue(this.cmbSucursal.store.data.items[0].json.id_sucursal);
-        this.Cmp.id_sucursal.setRawValue(this.cmbSucursal.store.data.items[0].json.nombre_sucursal);
+        this.Cmp.id_usuario_sucursal.setValue(dataSucSeleccionado.json.id_usuario_sucursal);
+        this.Cmp.id_sucursal.setValue(dataSucSeleccionado.json.id_sucursal);
+        this.Cmp.id_sucursal.setRawValue(dataSucSeleccionado.json.nombre_sucursal);
 
 
 
-        this.Cmp.ids_prioridad.setValue(this.cmbSucursal.store.data.items[0].json.ids_prioridad);
-        this.Cmp.ids_prioridad.setRawValue(this.cmbSucursal.store.data.items[0].json.nombres_prioridad);
+        this.Cmp.ids_prioridad.setValue(dataSucSeleccionado.json.ids_prioridad);
+        this.Cmp.ids_prioridad.setRawValue(dataSucSeleccionado.json.nombres_prioridad);
 
-        this.getComponente('numero_ventanilla').setValue(this.cmbSucursal.store.data.items[0].json.numero_ventanilla);
+        this.getComponente('numero_ventanilla').setValue(dataSucSeleccionado.json.numero_ventanilla);
 
-        console.log(this.cmbSucursal.store.data.items[0].json)
+        console.log(dataSucSeleccionado.json)
         console.log(this);
         //this.getComponente('id_sucursal').setValue(this.maestro.id_sucursal);
     },
