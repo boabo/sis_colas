@@ -168,16 +168,28 @@ class MODReporte extends MODbase{
         $this->procedimiento='cola.ft_reporte_sel';
         $this->transaccion='COLA_REPHISFIC_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+
         if ( isset($this->arreglo['servidor_remoto'])) {
 			$this->setRemote($this->arreglo['servidor_remoto']);
 		}
 
+        $this->capturaCount('total_cantidad_atendidas','numeric');
+        $this->capturaCount('total_cantidad_abandonadas','numeric');
+        $this->capturaCount('totales_fichas','numeric');
+
+        $this->setParametro('id_sucursal','id_sucursal','int4');
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
         //Definicion de la lista del resultado del query
         $this->captura('operador','varchar');
         $this->captura('cantidad_finalizadas','numeric');
         $this->captura('cantidad_abandonadas','numeric');
+        $this->captura('total_fichas','numeric');
         $this->captura('porcentaje_finalizadas','numeric');
         $this->captura('porcentaje_abandonadas','numeric');
+        $this->captura('nombre','varchar');
+
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -255,7 +267,7 @@ class MODReporte extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-	
+
 	function listarUsuariosServicio(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='cola.ft_reporte_sel';
@@ -277,8 +289,8 @@ class MODReporte extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-	
-	
+
+
 
     function listarCuadroII(){
         //Definicion de variables para ejecucion del procedimientp
@@ -302,7 +314,7 @@ class MODReporte extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-	
+
 	function listarCuadroIII(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='cola.ft_reporte_sel';

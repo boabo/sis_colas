@@ -31,7 +31,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             totalProperty: 'total',
                             fields: ['id_sucursal', 'nombre', 'codigo','servidor_remoto'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'sucur.nombre#sucur.codigo'}
+                            baseParams: {_adicionar:'si', par_filtro: 'sucur.nombre#sucur.codigo'}
                         }),
                         valueField: 'id_sucursal',
                         displayField: 'nombre',

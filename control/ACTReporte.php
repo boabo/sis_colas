@@ -197,7 +197,22 @@ class ACTReporte extends ACTbase{
         } else{
             $this->objFunc=$this->create('MODReporte');
 
-            $this->res=$this->objFunc->listarHistoricoFichas($this->objParam);
+            if ($this->objParam->getParametro('id_sucursal') != '') {
+                $this->res=$this->objFunc->listarHistoricoFichas($this->objParam);
+                $temp = Array();
+                $temp['total_cantidad_atendidas'] = $this->res->extraData['total_cantidad_atendidas'];
+                $temp['total_cantidad_abandonadas'] = $this->res->extraData['total_cantidad_abandonadas'];
+                $temp['totales_fichas'] = $this->res->extraData['totales_fichas'];
+                $temp['tipo_reg'] = 'summary';
+                //$temp['id_deposito'] = 0;
+
+                $this->res->total++;
+                $this->res->addLastRecDatos($temp);
+
+            }else{
+                $this->res=$this->objFunc->listarHistoricoFichas($this->objParam);
+
+            }
         }
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
@@ -229,31 +244,31 @@ class ACTReporte extends ACTbase{
             $this->res2=$this->objFunc->listarCuadroII($this->objParam);
 
             $this->objParam->addParametro('parametros',$this->res->datos);
-				
+
             $this->objParam->addParametro('datos',$this->res2->datos);
             //Instancia la clase de excel
             $this->objReporteFormato=new RCuadroII($this->objParam);
 
         } elseif($this->objParam->getParametro('tipo_reporte')=='operadorXtiempo') {
             $this->res = $this->objFunc->listarHorasUsuarios($this->objParam);
-			
+
             $this->objFunc=$this->create('MODReporte');
             $this->res2=$this->objFunc->listarCuadroIII($this->objParam);
             $this->objParam->addParametro('parametros',$this->res->datos);
             $this->objParam->addParametro('datos',$this->res2->datos);
-			
+
             //Instancia la clase de excel
             $this->objReporteFormato=new RCuadroIII($this->objParam);
 
         } elseif($this->objParam->getParametro('tipo_reporte')=='operadorXservicio') {
             $this->res = $this->objFunc->listarUsuariosServicio($this->objParam);
-			
+
             $this->objFunc=$this->create('MODReporte');
             $this->res2=$this->objFunc->listarCuadroVI($this->objParam);
-			
+
             $this->objParam->addParametro('parametros',$this->res->datos);
             $this->objParam->addParametro('datos',$this->res2->datos);
-			
+
             //Instancia la clase de excel
             $this->objReporteFormato=new RCuadroVI($this->objParam);
 
