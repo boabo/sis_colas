@@ -19,7 +19,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 		this.init();
 		//this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			
+
 	Atributos:[
 		{
 			//configuracion del componente
@@ -29,7 +29,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 					name: 'id_servicio'
 			},
 			type:'Field',
-			form:true 
+			form:true
 		},
 		{
 			config:{
@@ -53,7 +53,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 					name: 'id_servicio_fk'
 			},
 			type:'Field',
-			form:true 
+			form:true
 		},
 		{
 			config:{
@@ -77,7 +77,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:20
+				maxLength:50
 			},
 				type:'TextField',
 				filters:{pfiltro:'servi.nombre',type:'string'},
@@ -100,7 +100,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				grid:true,
 				form:true
 		},
-		
+
 		{
 			config: {
 				name: 'peso',
@@ -120,7 +120,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				form: true,
 				grid: true
 		},
-	
+
 		{
 			config:{
 				name: 'fecha_reg',
@@ -128,7 +128,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -189,7 +189,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -214,7 +214,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				form:false
 		}
 	],
-	tam_pag:50,	
+	tam_pag:50,
 	title:'Servicios',
 	ActSave:'../../sis_colas/control/Servicio/insertarServicio',
 	ActDel:'../../sis_colas/control/Servicio/eliminarServicio',
@@ -245,7 +245,7 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+
 	],
 	sortInfo:{
 		field: 'id_servicio',
@@ -258,18 +258,18 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 	//sobrecarga prepara menu
 	preparaMenu:function(n){
 			//si es una nodo tipo carpeta habilitamos la opcion de nuevo
-							
+
 			if(n.attributes.tipo_nodo == 'hijo' || n.attributes.tipo_nodo == 'raiz' || n.attributes.id == 'id'){
 					this.tbar.items.get('b-new-'+this.idContenedor).enable()
 					this.tbar.items.get('b-edit-'+this.idContenedor).enable()
 				}
 				else {
 					this.tbar.items.get('b-new-'+this.idContenedor).disable()
-				}			
+				}
 			// llamada funcion clace padre
 			Phx.vista.Servicio.superclass.preparaMenu.call(this,n)
 		},
-		
+
 	/*EnableSelect:function(n){
 	    var nivel = n.getDepth();
 		var direc = this.getNombrePadre(n)
@@ -277,22 +277,22 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 			Phx.CP.getPagina(this.idContenedor+'-east').ubicarPos(direc,nivel)
 			Phx.vista.Servicio.superclass.EnableSelect.call(this,n)
 		}
-		
+
 	},*/
-	
+
 	getNombrePadre:function(n){
-		var direc 
-		
-		
+		var direc
+
+
 		var padre = n.parentNode;
-		
-		
+
+
 		if(padre){
 			if(padre.attributes.id!='id'){
 			   direc = n.attributes.nombre +' - '+ this.getNombrePadre(padre)
 			   return direc;
 			}else{
-				
+
 				return n.attributes.nombre;
 			}
 		}
@@ -300,11 +300,9 @@ Phx.vista.Servicio=Ext.extend(Phx.arbInterfaz,{
 				return undefined;
 		}
 
-		
+
 	 }
-	 
+
 	}
 )
 </script>
-		
-		
