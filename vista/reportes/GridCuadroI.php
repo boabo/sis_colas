@@ -73,7 +73,15 @@ header("content-type:text/javascript; charset=UTF-8");
                 config: {
                     name: 'promedio_espera',
                     fieldLabel: 'Prom. Tiempo Espera',
-                    gwidth: 180
+                    gwidth: 180,
+                    galign: 'right',
+                    renderer : function(value, p, record) {
+                        if ( record.data['promedio_espera'] != '') {
+                          return String.format('<div>{0}</div>', record.data['promedio_espera'] + ' min');
+                        } else {
+                          return String.format('{0}', record.data['promedio_espera']);
+                        }
+                    }
                 },
                 type: 'Field',
                 grid: true
@@ -83,7 +91,15 @@ header("content-type:text/javascript; charset=UTF-8");
                 config: {
                     name: 'promedio_atencion',
                     fieldLabel: 'Prom. Tiempo Atencion',
-                    gwidth: 180
+                    gwidth: 180,
+                    galign: 'right',
+                    renderer : function(value, p, record) {
+                        if ( record.data['promedio_espera'] != '') {
+                          return String.format('<div>{0}</div>', record.data['promedio_atencion'] + ' min');
+                        } else {
+                          return String.format('{0}', record.data['promedio_atencion']);
+                        }
+                    }
                 },
                 type: 'Field',
                 grid: true

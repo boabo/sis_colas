@@ -661,12 +661,12 @@ BEGIN
 	elsif(p_transaccion='COLA_REPCUAI_SEL')then
 
     	begin
-
+        	/*Para el promedio se cambio los decimales de 2 a 0*/
     		--Sentencia de la consulta
 			v_consulta:='with tiempos as (
             select f.id_ficha,
-            round(sum(EXTRACT(EPOCH FROM arribo.fecha_hora_fin - arribo.fecha_hora_inicio)/60)::numeric,2) as promedio_espera,
-            round(sum(EXTRACT(EPOCH FROM atencion.fecha_hora_fin - atencion.fecha_hora_inicio)/60)::numeric,2) as promedio_atencion
+            round(sum(EXTRACT(EPOCH FROM arribo.fecha_hora_fin - arribo.fecha_hora_inicio)/60)::numeric,0) as promedio_espera,
+            round(sum(EXTRACT(EPOCH FROM atencion.fecha_hora_fin - atencion.fecha_hora_inicio)/60)::numeric,0) as promedio_atencion
             from cola.vficha f
             left join cola.vficha_estado arribo on arribo.estado = ''espera'' and arribo.id_ficha = f.id_ficha
              left join cola.vficha_estado atencion on atencion.estado = ''en_atencion'' and atencion.id_ficha = f.id_ficha
@@ -678,8 +678,8 @@ BEGIN
             (EXTRACT(hour FROM f.fecha_reg) || ''-'' || (EXTRACT(hour FROM f.fecha_reg) + 1))::varchar as rango,
             sum(case when fe.estado = ''finalizado'' then 1 else 0 end)::numeric as cantidad_atendidos,
             sum(case when fe.estado = ''no_show'' then 1 else 0 end)::numeric as cantidad_abandonados,
-            round(avg(t.promedio_espera)::NUMERIC,2),
-            round(avg(t.promedio_atencion)::NUMERIC,2)
+            round(avg(t.promedio_espera)::NUMERIC,0),
+            round(avg(t.promedio_atencion)::NUMERIC,0)
             from cola.vficha f
             inner join tiempos t on t.id_ficha = f.id_ficha
             inner join cola.vficha_estado fe on
@@ -910,7 +910,6 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
-PARALLEL UNSAFE
 COST 100;
 
 ALTER FUNCTION cola.ft_reporte_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)

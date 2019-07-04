@@ -51,7 +51,7 @@ BEGIN
 	if(p_transaccion='COLA_ficha_SEL')then
 
     	begin
-
+--raise exception 'ficha %', v_parametros.filtro;
     		--Sentencia de la consulta
 			v_consulta:='select
 						ficha.id_ficha,
@@ -475,10 +475,11 @@ BEGIN
 
                   select s.nombre as servicio
                   from cola.vficha_estado fe
-                  inner join cola.tficha f  on f.id_ficha = fe.id_ficha
+                  --inner join cola.tficha f  on f.id_ficha = fe.id_ficha
+                  inner join cola.vficha f  on f.id_ficha = fe.id_ficha
                   inner join cola.tservicio s on s.id_servicio = ANY(fe.id_servicio)
                   where f.fecha_reg::date between '''||v_parametros.desde||'''::date and '''||v_parametros.hasta||''' and f.id_sucursal = '||v_parametros.id_sucursal||'
-                  and fe.estado in (''en_atencion'',''finalizado'')
+                  and fe.estado in (''en_atencion'',''finalizado'') and fe.estado_reg = ''activo'' --se aumento estado Activo
                   )
                   select count(1)::numeric as cantidad_estado,round(((count(1) / (sum(count(1)) over ()))*100),2)::numeric as porcentaje_servicio,servicio::varchar
                   from historico h
@@ -539,7 +540,8 @@ BEGIN
 			v_consulta:='with fichas as (
     SELECT f.id_ficha,fe.id_usuario_atencion
     from cola.vficha_estado fe
-      inner join cola.tficha f on f.id_ficha = fe.id_ficha
+      --inner join cola.tficha f on f.id_ficha = fe.id_ficha
+      inner join cola.vficha f  on f.id_ficha = fe.id_ficha
     where fe.estado in (''atencion'',''finalizado'') and f.id_sucursal = '||v_parametros.id_sucursal||' and
           f.fecha_reg::date between '''||v_parametros.desde||''' and '''||v_parametros.hasta||'''
           and fe.id_usuario_atencion is not NULL
@@ -609,3 +611,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION cola.ft_ficha_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;
