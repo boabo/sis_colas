@@ -770,7 +770,8 @@ BEGIN
             (EXTRACT(hour FROM f.fecha_reg) || ''-'' || (EXTRACT(hour FROM f.fecha_reg) + 1))::varchar as nombre,
             ''hora''::varchar as tipo
             from cola.vficha f
-            where ' ||v_parametros.filtro || '
+            /*where ' ||v_parametros.filtro || '*/
+            where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||''' and f.id_sucursal = '||v_parametros.id_sucursal||'
             group by EXTRACT(hour FROM f.fecha_reg)
             order by EXTRACT(hour FROM f.fecha_reg)::integer
             )
@@ -781,7 +782,8 @@ BEGIN
             from cola.vficha f
             inner join cola.vficha_estado e on e.id_ficha = f.id_ficha and estado = ''llamado''
             inner join segu.vusuario u on u.id_usuario = e.id_usuario_atencion
-            where ' ||v_parametros.filtro || '
+            /*where ' ||v_parametros.filtro || '*/
+            where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||''' and f.id_sucursal = '||v_parametros.id_sucursal||'
             group by u.desc_persona
             order by 1)';
 
@@ -807,7 +809,8 @@ BEGIN
             from cola.vficha f
             inner join cola.vficha_estado e on e.id_ficha = f.id_ficha and estado = ''finalizado''
             inner join segu.vusuario u on u.id_usuario = e.id_usuario_atencion
-            where ' ||v_parametros.filtro || '
+            /*where ' ||v_parametros.filtro || '*/
+            where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||''' and f.id_sucursal = '||v_parametros.id_sucursal||'
             group by u.desc_persona
             order by 1)
 
@@ -819,7 +822,8 @@ BEGIN
             from cola.vficha f
             inner join cola.vficha_estado e on e.id_ficha = f.id_ficha and estado = ''finalizado''
             inner join cola.tservicio s on s.id_servicio = ANY(e.id_servicio)
-            where ' ||v_parametros.filtro || '
+            /*where ' ||v_parametros.filtro || '*/
+            where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||''' and f.id_sucursal = '||v_parametros.id_sucursal||'
             group by s.nombre
             order by 1) ';
 

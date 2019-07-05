@@ -255,7 +255,9 @@ class MODReporte extends MODbase{
 		if ( isset($this->arreglo['servidor_remoto'])) {
 			$this->setRemote($this->arreglo['servidor_remoto']);
 		}
-
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
+        $this->setParametro('id_sucursal','id_sucursal','int4');
         //Definicion de la lista del resultado del query
         $this->captura('nombre','varchar');
         $this->captura('tipo','varchar');
@@ -277,7 +279,9 @@ class MODReporte extends MODbase{
 		if ( isset($this->arreglo['servidor_remoto'])) {
 			$this->setRemote($this->arreglo['servidor_remoto']);
 		}
-
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
+        $this->setParametro('id_sucursal','id_sucursal','int4');
         //Definicion de la lista del resultado del query
         $this->captura('nombre','varchar');
         $this->captura('tipo','varchar');
@@ -355,7 +359,6 @@ class MODReporte extends MODbase{
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-
         //Devuelve la respuesta
         return $this->respuesta;
     }

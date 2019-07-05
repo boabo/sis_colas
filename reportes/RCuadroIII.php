@@ -51,7 +51,11 @@ class RCuadroIII
             52=>'BA',53=>'BB',54=>'BC',55=>'BD',56=>'BE',57=>'BF',58=>'BG',59=>'BH',
             60=>'BI',61=>'BJ',62=>'BK',63=>'BL',64=>'BM',65=>'BN',66=>'BO',67=>'BP',
             68=>'BQ',69=>'BR',70=>'BS',71=>'BT',72=>'BU',73=>'BV',74=>'BW',75=>'BX',
-            76=>'BY',77=>'BZ');
+            76=>'BY',77=>'BZ',
+            78=>'CA',79=>'CB',80=>'CC',81=>'CD',82=>'CE',83=>'CF',84=>'CG',85=>'CH',
+            86=>'CI',87=>'CJ',88=>'CK',89=>'CL',90=>'CM',91=>'CN',92=>'CO',93=>'CP',
+            94=>'CQ',95=>'CR',96=>'CS',97=>'CT',98=>'CU',99=>'CV',100=>'CW',101=>'CX',
+            102=>'CY',103=>'CZ');
         $this->styleTitulos0 = array(
             'font'  => array(
                 'bold'  => true,
@@ -101,8 +105,8 @@ class RCuadroIII
         $parametros = $this->objParam->getParametro('parametros');
 
         $datos = $this->objParam->getParametro('datos');
-        
-        
+
+
 
         $this->docexcel->getActiveSheet()->setCellValue('A1','Sucursal : ' . $this->objParam->getParametro('sucursal'));
         $this->docexcel->getActiveSheet()->setCellValue('A2','De : ' . $this->objParam->getParametro('fecha_ini') . " A " . $this->objParam->getParametro('fecha_fin'));
@@ -131,14 +135,14 @@ class RCuadroIII
         }
         $this->docexcel->getActiveSheet()->getStyle('B3:' . $this->equivalencias[$columna] . '3')->applyFromArray($this->styleTitulos0);
 		$puntero = 0;
-		 
+
         for ($i = 0 ; $i < count($horas) ; $i++) {
         	for ($j = 0 ; $j < count($usuarios) ; $j++) {
         		if ($datos[$puntero]['hora'] == $horas[$i] && $datos[$puntero]['usuario'] == $usuarios[$j]) {
         			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] .($i + 4),$datos[$puntero]['cantidad']);
         			$puntero++;
-				} else {	
-        			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');	
+				 } else {
+        			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');
         		}
         	}
         }

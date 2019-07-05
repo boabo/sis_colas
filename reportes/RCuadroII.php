@@ -101,8 +101,8 @@ class RCuadroII
         $parametros = $this->objParam->getParametro('parametros');
 
         $datos = $this->objParam->getParametro('datos');
-        
-        
+
+
 
         $this->docexcel->getActiveSheet()->setCellValue('A1','Sucursal : ' . $this->objParam->getParametro('sucursal'));
         $this->docexcel->getActiveSheet()->setCellValue('A2','De : ' . $this->objParam->getParametro('fecha_ini') . " A " . $this->objParam->getParametro('fecha_fin'));
@@ -131,16 +131,16 @@ class RCuadroII
         }
         $this->docexcel->getActiveSheet()->getStyle('B3:' . $this->equivalencias[$columna] . '3')->applyFromArray($this->styleTitulos0);
 		$puntero = 0;
-        
-		 
+
+
         for ($i = 0 ; $i < count($horas) ; $i++) {
         	for ($j = 0 ; $j < count($servicios) ; $j++) {
         		if ($datos[$puntero]['hora'] == $horas[$i] && $datos[$puntero]['servicio'] == $servicios[$j]) {
         			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] .($i + 4),$datos[$puntero]['cantidad']);
         			$puntero++;
 
-				} else {	
-        			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');	
+				} else {
+        			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');
         		}
         	}
         }
