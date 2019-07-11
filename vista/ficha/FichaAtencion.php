@@ -192,7 +192,7 @@ Phx.vista.FichaAtencion = {
 				displayField: 'nombre_sucursal',
 			    hiddenName: 'id_sucursal',
     			mode:'remote',
-				pageSize:50,
+				pageSize:200,
 				queryDelay:500,
 				listWidth:'280',
 				width:150

@@ -35,6 +35,7 @@ DECLARE
     v_tipo_ventanilla	integer;
     v_estado    		varchar;
     v_id_atencion		integer;
+    v_admin				varchar;
 
 BEGIN
 
@@ -51,6 +52,13 @@ BEGIN
 	if(p_transaccion='COLA_ficha_SEL')then
 
     	begin
+
+        SELECT 'administrador'::varchar as adminCounter into v_admin
+            from segu.tusuario_rol usu
+            where usu.id_usuario = p_id_usuario and usu.estado_reg = 'activo' and (usu.id_rol = 200 or usu.id_rol = 1);
+
+            if (v_admin = 'administrador') then
+
 --raise exception 'ficha %', v_parametros.filtro;
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -92,20 +100,95 @@ BEGIN
                         inner join cola.tprioridad priori on priori.id_prioridad = ficha.id_prioridad
                        -- inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha and ficest.estado  in (''espera'')
                          inner join cola.tficha_estado estact on estact.id_ficha = ficha.id_ficha and estact.estado_reg  = ''activo''
-                         	and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+
+                            /*Quitando esto IRVA*/
+                            --and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                            /**/
+                            /*Aumentando Esto*/
+                            --and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                        	/**/
+
+
                         --left join cola.tficha_estado ficest1 on ficest1.id_ficha = ficha.id_ficha and ficest1.estado in (''finalizado'',''no_show'')
 						inner join segu.vusuario usu1 on usu1.id_usuario = estact.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ficha.id_usuario_mod
                         left join segu.vusuario usu3 on usu3.id_usuario = estact.id_usuario_atencion
 				        where  ';
-			raise notice '%', v_consulta;
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			--v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-            v_consulta:=v_consulta||' order by cola_atencion desc , ficha.fecha_reg ASC limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
+                        raise notice '%', v_consulta;
+                        --Definicion de la respuesta
+                        v_consulta:=v_consulta||v_parametros.filtro;
+                        v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+                        --v_consulta:=v_consulta||' order by cola_atencion desc , ficha.fecha_reg ASC limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+                        --Devuelve la respuesta
+                        return v_consulta;
+            else
+            	v_consulta:='select
+						ficha.id_ficha,
+						ficha.numero,
+						ficha.estado_reg,
+						ficha.id_sucursal,
+						ficha.sigla,
+						ficha.id_servicio,
+						ficha.id_prioridad,
+						ficha.peso,
+						ficha.id_usuario_reg,
+						ficha.usuario_ai,
+						ficha.fecha_reg,
+						ficha.id_usuario_ai,
+						ficha.id_usuario_mod,
+						ficha.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        sucur.nombre as nombre_sucur,
+                        servi.nombre as nombre_servi,
+                        priori.nombre as nombre_priori,
+                         estact.estado as estado_ficha,
+
+                        to_char(estact.fecha_hora_inicio,''HH24:MI:SS'')::varchar as fecha_hora_inicio,
+                       ((EXTRACT(EPOCH FROM (now() - ficha.fecha_reg))/60) * ficha.peso)::integer AS cola_atencion,
+                       usu1.desc_persona,
+
+                       to_char(ficha.ultima_llamada,''HH24:MI:SS'')::varchar as ultima_llamada,
+                       estact.numero_ventanilla,
+                        (SELECT EXTRACT(EPOCH FROM (now()-ficha.fecha_reg))/60)::integer AS minuto_espera,
+
+                         --to_char( ficest1.fecha_hora_fin,''HH24:MI:SS'')::varchar as fecha_hora_fin,
+                         ''''::varchar,
+                         usu3.desc_persona as derivado, priori.peso
+						from cola.tficha ficha
+                        inner join cola.tsucursal sucur on sucur.id_sucursal = ficha.id_sucursal
+                        inner join cola.tservicio servi on servi.id_servicio = ficha.id_servicio
+                        inner join cola.tprioridad priori on priori.id_prioridad = ficha.id_prioridad
+                       -- inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha and ficest.estado  in (''espera'')
+                         inner join cola.tficha_estado estact on estact.id_ficha = ficha.id_ficha and estact.estado_reg  = ''activo''
+
+                            /*Quitando esto IRVA*/
+                            --and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                            /**/
+                            /*Aumentando Esto*/
+                            and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                        	/**/
+
+
+                        --left join cola.tficha_estado ficest1 on ficest1.id_ficha = ficha.id_ficha and ficest1.estado in (''finalizado'',''no_show'')
+						inner join segu.vusuario usu1 on usu1.id_usuario = estact.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = ficha.id_usuario_mod
+                        left join segu.vusuario usu3 on usu3.id_usuario = estact.id_usuario_atencion
+				        where  ';
+
+                        raise notice '%', v_consulta;
+                        --Definicion de la respuesta
+                        v_consulta:=v_consulta||v_parametros.filtro;
+                        --v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+                        v_consulta:=v_consulta||' order by cola_atencion desc , ficha.fecha_reg ASC limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+                        --Devuelve la respuesta
+                        return v_consulta;
+                end if;
+
+
 
 		end;
 
@@ -119,6 +202,13 @@ BEGIN
 	elsif(p_transaccion='COLA_ficha_CONT')then
 
 		begin
+
+        	SELECT 'administrador'::varchar as adminCounter into v_admin
+            from segu.tusuario_rol usu
+            where usu.id_usuario = p_id_usuario and usu.estado_reg = 'activo' and (usu.id_rol = 200 or usu.id_rol = 1);
+
+            if (v_admin = 'administrador') then
+
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(ficha.id_ficha)
 					    from cola.tficha ficha
@@ -127,12 +217,45 @@ BEGIN
                         inner join cola.tprioridad priori on priori.id_prioridad = ficha.id_prioridad
                         --inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha and ficest.estado  in (''espera'')
                          inner join cola.tficha_estado estact on estact.id_ficha = ficha.id_ficha and estact.estado_reg  = ''activo''
-                         	and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+
+                            /*Quitando esto IRVA*/
+                            --and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                            /**/
+                            /*Aumentando Esto*/
+                            --and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                        	/**/
+
                         --left join cola.tficha_estado ficest1 on ficest1.id_ficha = ficha.id_ficha and ficest1.estado in (''finalizado'',''no_show'')
 						inner join segu.vusuario usu1 on usu1.id_usuario = ficha.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ficha.id_usuario_mod
                         left join segu.vusuario usu3 on usu3.id_usuario = estact.id_usuario_atencion
 					    where ';
+
+
+            else
+            v_consulta:='select count(ficha.id_ficha)
+					    from cola.tficha ficha
+                        inner join cola.tsucursal sucur on sucur.id_sucursal = ficha.id_sucursal
+                        inner join cola.tservicio servi on servi.id_servicio = ficha.id_servicio
+                        inner join cola.tprioridad priori on priori.id_prioridad = ficha.id_prioridad
+                        --inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha and ficest.estado  in (''espera'')
+                         inner join cola.tficha_estado estact on estact.id_ficha = ficha.id_ficha and estact.estado_reg  = ''activo''
+
+                            /*Quitando esto IRVA*/
+                            --and estact.estado  = ''espera'' and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                            /**/
+                            /*Aumentando Esto*/
+                            and (estact.id_usuario_atencion is null or estact.id_usuario_atencion = ' || p_id_usuario ||')
+                        	/**/
+
+                        --left join cola.tficha_estado ficest1 on ficest1.id_ficha = ficha.id_ficha and ficest1.estado in (''finalizado'',''no_show'')
+						inner join segu.vusuario usu1 on usu1.id_usuario = ficha.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = ficha.id_usuario_mod
+                        left join segu.vusuario usu3 on usu3.id_usuario = estact.id_usuario_atencion
+					    where ';
+
+
+            end if;
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
