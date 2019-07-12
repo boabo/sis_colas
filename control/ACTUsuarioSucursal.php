@@ -7,8 +7,8 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
-class ACTUsuarioSucursal extends ACTbase{    
-			
+class ACTUsuarioSucursal extends ACTbase{
+
 	function listarUsuarioSucursal(){
 		$this->objParam->defecto('ordenacion','id_usuario_sucursal');
 
@@ -18,7 +18,9 @@ class ACTUsuarioSucursal extends ACTbase{
 		//filtro_usuario
         if($this->objParam->getParametro('filtro_usuario')=='diferente'){
             //ususuc.id_usuario != '||p_id_usuario||'
+						//var_dump("llega id sucur",$this->objParam->getParametro('id_sucursal'));
             $this->objParam->addFiltro("ususuc.id_usuario != ".$_SESSION["ss_id_usuario"]." ");
+						$this->objParam->addFiltro("ususuc.id_sucursal = ".$this->objParam->getParametro('id_sucursal')." ");
         }
 
         if($this->objParam->getParametro('filtro_usuario')=='igual'){
@@ -31,24 +33,24 @@ class ACTUsuarioSucursal extends ACTbase{
 			$this->res = $this->objReporte->generarReporteListado('MODUsuarioSucursal','listarUsuarioSucursal');
 		} else{
 			$this->objFunc=$this->create('MODUsuarioSucursal');
-			
+
 			$this->res=$this->objFunc->listarUsuarioSucursal($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-				
+
 	function insertarUsuarioSucursal(){
-		$this->objFunc=$this->create('MODUsuarioSucursal');	
+		$this->objFunc=$this->create('MODUsuarioSucursal');
 		if($this->objParam->insertar('id_usuario_sucursal')){
-			$this->res=$this->objFunc->insertarUsuarioSucursal($this->objParam);			
-		} else{			
+			$this->res=$this->objFunc->insertarUsuarioSucursal($this->objParam);
+		} else{
 			$this->res=$this->objFunc->modificarUsuarioSucursal($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-						
+
 	function eliminarUsuarioSucursal(){
-			$this->objFunc=$this->create('MODUsuarioSucursal');	
+			$this->objFunc=$this->create('MODUsuarioSucursal');
 		$this->res=$this->objFunc->eliminarUsuarioSucursal($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
@@ -57,7 +59,7 @@ class ACTUsuarioSucursal extends ACTbase{
 		$this->res=$this->objFunc->modificarUsuarioSucursalAtencion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-			
+
 }
 
 ?>

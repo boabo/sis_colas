@@ -53,7 +53,7 @@ class MODFicha extends MODbase
         $this->captura('desc_persona', 'text');
         $this->captura('ultima_llamada', 'varchar');
         $this->captura('numero_ventanilla', 'varchar');
-        $this->captura('minuto_espera', 'int4');
+        $this->captura('minuto_espera', 'varchar');
         $this->captura('fecha_hora_fin', 'varchar');
         $this->captura('derivado', 'text');
         $this->captura('peso_prioridad', 'integer');

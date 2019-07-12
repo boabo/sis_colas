@@ -529,6 +529,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.getBoton('finalizar').enable();
             this.Cmp.estado_ficha.setValue('En Atención');
             this.Cmp.ids_servicio.store.setBaseParam('id_sucursal', this.datos.id_sucursal);
+            this.Cmp.id_usuario.store.setBaseParam('id_sucursal', this.datos.id_sucursal);
             this.Cmp.ids_servicio.enable();
             this.Cmp.ids_servicio.modificado = true;
             this.Cmp.ids_servicio.reset();

@@ -83,22 +83,33 @@ BEGIN
                         priori.nombre as nombre_priori,
                          estact.estado as estado_ficha,
 
-                        to_char(estact.fecha_hora_inicio,''HH24:MI:SS'')::varchar as fecha_hora_inicio,
+                        to_char(ficha.fecha_reg,''HH24:MI:SS'')::varchar as fecha_hora_inicio,
                        ((EXTRACT(EPOCH FROM (now() - ficha.fecha_reg))/60) * ficha.peso)::integer AS cola_atencion,
                        usu1.desc_persona,
 
                        to_char(ficha.ultima_llamada,''HH24:MI:SS'')::varchar as ultima_llamada,
                        estact.numero_ventanilla,
-                        (SELECT EXTRACT(EPOCH FROM (now()-ficha.fecha_reg))/60)::integer AS minuto_espera,
+                       /*Quitando este*/
+                        --((SELECT EXTRACT(EPOCH FROM (estact.fecha_hora_fin - ficha.fecha_reg))/60/60)::integer)::varchar AS minuto_espera,
 
-                         --to_char( ficest1.fecha_hora_fin,''HH24:MI:SS'')::varchar as fecha_hora_fin,
-                         ''''::varchar,
+                        /**/
+                      /*Aumentando esta condicion para tiempo espera*/
+            		     ((((SELECT EXTRACT(EPOCH FROM (estact.fecha_hora_fin - ficha.fecha_reg))/60/60)::integer)::varchar) || ''h:'' || (case
+                        				 when ((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))<0 THEN
+                                         	(((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))*-1)::varchar
+                                         else
+                                         	((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))::varchar
+                                         END) || ''m'')::varchar as minuto_espera,
+                        /**********************************************************/
+
+                         to_char( estact.fecha_hora_fin,''HH24:MI:SS'')::varchar as fecha_hora_fin,
+                        -- ''''::varchar,
                          usu3.desc_persona as derivado, priori.peso
 						from cola.tficha ficha
                         inner join cola.tsucursal sucur on sucur.id_sucursal = ficha.id_sucursal
                         inner join cola.tservicio servi on servi.id_servicio = ficha.id_servicio
                         inner join cola.tprioridad priori on priori.id_prioridad = ficha.id_prioridad
-                       -- inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha and ficest.estado  in (''espera'')
+                         --inner join cola.tficha_estado ficest on ficest.id_ficha = ficha.id_ficha --and ficest.estado  in (''espera'')
                          inner join cola.tficha_estado estact on estact.id_ficha = ficha.id_ficha and estact.estado_reg  = ''activo''
 
                             /*Quitando esto IRVA*/
@@ -152,7 +163,22 @@ BEGIN
 
                        to_char(ficha.ultima_llamada,''HH24:MI:SS'')::varchar as ultima_llamada,
                        estact.numero_ventanilla,
-                        (SELECT EXTRACT(EPOCH FROM (now()-ficha.fecha_reg))/60)::integer AS minuto_espera,
+                        /*Quitando este*/
+                      --  (SELECT EXTRACT(EPOCH FROM (now()-ficha.fecha_reg))/60)::integer AS minuto_espera,
+                        /**/
+                      /*Aumentando esta condicion para tiempo espera*/
+            		   ((case
+                       	 when ((SELECT EXTRACT(HOUR FROM now()::TIMESTAMP)) - (SELECT EXTRACT(HOUR FROM ficha.fecha_reg::TIMESTAMP))) < 0 THEN
+                         		(((SELECT EXTRACT(HOUR FROM now()::TIMESTAMP)) - (SELECT EXTRACT(HOUR FROM ficha.fecha_reg::TIMESTAMP))) * -1)::varchar
+                         ELSE
+                         		((SELECT EXTRACT(HOUR FROM now()::TIMESTAMP)) - (SELECT EXTRACT(HOUR FROM ficha.fecha_reg::TIMESTAMP)))::varchar
+                        end) || ''h:'' || (case
+                        				 when ((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM now()::TIMESTAMP)))<0 THEN
+                                         	(((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM now()::TIMESTAMP)))*-1)::varchar
+                                         else
+                                         	((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM now()::TIMESTAMP)))::varchar
+                                         END) || ''m'')::varchar as minuto_espera,
+                        /**********************************************************/
 
                          --to_char( ficest1.fecha_hora_fin,''HH24:MI:SS'')::varchar as fecha_hora_fin,
                          ''''::varchar,
@@ -733,6 +759,7 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
 
 ALTER FUNCTION cola.ft_ficha_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)

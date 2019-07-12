@@ -29,7 +29,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 					name: 'id_ficha'
 			},
 			type:'Field',
-			form:true 
+			form:true
 		},
 
         {
@@ -42,7 +42,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
             type:'Field',
             form:true
         },
-		
+
 		{
 			config:{
 				name: 'sigla',
@@ -52,7 +52,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 100,
 				maxLength:5,
 				readOnly:true,
-				renderer:function (value, p, record){  
+				renderer:function (value, p, record){
                             if(record.data['peso_prioridad'] != 1)
                                 return  String.format('<font color="red">{0}</font>',value);
                             else
@@ -80,7 +80,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		
+
 		{
 			config:{
 				name: 'nombre_priori',
@@ -96,7 +96,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		
+
 
 		{
 			config:{
@@ -105,7 +105,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100
-							
+
 			},
 				type:'TextField',
 				filters:{pfiltro:'ficest.fecha_hora_inicio',type:'string'},
@@ -155,7 +155,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'ficha.ultima_llamada',type:'date'},
 				id_grupo:1,
 				grid:true,
-				form:false 
+				form:false
 		},
 		{
 			config:{
@@ -309,7 +309,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 
 
     ],
-	tam_pag:50,	
+	tam_pag:50,
 	title:'Fichas',
         ActSave:'../../sis_colas/control/UsuarioSucursal/modificarUsuarioSucursalAtencion', //aca modificamos la configuracion del usuario
 	ActDel:'../../sis_colas/control/Ficha/eliminarFicha',
@@ -341,7 +341,7 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_persona', type: 'string'},
 		{name:'ultima_llamada', type: 'string'},
 		{name:'numero_ventanilla', type: 'string'},
-		{name:'minuto_espera', type: 'numeric'},
+		{name:'minuto_espera', type: 'string'},
 		{name:'fecha_hora_fin', type: 'string'},
 		{name:'derivado', type: 'string'},
         {name:'peso_prioridad', type: 'numeric'}
@@ -355,5 +355,3 @@ Phx.vista.Ficha=Ext.extend(Phx.gridInterfaz,{
 	}
 )
 </script>
-		
-		
