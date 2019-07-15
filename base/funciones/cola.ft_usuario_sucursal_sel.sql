@@ -45,7 +45,7 @@ BEGIN
 
     	begin
 
-        SELECT 'administrador'::varchar as adminCounter into v_admin
+        /*SELECT 'administrador'::varchar as adminCounter into v_admin
         from segu.tusuario_rol usu
         where usu.id_usuario = p_id_usuario and usu.estado_reg = 'activo' and (usu.id_rol = 200 or usu.id_rol = 1);
 
@@ -85,7 +85,7 @@ BEGIN
 			--Definicion de la respuesta
 			--v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-		else
+		else */
         	v_consulta:='select
 						ususuc.id_usuario_sucursal,
 						ususuc.id_sucursal,
@@ -120,7 +120,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-		end if;
+		--end if;
 			--Devuelve la respuesta
 			return v_consulta;
 
@@ -137,7 +137,7 @@ BEGIN
 
 		begin
 
-        SELECT 'administrador'::varchar as adminCounter into v_admin
+       /* SELECT 'administrador'::varchar as adminCounter into v_admin
         from segu.tusuario_rol usu
         where usu.id_usuario = p_id_usuario and usu.estado_reg = 'activo' and (usu.id_rol = 200 or usu.id_rol = 1);
 
@@ -155,7 +155,7 @@ BEGIN
 
 			--Definicion de la respuesta
 			--v_consulta:=v_consulta||v_parametros.filtro;
-          ELSE
+          ELSE*/
           	--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_usuario_sucursal)
 					     from cola.tusuario_sucursal ususuc
@@ -168,7 +168,7 @@ BEGIN
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
-		  end if;
+		  --end if;
 			--Devuelve la respuesta
 			return v_consulta;
 

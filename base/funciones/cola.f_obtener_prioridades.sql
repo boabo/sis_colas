@@ -14,7 +14,7 @@ BEGIN
 	v_nombre_funcion = 'cola.f_obtener_prioridades';
 
     	/*Verificamos si es administrador*/
-        SELECT 'administrador'::varchar as adminCounter into v_admin
+      /*  SELECT 'administrador'::varchar as adminCounter into v_admin
         from segu.tusuario_rol usu
         where usu.id_usuario = p_id_usuario and usu.estado_reg = 'activo' and (usu.id_rol = 200 or usu.id_rol = 1);
         /*********************************/
@@ -24,11 +24,11 @@ BEGIN
         from cola.tusuario_sucursal
         where id_sucursal = p_id_sucursal and estado_reg = 'activo';
 
-        else
-
+        else 
+    	*/
 		select prioridades into v_prioridades from cola.tusuario_sucursal where id_sucursal = p_id_sucursal and id_usuario = p_id_usuario and estado_reg = 'activo';
 
-        end if;
+    --    end if;
 
     return v_prioridades;
 
