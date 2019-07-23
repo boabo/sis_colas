@@ -18,10 +18,10 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.UsuarioSucursal.superclass.constructor.call(this,config);
 		this.init();
 		this.iniciarEventos();
-		this.Cmp.ids_servicio.disable(); 
+		this.Cmp.ids_servicio.disable();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			
+
 	Atributos:[
 		{
 			//configuracion del componente
@@ -31,7 +31,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 					name: 'id_usuario_sucursal'
 			},
 			type:'Field',
-			form:true 
+			form:true
 		},
 		{
 			config: {
@@ -72,7 +72,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
-			filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+			filters: {pfiltro: 'suc.nombre',type: 'string'},
 			grid: true,
 			form: true
 		},
@@ -177,7 +177,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		
+
 		{
        			config:{
        				name:'ids_servicio',
@@ -197,7 +197,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        					// turn on remote sorting
        					remoteSort: true,
        					baseParams:{par_filtro:'nombre_servi'}
-       					
+
        				}),
        				valueField: 'id_servicio',
        				displayField: 'nombre_servi',
@@ -212,8 +212,8 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        				gwidth: 400,
        				minChars:2,
 	       			enableMultiSelect:true,
-	       		
-       			
+
+
        				renderer:function(value, p, record){return String.format('{0}', record.data['nombres_servicio']);}
 
        			},
@@ -222,7 +222,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        			grid:true,
        			form:true
        	},
-				
+
 		{
        			config:{
        				name:'ids_prioridad',
@@ -242,7 +242,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        					// turn on remote sorting
        					remoteSort: true,
        					baseParams:{par_filtro:'nombre'}
-       					
+
        				}),
        				valueField: 'id_prioridad',
        				displayField: 'nombre',
@@ -257,7 +257,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        				gwidth: 400,
        				minChars:2,
 	       			enableMultiSelect:true,
-       			
+
        				renderer:function(value, p, record){return String.format('{0}', record.data['nombres_prioridad']);}
 
        			},
@@ -266,7 +266,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
        			grid:true,
        			form:true
        	},
-		
+
 		{
 			config:{
 				name: 'estado_reg',
@@ -282,7 +282,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		
+
 		{
 			config:{
 				name: 'usr_reg',
@@ -305,7 +305,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -314,7 +314,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		
+
 		{
 			config:{
 				name: 'usr_mod',
@@ -337,7 +337,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -347,7 +347,7 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 				form:false
 		}
 	],
-	tam_pag:50,	
+	tam_pag:50,
 	title:'Usuario Sucursal',
 	ActSave:'../../sis_colas/control/UsuarioSucursal/insertarUsuarioSucursal',
 	ActDel:'../../sis_colas/control/UsuarioSucursal/eliminarUsuarioSucursal',
@@ -382,37 +382,35 @@ Phx.vista.UsuarioSucursal=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true,
-	
+
 	iniciarEventos : function() {
 		console.log('entra a eventos');
 			this.Cmp.id_sucursal.on('select', function (c, r, i) {
 				console.log(r.data.id_sucursal);
 			this.Cmp.ids_servicio.store.setBaseParam('id_sucursal',r.data.id_sucursal);
-						
-			this.Cmp.ids_servicio.enable(); 
-			 
+
+			this.Cmp.ids_servicio.enable();
+
 			this.Cmp.ids_servicio.modificado = true;
-						
+
 			this.Cmp.ids_servicio.reset();
-			
-		}, this);	
-		
+
+		}, this);
+
 		/*this.Cmp.id_cuenta.on('select', function (c, r, i) {
-          
+
             this.Cmp.id_auxiliar.store.setBaseParam('id_cuenta',r.data.id_cuenta);
             this.Cmp.id_auxiliar.modificado = true;
             this.Cmp.id_auxiliar.reset();
-            
+
             //this.Cmp.id_partida.store.setBaseParam('id_cuenta',r.data.id_cuenta);
             //this.Cmp.id_partida.modificado = true;
             //this.Cmp.id_partida.reset();
-            
-            
+
+
         }, this);*/
      },
-	
+
 	}
 )
 </script>
-		
-		

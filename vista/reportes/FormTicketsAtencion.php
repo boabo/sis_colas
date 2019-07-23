@@ -53,7 +53,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+                    filters: {pfiltro: 'suc.nombre',type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -159,7 +159,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 data.id_sucursal=this.getComponente('id_sucursal').getValue();
                 data.id_usuario=this.getComponente('id_usuario').getValue();
                 data.estado=this.getComponente('estado').getValue();
-                
+
                 data.desc_sucursal = this.Cmp.id_sucursal.getRawValue();
 				data.servidor_remoto = this.remoteServer;
                 Phx.CP.loadWindows('../../../sis_colas/vista/reportes/GridTicketsAtencion.php', 'Tickets en Atencion: '+data.desc_sucursal, {

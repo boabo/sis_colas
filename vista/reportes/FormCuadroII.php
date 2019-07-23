@@ -53,7 +53,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+                    filters: {pfiltro: 'suc.nombre',type: 'string'},
                     grid: true,
                     form: true
                 },

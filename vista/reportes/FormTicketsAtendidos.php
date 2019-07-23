@@ -10,7 +10,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 	Phx.vista.FormTicketsAtendidos = Ext.extend(Phx.frmInterfaz, {
-		
+
 		constructor: function(config) {
 			Ext.apply(this,config);
 			this.Atributos = [
@@ -53,7 +53,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'ComboBox',
                     id_grupo: 0,
-                    filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+                    filters: {pfiltro: 'suc.nombre',type: 'string'},
                     grid: true,
                     form: true
                 },
@@ -138,7 +138,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: true
                 }];
-					
+
 			Phx.vista.FormTicketsAtendidos.superclass.constructor.call(this, config);
 			this.init();
 			this.iniciarEventos();
@@ -171,7 +171,7 @@ header("content-type: text/javascript; charset=UTF-8");
         		this.remoteServer = r.data.servidor_remoto;
         	},this);
         },
-		
+
 		onSubmit: function(){
 			if (this.form.getForm().isValid()) {
 				var data={};

@@ -19,7 +19,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		//this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			
+
 	Atributos:[
 		{
 			//configuracion del componente
@@ -29,7 +29,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 					name: 'id_sucursal_video'
 			},
 			type:'Field',
-			form:true 
+			form:true
 		},
 
         {
@@ -112,7 +112,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
             },
             type: 'ComboBox',
             id_grupo: 0,
-            filters: {pfiltro: 'suc.nombre_sucural',type: 'string'},
+            filters: {pfiltro: 'suc.nombre',type: 'string'},
             grid: true,
             form: true
         },
@@ -153,7 +153,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -199,7 +199,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
+							format: 'd/m/Y',
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
@@ -209,7 +209,7 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 				form:false
 		}
 	],
-	tam_pag:50,	
+	tam_pag:50,
 	title:'Sucursal Video',
 	ActSave:'../../sis_colas/control/SucursalVideo/insertarSucursalVideo',
 	ActDel:'../../sis_colas/control/SucursalVideo/eliminarSucursalVideo',
@@ -260,5 +260,3 @@ Phx.vista.SucursalVideo=Ext.extend(Phx.gridInterfaz,{
 	}
 )
 </script>
-		
-		
