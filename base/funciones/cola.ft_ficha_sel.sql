@@ -57,12 +57,15 @@ BEGIN
         IF (v_parametros.estado_ficha = 'espera' or v_parametros.estado_ficha = 'en_atencion' )  then
         	v_minutos_espera = '(((SELECT EXTRACT(EPOCH FROM (now()-ficha.fecha_reg))/60)::integer)::varchar || '' min'')::varchar AS minuto_espera,';
         else
-        	v_minutos_espera =  '((((SELECT EXTRACT(EPOCH FROM (estact.fecha_hora_fin - ficha.fecha_reg))/60/60)::integer)::varchar) || ''h:'' || (case
+        	v_minutos_espera = '(((SELECT EXTRACT(EPOCH FROM (estact.fecha_hora_fin - ficha.fecha_reg))/60)::integer)::varchar || '' min'')::varchar AS minuto_espera,';
+
+            /* '((((SELECT EXTRACT(EPOCH FROM (estact.fecha_hora_fin - ficha.fecha_reg))/60/60)::integer)::varchar) || ''h:'' || (case
                         				 when ((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))<0 THEN
                                          	(((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))*-1)::varchar
                                          else
                                          	((SELECT EXTRACT(MINUTE FROM ficha.fecha_reg::TIMESTAMP)) - (SELECT EXTRACT(MINUTE FROM estact.fecha_hora_fin::TIMESTAMP)))::varchar
-                                         END) || ''m'')::varchar as minuto_espera,';
+                                         END) || ''m'')::varchar as minuto_espera,';*/
+
         end if;
 
         SELECT 'administrador'::varchar as adminCounter into v_admin
