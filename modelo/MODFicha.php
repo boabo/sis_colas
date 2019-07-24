@@ -26,7 +26,7 @@ class MODFicha extends MODbase
         /*if ( isset($this->arreglo['servidor_remoto'])) {
             $this->setRemote($this->arreglo['servidor_remoto']);
         }*/
-
+        $this->setParametro('estado_ficha', 'estado_ficha', 'varchar');
         //Definicion de la lista del resultado del query
         $this->captura('id_ficha', 'int4');
         $this->captura('numero', 'int4');

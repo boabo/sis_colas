@@ -64,9 +64,18 @@ Phx.vista.FichaAtencion = {
 		this.iniciarEventos();
 
 
+    this.timer_id=Ext.TaskMgr.start({
+       run: Ftimer,
+       interval:3000,
+       scope:this
+   });
 
+   function Ftimer(){
+           if (this.cmbSucursal.getValue()) {
+               this.reload();
+           }
 
-
+     }
 
 
         this.addButton('configurar', {
@@ -76,23 +85,6 @@ Phx.vista.FichaAtencion = {
             handler: this.onButtonNew
         });
 
-
-
-
-
-		/*
-		 this.timer_id=Ext.TaskMgr.start({
-		    run: Ftimer,
-		    interval:3000,
-		    scope:this
-		});*/
-
-		/*function Ftimer(){
-            if (this.cmbSucursal.getValue()) {
-                this.reload();
-            }
-
-    	}*/
 
    },
     ejecucionNuevoTicketEscuchando : function(mensaje){

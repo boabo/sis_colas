@@ -57,12 +57,28 @@ BEGIN
               inner join cola.vficha f on f.id_ficha = feh.id_ficha
               where feh.estado = ''espera'' and ' ||v_parametros.filtro || '
               group by f.id_ficha
-              )
+              ),
+              /*aumentando esta subconsulta*/
+              servicios AS (
+                      select
+                      es.id_ficha,
+                      UNNEST((select ARRAY (SELECT UNNEST( (''{''||string_agg(rtrim(ltrim(es.id_servicio::VARCHAR,''{''),''}''),'','')||''}'')::int[])))::INTEGER[]) as id_servicio
+                      from cola.vficha_estado es
+                      inner join cola.vficha f on f.id_ficha = es.id_ficha
+                      where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and es.id_usuario_atencion = '||p_id_usuario||' AND ' ||v_parametros.filtro ||'
+                      group by es.id_ficha
+               )
+              /*-------------------------------------------------------------------*/
               select f.id_ficha,
               f.sigla::varchar as ficha,
               	s.nombre::varchar as sucursal,
               	pxp.list(usu.desc_persona)::varchar as operador,
-              pxp.list(ser.nombre)::varchar as servicio,
+
+              /*Aumentando para listar servicio*/
+              --pxp.list(ser.nombre)::varchar as servicio,
+              pxp.list(DISTINCT (ser.nombre)::text)::varchar as servicio,
+              /*-------------------------------*/
+
               pxp.list(tv.nombre)::varchar as tipo_ventanilla,
               pxp.list(llamado.numero_ventanilla)::varchar as numero_ventanilla,
               pxp.list(to_char(f.fecha_reg,''HH24:MI:SS''))::varchar as hora_generacion,
@@ -80,7 +96,11 @@ BEGIN
                   llamado.id_usuario_atencion = atencion.id_usuario_atencion
               left join segu.vusuario usu on usu.id_usuario = llamado.id_usuario_atencion
               inner join cola.tsucursal s on s.id_sucursal = f.id_sucursal
-              left join cola.tservicio ser on ser.id_servicio = f.id_servicio
+              /*Quitando y aumentando*/
+              --left join cola.tservicio ser on ser.id_servicio = f.id_servicio
+              inner join servicios serv on serv.id_ficha = atencion.id_ficha
+              left join cola.tservicio ser on ser.id_servicio = serv.id_servicio
+              /*-------------------------------------------------------------*/
               left join cola.ttipo_ventanilla tv on tv.id_tipo_ventanilla = llamado.id_tipo_ventanilla
               left join espera es on es.id_ficha = f.id_ficha
               where ' ||v_parametros.filtro || v_filtro_adi;
@@ -121,7 +141,18 @@ BEGIN
               inner join cola.vficha f on f.id_ficha = feh.id_ficha
               where feh.estado = ''espera'' and ' ||v_parametros.filtro || '
               group by f.id_ficha
-              )
+              ),
+              /*aumentando esta subconsulta*/
+              servicios AS (
+                      select
+                      es.id_ficha,
+                      UNNEST((select ARRAY (SELECT UNNEST( (''{''||string_agg(rtrim(ltrim(es.id_servicio::VARCHAR,''{''),''}''),'','')||''}'')::int[])))::INTEGER[]) as id_servicio
+                      from cola.vficha_estado es
+                      inner join cola.vficha f on f.id_ficha = es.id_ficha
+                      where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and es.id_usuario_atencion = '||p_id_usuario||' AND ' ||v_parametros.filtro ||'
+                      group by es.id_ficha
+               )
+              /*-------------------------------------------------------------------*/
               select count( distinct f.id_ficha)
               from cola.vficha f
               left join cola.vficha_estado llamado on llamado.id_ficha = f.id_ficha and llamado.estado = ''llamado''
@@ -130,7 +161,11 @@ BEGIN
                   llamado.id_usuario_atencion = atencion.id_usuario_atencion
               left join segu.vusuario usu on usu.id_usuario = llamado.id_usuario_atencion
               inner join cola.tsucursal s on s.id_sucursal = f.id_sucursal
-              left join cola.tservicio ser on ser.id_servicio = f.id_servicio
+              /*Quitando y aumentando*/
+                  --left join cola.tservicio ser on ser.id_servicio = f.id_servicio
+                  inner join servicios serv on serv.id_ficha = atencion.id_ficha
+                  left join cola.tservicio ser on ser.id_servicio = serv.id_servicio
+              /*-------------------------------------------------------------*/
               left join cola.ttipo_ventanilla tv on tv.id_tipo_ventanilla = llamado.id_tipo_ventanilla
               left join espera es on es.id_ficha = f.id_ficha
               where ' ||v_parametros.filtro || v_filtro_adi;
@@ -714,14 +749,32 @@ BEGIN
             order by EXTRACT(hour FROM f.fecha_reg)::integer
             )
             union all
-            (select
+
+            (WITH servicios AS (
+                    select
+                    es.id_ficha,
+                    UNNEST((select ARRAY (SELECT UNNEST( (''{''||string_agg(rtrim(ltrim(es.id_servicio::VARCHAR,''{''),''}''),'','')||''}'')::int[])))::INTEGER[]) as id_servicio,
+                    (EXTRACT(hour FROM f.fecha_reg) || ''-'' || (EXTRACT(hour FROM f.fecha_reg) + 1))::varchar as hora
+                    from cola.vficha_estado es
+                    inner join cola.vficha f on f.id_ficha = es.id_ficha
+                    where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and ' ||v_parametros.filtro || '
+                    group by EXTRACT(hour FROM f.fecha_reg),es.id_ficha,es.id_servicio
+                    order by EXTRACT(hour FROM f.fecha_reg)::integer
+             )select DISTINCT (s.nombre) as nombre,
+                  ''servicio''::varchar as tipo
+            from cola.tservicio s
+            inner join servicios serv on serv.id_servicio = s.id_servicio
+            group by s.nombre,serv.hora
+            order by s.nombre)
+
+            /*(select
             s.nombre::varchar as nombre,
             ''servicio''::varchar as tipo
             from cola.vficha f
             inner join cola.tservicio s on s.id_servicio = f.id_servicio
             where ' ||v_parametros.filtro || '
             group by s.nombre
-            order by 1)
+            order by 1) */
 
                         ';
 
@@ -738,9 +791,9 @@ BEGIN
 	elsif(p_transaccion='COLA_REPCUAII_SEL')then
 
     	begin
-
+    	--remplazando esta consulta porque solo recuperaba datos del servicio inicial y no los demas
     		--Sentencia de la consulta
-			v_consulta:='select
+			/*v_consulta:='select
             (EXTRACT(hour FROM f.fecha_reg) || ''-'' || (EXTRACT(hour FROM f.fecha_reg) + 1))::varchar as hora,
             s.nombre::varchar as servicio,
             count(f.id_ficha)::integer as cantidad
@@ -749,7 +802,30 @@ BEGIN
             where ' ||v_parametros.filtro || '
             group by EXTRACT(hour FROM f.fecha_reg),s.nombre
             order by EXTRACT(hour FROM f.fecha_reg)::integer,s.nombre
-               ';
+               ';				*/
+
+            v_consulta = '
+            	WITH  servicios AS (
+                      select
+                      es.id_ficha,
+                      UNNEST((select ARRAY (SELECT UNNEST( (''{''||string_agg(rtrim(ltrim(es.id_servicio::VARCHAR,''{''),''}''),'','')||''}'')::int[])))::INTEGER[]) as id_servicio,
+                      (EXTRACT(hour FROM f.fecha_reg) || ''-'' || (EXTRACT(hour FROM f.fecha_reg) + 1))::varchar as hora,
+                      count(f.id_ficha)::integer as cantidad,
+                      (EXTRACT(hour FROM f.fecha_reg))::integer as orden
+                      from cola.vficha_estado es
+                      inner join cola.vficha f on f.id_ficha = es.id_ficha
+                      where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and '||v_parametros.filtro||'
+                      group by EXTRACT(hour FROM f.fecha_reg),es.id_ficha,es.id_servicio
+                      order by EXTRACT(hour FROM f.fecha_reg)::integer
+                )select DISTINCT (s.nombre)::varchar as servicio,
+                      serv.hora::varchar as hora,
+                      sum(serv.cantidad)::integer as cantidad,
+                      serv.orden::integer as orden
+                from cola.tservicio s
+                inner join servicios serv on serv.id_servicio = s.id_servicio
+                group by s.nombre,serv.hora,serv.cantidad,serv.orden
+                order by serv.orden
+            ';
 
 			return v_consulta;
 

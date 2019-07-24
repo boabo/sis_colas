@@ -307,9 +307,10 @@ class MODReporte extends MODbase{
 		}
 
         //Definicion de la lista del resultado del query
-        $this->captura('hora','varchar');
         $this->captura('servicio','varchar');
+        $this->captura('hora','varchar');
         $this->captura('cantidad','integer');
+        $this->captura('orden','integer');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

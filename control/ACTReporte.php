@@ -226,11 +226,11 @@ class ACTReporte extends ACTbase{
         $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
 
         if($this->objParam->getParametro('fecha_ini')!=''){
-            $this->objParam->addFiltro("f.fecha_reg::date >= ''" . $this->objParam->getParametro('fecha_ini') . "''::date");
+            $this->objParam->addFiltro("(extract(day from f.fecha_reg)||''/''||extract(month from f.fecha_reg)||''/''||extract(year from f.fecha_reg))::date >= ''" . $this->objParam->getParametro('fecha_ini') . "''::date");
         }
 
         if($this->objParam->getParametro('fecha_fin')!=''){
-            $this->objParam->addFiltro("f.fecha_reg::date <= ''" . $this->objParam->getParametro('fecha_fin') . "''::date");
+            $this->objParam->addFiltro("(extract(day from f.fecha_reg)||''/''||extract(month from f.fecha_reg)||''/''||extract(year from f.fecha_reg))::date <= ''" . $this->objParam->getParametro('fecha_fin') . "''::date");
         }
 
         if($this->objParam->getParametro('id_sucursal')!=''){

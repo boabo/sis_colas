@@ -70,6 +70,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     name: 'nombre_servi',
                     fieldLabel: 'Servicio',
                     allowBlank: true,
+                    hidden : true,
                     anchor: '80%'
 
                 },
@@ -142,7 +143,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fields: ['id_servicio', 'descripcion'],
                         // turn on remote sorting
                         remoteSort: true,
-                        baseParams: {par_filtro: 'serv.descripcion'}
+                        baseParams: {par_filtro: 'serv.descripcion', excluir:'SI'}
 
                     }),
                     valueField: 'id_servicio',
