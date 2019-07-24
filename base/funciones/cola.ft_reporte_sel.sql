@@ -65,7 +65,7 @@ BEGIN
                       UNNEST((select ARRAY (SELECT UNNEST( (''{''||string_agg(rtrim(ltrim(es.id_servicio::VARCHAR,''{''),''}''),'','')||''}'')::int[])))::INTEGER[]) as id_servicio
                       from cola.vficha_estado es
                       inner join cola.vficha f on f.id_ficha = es.id_ficha
-                      where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and es.id_usuario_atencion = '||p_id_usuario||' AND ' ||v_parametros.filtro ||'
+                      where es.estado = ''finalizado'' and es.estado_reg = ''activo'' and es.id_usuario_atencion = '|| v_parametros.id_usuario ||' AND ' ||v_parametros.filtro ||'
                       group by es.id_ficha
                )
               /*-------------------------------------------------------------------*/
