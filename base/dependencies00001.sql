@@ -6,21 +6,21 @@ ALTER TABLE ONLY cola.tservicio
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
-    
+
 ALTER TABLE ONLY cola.tsucursal_servicio
     ADD CONSTRAINT tsucursal_servicio_fk_id_servicio FOREIGN KEY (id_servicio)
     REFERENCES cola.tservicio(id_servicio)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
-    
+
 ALTER TABLE ONLY cola.tsucursal_servicio
     ADD CONSTRAINT tsucursal_servicio_fk_id_sucural FOREIGN KEY (id_sucursal)
     REFERENCES cola.tsucursal(id_sucursal)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
-    
+
 ALTER TABLE ONLY cola.tsucursal_servicio
     ADD CONSTRAINT tsucursal_servicio_fk_id_tipo_servicio FOREIGN KEY (id_tipo_ventanilla)
     REFERENCES cola.ttipo_ventanilla(id_tipo_ventanilla)
@@ -28,7 +28,7 @@ ALTER TABLE ONLY cola.tsucursal_servicio
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
-    
+
 /***********************************F-DEP-JMH-COLA-0-25/06/2016****************************************/
 
 
@@ -52,7 +52,7 @@ ALTER TABLE cola.tficha
 
 ALTER TABLE cola.tficha
   ALTER COLUMN ultima_llamada SET DEFAULT now();
-  
+
 /***********************************F-DEP-JMH-COLA-0-20/07/2016****************************************/
 
 /***********************************I-DEP-JMH-COLA-0-27/07/2016****************************************/
@@ -223,3 +223,8 @@ select pxp.f_insert_testructura_gui ('VIDEO', 'PARCOL');
 
 /***********************************F-DEP-FFP-COLA-0-08/08/2017****************************************/
 
+/***********************************I-DEP-IRVA-COLA-0-14/08/2019****************************************/
+ALTER TABLE cola.tusuario_sucursal
+  ADD CONSTRAINT tusuario_sucursal_idx
+    UNIQUE (id_sucursal, id_usuario) NOT DEFERRABLE;
+/***********************************F-DEP-IRVA-COLA-0-14/08/2019****************************************/
