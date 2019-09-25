@@ -103,7 +103,7 @@ CREATE TABLE cola.tservicio (
   nombre VARCHAR,
   peso INTEGER,
   CONSTRAINT tservicio_pkey PRIMARY KEY(id_servicio)
-  
+
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
@@ -159,7 +159,7 @@ CREATE TABLE cola.tsucursal_servicio (
   estado VARCHAR,
   prioridades INTEGER[],
   CONSTRAINT tsucursal_servicio_pkey PRIMARY KEY(id_sucursal_servicio)
-  
+
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
@@ -203,7 +203,7 @@ IS 'Nombre de la Sucursal';
 /***********************************I-SCP-JMH-COLA-0-28/06/2016****************************************/
 ALTER TABLE cola.tprioridad
   ADD COLUMN sigla VARCHAR(3);
-  
+
 ALTER TABLE cola.tservicio
   ADD COLUMN sigla VARCHAR(3);
 
@@ -211,7 +211,7 @@ ALTER TABLE cola.tficha
   RENAME COLUMN id_unidad TO id_sucursal;
 
 COMMENT ON COLUMN cola.tficha.id_sucursal
-IS 'Identificador de la tabla Sucursal';  
+IS 'Identificador de la tabla Sucursal';
 /***********************************F-SCP-JMH-COLA-0-28/06/2016****************************************/
 /***********************************I-SCP-JMH-COLA-0-11/07/2016****************************************/
 ALTER TABLE cola.tsucursal_servicio
@@ -222,19 +222,19 @@ IS 'tamaño de digitos que tendra la numeracion de las fichas';
 
 ALTER TABLE cola.tsucursal_servicio
   DROP COLUMN sigla;
-  
+
   ALTER TABLE cola.tsucursal_servicio
   DROP COLUMN peso;
 /***********************************F-SCP-JMH-COLA-0-11/07/2016****************************************/
 /***********************************I-SCP-JMH-COLA-0-13/07/2016****************************************/
 CREATE TABLE cola.tficha_historico (
-  id_ficha SERIAL, 
-  id_prioridad INTEGER NOT NULL, 
-  id_sucursal INTEGER NOT NULL, 
-  id_servicio INTEGER NOT NULL, 
-  sigla VARCHAR, 
-  numero INTEGER, 
-  peso INTEGER, 
+  id_ficha SERIAL,
+  id_prioridad INTEGER NOT NULL,
+  id_sucursal INTEGER NOT NULL,
+  id_servicio INTEGER NOT NULL,
+  sigla VARCHAR,
+  numero INTEGER,
+  peso INTEGER,
   CONSTRAINT tficha_historico_pkey PRIMARY KEY(id_ficha)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -262,14 +262,14 @@ IS 'El peso de la ficha';
 
 
 CREATE TABLE cola.tficha_estado_historico (
-  id_ficha_estado SERIAL, 
-  id_ficha INTEGER NOT NULL, 
-  estado VARCHAR, 
-  fecha_hora_inicio TIMESTAMP WITHOUT TIME ZONE, 
-  fecha_hora_fin TIMESTAMP WITHOUT TIME ZONE, 
-  id_tipo_ventanilla INTEGER, 
-  id_usuario_atencion INTEGER, 
-  numero_ventanilla INTEGER, 
+  id_ficha_estado SERIAL,
+  id_ficha INTEGER NOT NULL,
+  estado VARCHAR,
+  fecha_hora_inicio TIMESTAMP WITHOUT TIME ZONE,
+  fecha_hora_fin TIMESTAMP WITHOUT TIME ZONE,
+  id_tipo_ventanilla INTEGER,
+  id_usuario_atencion INTEGER,
+  numero_ventanilla INTEGER,
   CONSTRAINT tficha_estado_historico_pkey PRIMARY KEY(id_ficha_estado)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -301,13 +301,13 @@ IS 'Numero de la ventanilla donde es atendido la ficha';
 
 /***********************************I-SCP-JMH-COLA-0-21/07/2016****************************************/
 CREATE TABLE cola.tusuario_sucursal (
-  id_usuario_sucursal SERIAL, 
-  id_usuario INTEGER, 
-  id_sucursal INTEGER, 
-  servicios INTEGER[], 
-  prioridades INTEGER[], 
-  numero_ventanilla VARCHAR, 
-  id_tipo_ventanilla INTEGER, 
+  id_usuario_sucursal SERIAL,
+  id_usuario INTEGER,
+  id_sucursal INTEGER,
+  servicios INTEGER[],
+  prioridades INTEGER[],
+  numero_ventanilla VARCHAR,
+  id_tipo_ventanilla INTEGER,
   CONSTRAINT tusuario_sucursal_pkey PRIMARY KEY(id_usuario_sucursal)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -327,7 +327,7 @@ ALTER TABLE cola.tficha_estado
   ALTER COLUMN numero_ventanilla TYPE VARCHAR(5);
 ALTER TABLE cola.tficha_estado_historico
   ALTER COLUMN numero_ventanilla TYPE VARCHAR(5);
-  
+
 ALTER TABLE cola.tficha_estado
   ADD COLUMN id_servicio INTEGER[];
 ALTER TABLE cola.tficha_estado_historico
@@ -357,7 +357,7 @@ CREATE TABLE cola.tsucursal_mensaje (
 /***********************************I-SCP-JRR-COLA-0-20/05/2017****************************************/
 ALTER TABLE cola.tsucursal
   ADD COLUMN servidor_remoto VARCHAR(30);
-  
+
 /***********************************F-SCP-JRR-COLA-0-20/05/2017****************************************/
 
 /***********************************I-SCP-FFP-COLA-0-08/08/2017****************************************/
@@ -377,3 +377,16 @@ CREATE TABLE cola.tsucursal_video (
 
 
 /***********************************F-SCP-FFP-COLA-0-08/08/2017****************************************/
+
+/***********************************I-SCP-IRVA-COLA-0-25/09/2019****************************************/
+ALTER TABLE cola.tficha_estado
+  DROP CONSTRAINT tficha_estado_fk_id_ficha RESTRICT;
+
+ALTER TABLE cola.tficha_estado
+  ADD CONSTRAINT tficha_estado_fk_id_ficha FOREIGN KEY (id_ficha)
+    REFERENCES cola.tficha(id_ficha)
+    MATCH FULL
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+    NOT DEFERRABLE;
+/***********************************F-SCP-IRVA-COLA-0-25/09/2019****************************************/
