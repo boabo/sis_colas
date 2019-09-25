@@ -10,10 +10,11 @@ DECLARE
     v_id_sucursal			integer;
 
     /*********************/
-    v_id_maximo		integer;
+    v_id_minimo		integer;
     v_id_maximo_histo	integer;
     v_registros			record;
-    v_id_maximo_ficha_estado	integer;
+    v_id_minimo_ficha_estado	integer;
+    v_id_maximo_ficha_estado_histo	integer;
     v_existencia		integer;
     v_historico_seq		bigint;
     v_estado_historico_seq	bigint;
@@ -33,7 +34,7 @@ BEGIN
         if (v_existencia is not null) then
 
     		/*Verificamos si la secuencia de tficha inicio en 1*/
-    		select max(fi.id_ficha) into v_id_maximo
+    		select min(fi.id_ficha) into v_id_minimo
             from cola.tficha fi;
     		/***************************************************/
 
@@ -43,7 +44,7 @@ BEGIN
             /********************************************************/
 
 
-            if (v_id_maximo <= v_id_maximo_histo) then
+            if (v_id_minimo <= v_id_maximo_histo) then
 
                 /*Realizamos la actualizacion del id_ficha de acuerdo a la secuencia de tficha_historico*/
                     FOR v_registros in (select f.*
@@ -70,7 +71,7 @@ BEGIN
             end if;
 
             /*Verificamos si la secuencia de tficha_estado inició en 1*/
-            select max(fies.id_ficha_estado) into v_id_maximo_ficha_estado
+            select min(fies.id_ficha_estado) into v_id_minimo_ficha_estado
             from cola.tficha_estado fies;
             /**********************************************************/
 
@@ -79,17 +80,17 @@ BEGIN
                 from cola.tficha_estado_historico estHis;
             	/********************************************************/
             	--raise exception 'llega auqi el id % , %',v_id_maximo_ficha_estado,v_id_maximo_histo;
-             if (v_id_maximo_ficha_estado <= v_id_maximo_histo) then
+             if (v_id_minimo_ficha_estado <= v_id_maximo_ficha_estado_histo) then
 
                 /*Realizamos la actualizacion del id_ficha de acuerdo a la secuencia de tficha_estado_historico*/
                     FOR v_registros in (select f.*
                                         from cola.tficha_estado f
                                         ) loop
 
-                    v_id_maximo_histo = v_id_maximo_histo + 1;
+                    v_id_maximo_ficha_estado_histo = v_id_maximo_ficha_estado_histo + 1;
 
                                UPDATE cola.tficha_estado SET
-                               id_ficha_estado = v_id_maximo_histo
+                               id_ficha_estado = v_id_maximo_ficha_estado_histo
                                Where id_ficha_estado = v_registros.id_ficha_estado;
 
                     end loop;
@@ -117,16 +118,16 @@ BEGIN
             /********************************************************/
 
             /*Obtenemos el maximo valor de la tabla tficha_historico*/
-                select max(estHis.id_ficha) into v_estado_historico_seq
+                select max(estHis.id_ficha_estado) into v_estado_historico_seq
                 from cola.tficha_estado_historico estHis;
             /********************************************************/
 
             /********************Cambiamos la secuencia de la tabla tficha*********************/
-            v_secuencia_ficha = (select pg_catalog.setval('cola.tficha_id_ficha_seq', v_historico_seq, true));
+            v_secuencia_ficha = (select pg_catalog.setval('cola.tficha_id_ficha_seq', v_historico_seq+1, true));
             /************************************************************************************/
 
             /********************Cambiamos la secuencia de la tabla tficha_estado*********************/
-            v_secuencia_ficha_estado = (select pg_catalog.setval('cola.tficha_estado_id_ficha_estado_seq', v_estado_historico_seq, true));
+            v_secuencia_ficha_estado = (select pg_catalog.setval('cola.tficha_estado_id_ficha_estado_seq', v_estado_historico_seq+1, true));
             /************************************************************************************/
 
 
