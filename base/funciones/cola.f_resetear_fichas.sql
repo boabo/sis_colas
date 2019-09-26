@@ -58,6 +58,8 @@ BEGIN
                                id_ficha = v_id_maximo_histo
                                Where id_ficha = v_registros.id_ficha;
 
+                               --raise notice 'El valor v_registros.id_ficha es:%',v_registros.id_ficha;
+
                                /*UPDATE cola.tficha_estado SET
                                id_ficha = v_id_maximo_histo
                                Where id_ficha = v_registros.id_ficha;*/
@@ -76,15 +78,18 @@ BEGIN
             /**********************************************************/
 
             /*Obtenemos el maximo valor de la tabla tficha_historico*/
-                select max(estHis.id_ficha_estado) into v_id_maximo_histo
-                from cola.tficha_estado_historico estHis;
-            	/********************************************************/
-            	--raise exception 'llega auqi el id % , %',v_id_maximo_ficha_estado,v_id_maximo_histo;
+            select max(estHis.id_ficha_estado) into v_id_maximo_ficha_estado_histo
+            from cola.tficha_estado_historico estHis;
+            /********************************************************/
+
+
+            --raise exception 'Llega auqi el id % , %',v_id_minimo_ficha_estado,v_id_maximo_ficha_estado_histo;
              if (v_id_minimo_ficha_estado <= v_id_maximo_ficha_estado_histo) then
 
                 /*Realizamos la actualizacion del id_ficha de acuerdo a la secuencia de tficha_estado_historico*/
                     FOR v_registros in (select f.*
                                         from cola.tficha_estado f
+                                        order by f.id_ficha_estado
                                         ) loop
 
                     v_id_maximo_ficha_estado_histo = v_id_maximo_ficha_estado_histo + 1;
@@ -92,6 +97,8 @@ BEGIN
                                UPDATE cola.tficha_estado SET
                                id_ficha_estado = v_id_maximo_ficha_estado_histo
                                Where id_ficha_estado = v_registros.id_ficha_estado;
+
+                               --raise notice 'El valor v_registros.id_ficha_estado es:%',v_registros.id_ficha_estado;
 
                     end loop;
                 /***********************************************************************************************/

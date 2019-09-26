@@ -639,8 +639,13 @@ BEGIN
                           0
                           end)::numeric as cantidad_abandonadas,
                           count(*)::numeric as total_fichas
+                           /* QUITANDO ESTO PORQ SOLO ES DEL HISTORICO
                           from cola.tficha_historico fh
-                          inner join cola.tficha_estado_historico feh on feh.id_ficha = fh.id_ficha
+                          inner join cola.tficha_estado_historico feh on feh.id_ficha = fh.id_ficha*/
+
+                          from cola.vficha fh
+                          inner join cola.vficha_estado feh on feh.id_ficha = fh.id_ficha
+
                           and feh.estado in (''finalizado'',''no_show'') and feh.estado_reg = ''activo''
                           left join segu.vusuario usu on usu.id_usuario = feh.id_usuario_atencion
                           where fh.fecha_reg::date >= ''' || v_parametros.fecha_ini || ''' and fh.fecha_reg::date <= ''' || v_parametros.fecha_fin || '''
@@ -668,8 +673,13 @@ BEGIN
                           0
                           end)::numeric as cantidad_abandonadas,
                           count(*)::numeric as total_fichas
+                           /* QUITANDO ESTO PORQ SOLO ES DEL HISTORICO
                           from cola.tficha_historico fh
-                          inner join cola.tficha_estado_historico feh on feh.id_ficha = fh.id_ficha
+                          inner join cola.tficha_estado_historico feh on feh.id_ficha = fh.id_ficha*/
+
+                          from cola.vficha fh
+                          inner join cola.vficha_estado feh on feh.id_ficha = fh.id_ficha
+
                           and feh.estado in (''finalizado'',''no_show'') and feh.estado_reg = ''activo''
                           left join segu.vusuario usu on usu.id_usuario = feh.id_usuario_atencion
                           where ' || v_parametros.filtro || '
