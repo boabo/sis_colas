@@ -485,7 +485,7 @@ BEGIN
 
             else
 
-              RAISE EXCEPTION 'ficha NOes null';
+              --RAISE EXCEPTION 'ficha NOes null';
             	select  ficest.id_usuario_atencion into v_id_atencion
                 from cola.tficha_estado ficest
                 where ficest.id_ficha = v_id_ficha and ficest.estado = 'espera' ORDER BY ficest.id_ficha_estado desc LIMIT 1;
