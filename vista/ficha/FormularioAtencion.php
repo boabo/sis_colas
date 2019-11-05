@@ -509,10 +509,12 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         onIniciarAtencion: function () {
             Phx.CP.loadingShow();
+            console.log("llega aqui el id:",this.datos.id_sucursal);
             Ext.Ajax.request({
                 url: '../../sis_colas/control/Ficha/iniciarAtencion',
                 params: {
                     id_ficha: this.Cmp.id_ficha.getValue(),
+                    id_sucursal: this.datos.id_sucursal,
 
                 },
                 success: this.successIniciarAtencion,
@@ -643,7 +645,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     url: '../../sis_colas/control/Ficha/finalizarFicha',
                     params: {
                         id_ficha: this.Cmp.id_ficha.getValue(),
-                        ids_servicio: this.Cmp.ids_servicio.getValue()
+                        ids_servicio: this.Cmp.ids_servicio.getValue(),
+                        id_sucursal: this.datos.id_sucursal,
                     },
                     success: this.successFinalizar,
                     failure: this.conexionFailure,

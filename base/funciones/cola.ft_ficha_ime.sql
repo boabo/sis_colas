@@ -302,9 +302,10 @@ BEGIN
 
 		begin
 			--Sentencia de la modificacion
-			  select usc.numero_ventanilla into  v_num_ventanilla
+
+			select usc.numero_ventanilla into  v_num_ventanilla
             from cola.tusuario_sucursal usc
-            where usc.id_usuario = p_id_usuario;
+            where usc.id_usuario = p_id_usuario and usc.id_sucursal = v_parametros.id_sucursal;
 
             update cola.tficha_estado set
 			fecha_mod = now(),
@@ -368,7 +369,7 @@ BEGIN
 
 			select usc.numero_ventanilla into  v_num_ventanilla
             from cola.tusuario_sucursal usc
-            where usc.id_usuario = p_id_usuario;
+            where usc.id_usuario = p_id_usuario and usc.id_sucursal = v_parametros.id_sucursal;
 
             update cola.tficha_estado set
 			fecha_mod = now(),

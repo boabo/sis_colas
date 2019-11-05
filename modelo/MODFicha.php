@@ -249,6 +249,7 @@ class MODFicha extends MODbase
         //Define los parametros para la funcion
         $this->setParametro('id_ficha', 'id_ficha', 'int4');
         $this->setParametro('ids_servicio', 'ids_servicio', 'varchar');
+        $this->setParametro('id_sucursal', 'id_sucursal', 'int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -267,6 +268,7 @@ class MODFicha extends MODbase
 
         //Define los parametros para la funcion
         $this->setParametro('id_ficha', 'id_ficha', 'int4');
+        $this->setParametro('id_sucursal', 'id_sucursal', 'int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

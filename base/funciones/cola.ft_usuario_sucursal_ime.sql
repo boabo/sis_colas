@@ -12,13 +12,13 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'cola.tusuario_sucursal'
  AUTOR: 		 (José Mita)
  FECHA:	        22-07-2016 01:55:47
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
@@ -31,23 +31,27 @@ DECLARE
 	v_mensaje_error         text;
 	v_id_usuario_sucursal	integer;
    	v_consulta        text;
-			    
+
+    v_letra_ventanilla		varchar;
+    v_numero_ventanilla 	varchar;
+    v_numero_oficial		varchar;
+
 BEGIN
 
     v_nombre_funcion = 'cola.ft_usuario_sucursal_ime';
     v_parametros = pxp.f_get_record(p_tabla);
- 
-	/*********************************    
+
+	/*********************************
  	#TRANSACCION:  'COLA_USUSUC_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		José Mita	
+ 	#AUTOR:		José Mita
  	#FECHA:		22-07-2016 01:55:47
 	***********************************/
 
 	if(p_transaccion='COLA_USUSUC_INS')then
-					
+
         begin
-        	
+
         	--Sentencia de la insercion
         	insert into cola.tusuario_sucursal(
 			servicios,
@@ -74,11 +78,11 @@ BEGIN
 			null,
 			null
 			)RETURNING id_usuario_sucursal into v_id_usuario_sucursal;
-			
-           
-            
+
+
+
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal almacenado(a) con exito (id_usuario_sucursal'||v_id_usuario_sucursal||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal almacenado(a) con exito (id_usuario_sucursal'||v_id_usuario_sucursal||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario_sucursal',v_id_usuario_sucursal::varchar);
 
             --Devuelve la respuesta
@@ -86,10 +90,10 @@ BEGIN
 
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'COLA_USUSUC_MOD'
  	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		José Mita	
+ 	#AUTOR:		José Mita
  	#FECHA:		22-07-2016 01:55:47
 	***********************************/
 
@@ -97,32 +101,50 @@ BEGIN
 
 		begin
 			--Sentencia de la modificacion
-			update cola.tusuario_sucursal set
-			servicios = string_to_array (v_parametros.ids_servicio,',')::INTEGER[],
-			id_sucursal = v_parametros.id_sucursal,
-			prioridades = string_to_array (v_parametros.ids_prioridad,',')::INTEGER[],
-			numero_ventanilla = v_parametros.numero_ventanilla,
-			id_tipo_ventanilla = v_parametros.id_tipo_ventanilla,
-			id_usuario = v_parametros.id_usuario,
-			id_usuario_mod = p_id_usuario,
-			fecha_mod = now(),
-			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
-			where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
-               
+
+            	 /*Verificamos si el numero de ventanilla es puro numeros*/
+              select regexp_replace (v_parametros.numero_ventanilla, '[a-zA-Z]','','gi') into v_numero_ventanilla;
+              	/*Validamos si en numero de ventanilla es pura letra*/
+                      IF (v_numero_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla debe tener al menos un número Por Ejemplo: C12, Revise el número de ventanilla.';
+                      end if;
+                /****************************************************/
+              select regexp_replace (v_parametros.numero_ventanilla, '[0-9]','','g') into v_letra_ventanilla;
+                	 /*Validamos si el numero de ventanilla es puro numero*/
+                		IF (v_letra_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla debe tener al menos una letra Por Ejemplo: C12, Revise el número de ventanilla.';
+                      end if;
+                     /*****************************************************/
+                v_numero_oficial =  v_letra_ventanilla||v_numero_ventanilla;
+
+
+              update cola.tusuario_sucursal set
+              servicios = string_to_array (v_parametros.ids_servicio,',')::INTEGER[],
+              id_sucursal = v_parametros.id_sucursal,
+              prioridades = string_to_array (v_parametros.ids_prioridad,',')::INTEGER[],
+              numero_ventanilla = v_numero_oficial,--v_parametros.numero_ventanilla,
+              id_tipo_ventanilla = v_parametros.id_tipo_ventanilla,
+              id_usuario = v_parametros.id_usuario,
+              id_usuario_mod = p_id_usuario,
+              fecha_mod = now(),
+              id_usuario_ai = v_parametros._id_usuario_ai,
+              usuario_ai = v_parametros._nombre_usuario_ai
+              where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
+
+
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario_sucursal',v_parametros.id_usuario_sucursal::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'COLA_USUSUC_ELI'
  	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		José Mita	
+ 	#AUTOR:		José Mita
  	#FECHA:		22-07-2016 01:55:47
 	***********************************/
 
@@ -132,11 +154,11 @@ BEGIN
 			--Sentencia de la eliminacion
 			delete from cola.tusuario_sucursal
             where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario_sucursal',v_parametros.id_usuario_sucursal::varchar);
-              
+
             --Devuelve la respuesta
             return v_resp;
 
@@ -152,15 +174,31 @@ BEGIN
 	elsif(p_transaccion='COLA_USUSUCATE_MOD')then
 
 		begin
-			--Sentencia de la eliminacion
-			update cola.tusuario_sucursal set
-				prioridades = string_to_array (v_parametros.ids_prioridad,',')::INTEGER[],
-				numero_ventanilla = v_parametros.numero_ventanilla,
-				id_usuario_mod = p_id_usuario,
-				fecha_mod = now(),
-				id_usuario_ai = v_parametros._id_usuario_ai,
-				usuario_ai = v_parametros._nombre_usuario_ai
-			where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
+
+        	  /*Verificamos si el numero de ventanilla es puro numeros*/
+              select regexp_replace (v_parametros.numero_ventanilla, '[a-zA-Z]','','gi') into v_numero_ventanilla;
+              	/*Validamos si en numero de ventanilla es pura letra*/
+                      IF (v_numero_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla debe tener al menos un número Por Ejemplo: C12, Revise el número de ventanilla.';
+                      end if;
+                /****************************************************/
+              select regexp_replace (v_parametros.numero_ventanilla, '[0-9]','','g') into v_letra_ventanilla;
+                	 /*Validamos si el numero de ventanilla es puro numero*/
+                		IF (v_letra_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla debe tener al menos una letra Por Ejemplo: C12, Revise el número de ventanilla.';
+                      end if;
+                     /*****************************************************/
+                v_numero_oficial =  v_letra_ventanilla||v_numero_ventanilla;
+
+
+              update cola.tusuario_sucursal set
+                  prioridades = string_to_array (v_parametros.ids_prioridad,',')::INTEGER[],
+                  numero_ventanilla = v_numero_oficial,--v_parametros.numero_ventanilla,
+                  id_usuario_mod = p_id_usuario,
+                  fecha_mod = now(),
+                  id_usuario_ai = v_parametros._id_usuario_ai,
+                  usuario_ai = v_parametros._nombre_usuario_ai
+              where id_usuario_sucursal=v_parametros.id_usuario_sucursal;
 
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Sucursal modificado(a)');
@@ -172,22 +210,22 @@ BEGIN
 		end;
 
 	else
-     
+
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 
 	end if;
- 
+
 EXCEPTION
-				
+
 	WHEN OTHERS THEN
-  
-    
+
+
 		v_resp='';
        	v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
-				        
+
 END;
 $body$
 LANGUAGE 'plpgsql'
@@ -195,3 +233,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION cola.ft_usuario_sucursal_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

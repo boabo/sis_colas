@@ -38,6 +38,11 @@ DECLARE
     v_admin				varchar;
     v_minutos_espera	varchar;
 
+    /*Aumentando para controlar el numero de ventanilla*/
+    v_numero_ventanilla varchar;
+    v_letra_ventanilla	varchar;
+    v_numero_oficial	varchar;
+	/***************************************************/
 BEGIN
 
 	v_nombre_funcion = 'cola.ft_ficha_sel';
@@ -371,6 +376,7 @@ BEGIN
                --FICHA NUEVA PARA LLAMAR
 
               --RAISE EXCEPTION '%','ficha es null';
+
                 select fic.id_ficha,
 
                ((EXTRACT(EPOCH FROM (now() - fic.fecha_reg))/60) * fic.peso)::integer as peso_total into v_id_ficha, v_minutos
@@ -396,6 +402,30 @@ BEGIN
                 ultima_llamada = now()
                 where id_ficha=v_id_ficha;
 
+
+                /********************Control para el numero de ventanilla*********************************************/
+                select regexp_replace (v_num_ventanilla, '[a-zA-Z]','','gi') into v_numero_ventanilla;
+
+                      /*Validamos si en numero de ventanilla es pura letra*/
+                      IF (v_numero_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla configurada debe tener al menos un número Por Ejemplo: C12, Revise el número de ventanilla que se le asignó.';
+                      end if;
+                      /****************************************************/
+
+                select regexp_replace (v_num_ventanilla, '[0-9]','','g') into v_letra_ventanilla;
+                	 /*Validamos si el numero de ventanilla es puro numero*/
+                		IF (v_letra_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla configurada debe tener al menos una letra Por Ejemplo: C12, Revise el número de ventanilla que se le asignó.';
+                      end if;
+                     /*****************************************************/
+                v_numero_oficial =  v_letra_ventanilla||v_numero_ventanilla;
+
+               /******************************************************************************************************/
+
+
+
+
+
                 insert into cola.tficha_estado(
                 id_ficha,
 
@@ -414,9 +444,11 @@ BEGIN
 
                 p_id_usuario,
     			v_tipo_ventanilla,
-                v_num_ventanilla,
+                v_numero_oficial, --v_num_ventanilla,
                 p_id_usuario
                 );
+
+
 
                 v_consulta:='select
                             ficha.id_ficha,
@@ -428,10 +460,18 @@ BEGIN
                             (EXTRACT(EPOCH FROM (now() - estini.fecha_hora_inicio)::interval)/60)::integer AS minutos,
                             ficest.estado as estado_ficha,
                             ficha.id_sucursal,
-                            SUBSTRING(ficest.numero_ventanilla,2,3)::INTEGER as numero_ventanilla,
-                            SUBSTRING(ficest.numero_ventanilla,1,1)::varchar as letra_ventanilla,
-                            tive.nombre as desc_tipo_ventanilla
 
+                            /*Aumentando para controlar el numero y la letra*/
+                            regexp_replace (ficest.numero_ventanilla, ''[a-zA-Z]'','''',''gi'')::INTEGER as numero_ventanilla,
+                            regexp_replace (ficest.numero_ventanilla, ''[0-9]'','''',''g'')::varchar as letra_ventanilla,
+                            /************************************************/
+
+                            /***************Comentando lo que estaba antes********************/
+                            --SUBSTRING(ficest.numero_ventanilla,2,3)::INTEGER as numero_ventanilla,
+                            --SUBSTRING(ficest.numero_ventanilla,1,1)::varchar as letra_ventanilla,
+                            /******************************************************************/
+
+                            tive.nombre as desc_tipo_ventanilla
                             from cola.tficha ficha
                             inner join cola.tsucursal sucur on sucur.id_sucursal = ficha.id_sucursal
                             inner join cola.tservicio servi on servi.id_servicio = ficha.id_servicio
@@ -440,16 +480,12 @@ BEGIN
                             inner join cola.tficha_estado estini on estini.id_ficha = ficha.id_ficha and estini.estado=''espera''
                             inner join segu.tusuario usu1 on usu1.id_usuario = ficha.id_usuario_reg
                             left join segu.tusuario usu2 on usu2.id_usuario = ficha.id_usuario_mod
-
                             left join cola.ttipo_ventanilla tive on tive.id_tipo_ventanilla = ficest.id_tipo_ventanilla
-
-
                             where ficha.id_ficha= '|| v_id_ficha||' ;';
-
 
             else
 
-              --RAISE EXCEPTION '%','ficha NOes null';
+              RAISE EXCEPTION 'ficha NOes null';
             	select  ficest.id_usuario_atencion into v_id_atencion
                 from cola.tficha_estado ficest
                 where ficest.id_ficha = v_id_ficha and ficest.estado = 'espera' ORDER BY ficest.id_ficha_estado desc LIMIT 1;
@@ -471,6 +507,28 @@ BEGIN
                 ultima_llamada = now()
                 where id_ficha=v_id_ficha;
 
+
+                 /********************Control para el numero de ventanilla*********************************************/
+                select regexp_replace (v_num_ventanilla, '[a-zA-Z]','','gi') into v_numero_ventanilla;
+
+                      /*Validamos si en numero de ventanilla es pura letra*/
+                      IF (v_numero_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla configurada debe tener al menos un número Por Ejemplo: C12, Revise el número de ventanilla que se le asignó.';
+                      end if;
+                      /****************************************************/
+
+                select regexp_replace (v_num_ventanilla, '[0-9]','','g') into v_letra_ventanilla;
+                	 /*Validamos si el numero de ventanilla es puro numero*/
+                		IF (v_letra_ventanilla = '') then
+                          Raise exception 'El numero de Ventanilla configurada debe tener al menos una letra Por Ejemplo: C12, Revise el número de ventanilla que se le asignó.';
+                      end if;
+                     /*****************************************************/
+                v_numero_oficial =  v_letra_ventanilla||v_numero_ventanilla;
+
+               /******************************************************************************************************/
+
+
+
                 insert into cola.tficha_estado(
                 id_ficha,
                 estado,
@@ -485,7 +543,7 @@ BEGIN
                 now(),
                 p_id_usuario,
     			v_tipo_ventanilla,
-                v_num_ventanilla,
+                v_numero_oficial,
                 p_id_usuario
                 );
                 end if;
@@ -500,8 +558,17 @@ BEGIN
                              (EXTRACT(EPOCH FROM (now() - estini.fecha_hora_inicio)::interval)/60)::integer AS minutos,
                             ficest.estado as estado_ficha,
                             ficha.id_sucursal,
-                             SUBSTRING(ficest.numero_ventanilla,2,3)::INTEGER as numero_ventanilla,
-                            SUBSTRING(ficest.numero_ventanilla,1,1)::varchar as letra_ventanilla,
+
+                            /*Aumentando para controlar el numero y la letra*/
+                            regexp_replace (ficest.numero_ventanilla, ''[a-zA-Z]'','''',''gi'')::INTEGER as numero_ventanilla,
+                            regexp_replace (ficest.numero_ventanilla, ''[0-9]'','''',''g'')::varchar as letra_ventanilla,
+                            /************************************************/
+
+                            /***************Comentando lo que estaba antes********************/
+                            --SUBSTRING(ficest.numero_ventanilla,2,3)::INTEGER as numero_ventanilla,
+                            --SUBSTRING(ficest.numero_ventanilla,1,1)::varchar as letra_ventanilla,
+                            /******************************************************************/
+
                             tive.nombre as desc_tipo_ventanilla
                             from cola.tficha ficha
                             inner join cola.tsucursal sucur on sucur.id_sucursal = ficha.id_sucursal
