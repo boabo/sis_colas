@@ -162,20 +162,21 @@ header("content-type: text/javascript; charset=UTF-8");
                                 direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_sucursal', 'nombre', 'lugar','codigo'],
+                            fields: ['id_sucursal', 'nombre', 'lugar','codigo','direccion','estado_sucursal'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'suc.nombre#suc.lugar#suc.codigo'}
+                            baseParams: {par_filtro: 'suc.nombre#suc.lugar#suc.codigo#suc.direccion'}
                         }),
-                        valueField: 'id_sucursal_venta',
-                        displayField: 'nombre_sucursal',
+                        valueField: 'id_sucursal',
+                        displayField: 'nombre',
                         gdisplayField: 'nombre_sucursal',
                         hiddenName: 'id_sucursal_venta',
                         forceSelection: true,
                         tpl: new Ext.XTemplate([
                             '<tpl for=".">',
                             '<div class="x-combo-list-item">',
-                            '<p><b>Nombre Sucursal:</b><span style="color: blue; font-weight:bold;"> {nombre}</span></p></p>',
-                            '<p><b>Lugar:</b> <span style="color: green; font-weight:bold;">{lugar}</span></p>',
+                            '<p><b>Nombre Sucursal:</b><span style="color: blue; font-weight:bold;"> <span style="color:red;">{codigo}</span> {nombre}</span></p></p>',
+                            '<p><b>Dirección:</b> <span style="color: green; font-weight:bold;">{direccion}</span></p>',
+                            '<p><b>Estado:</b> <span style="color: green; font-weight:bold;">{estado_sucursal}</span></p>',
                             '</div></tpl>'
                           ]),
                         typeAhead: false,
@@ -185,7 +186,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         pageSize: 15,
                         queryDelay: 1000,
                         anchor: '80%',
-                        listWidth:'450',
+                        listWidth:'700',
+                        resizable:true,
                         gwidth: 200,
                         minChars: 2,
 
@@ -193,8 +195,23 @@ header("content-type: text/javascript; charset=UTF-8");
                     type: 'ComboBox',
                     id_grupo: 0,
                     filters: {pfiltro: 'suc.nombre', type: 'string'},
-                    grid: true,
+                    grid: false,
                     form: true
+                },
+                {
+                    config: {
+                        name: 'nombre_sucursal',
+                        fieldLabel: 'Sucursal de Venta.',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 10
+                    },
+                    type: 'TextField',
+                    filters: {pfiltro: 'vesu.nombre', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
                 },
 
                 {
