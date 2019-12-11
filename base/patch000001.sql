@@ -390,3 +390,19 @@ ALTER TABLE cola.tficha_estado
     ON UPDATE CASCADE
     NOT DEFERRABLE;
 /***********************************F-SCP-IRVA-COLA-0-25/09/2019****************************************/
+
+/***********************************I-SCP-IRVA-COLA-0-11/12/2019****************************************/
+ALTER TABLE cola.tsucursal
+  ADD COLUMN id_sucursal_venta INTEGER;
+
+COMMENT ON COLUMN cola.tsucursal.id_sucursal_venta
+IS 'Id de la tabla vef.tsucursal';
+
+
+ALTER TABLE cola.tsucursal
+  ADD CONSTRAINT tsucursal_fk FOREIGN KEY (id_sucursal_venta)
+    REFERENCES vef.tsucursal(id_sucursal)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+/***********************************F-SCP-IRVA-COLA-0-11/12/2019****************************************/
