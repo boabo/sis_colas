@@ -8,17 +8,17 @@
 */
 
 class MODSucursal extends MODbase{
-	
+
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
 	}
-			
+
 	function listarSucursal(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='cola.ft_sucursal_sel';
 		$this->transaccion='COLA_sucur_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-				
+
 		//Definicion de la lista del resultado del query
 		$this->captura('id_sucursal','int4');
 		$this->captura('id_depto','int4');
@@ -36,21 +36,23 @@ class MODSucursal extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_dep','varchar');
 		$this->captura('servidor_remoto','varchar');
+		$this->captura('id_sucursal_venta','int4');
+		$this->captura('nombre_sucursal','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		
+
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
 	function insertarSucursal(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='cola.ft_sucursal_ime';
 		$this->transaccion='COLA_sucur_INS';
 		$this->tipo_procedimiento='IME';
-				
+
 		//Define los parametros para la funcion
 		$this->setParametro('id_depto','id_depto','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
@@ -58,6 +60,9 @@ class MODSucursal extends MODbase{
 		$this->setParametro('mensaje_imp','mensaje_imp','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('servidor_remoto','servidor_remoto','varchar');
+		/*Aumentando el campo para relacionar con la sucursal del sistema de ventas (Ismael Valdivia 11/12/2019)*/
+		$this->setParametro('id_sucursal_venta','id_sucursal_venta','int4');
+		/********************************************************************************************************/
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -66,13 +71,13 @@ class MODSucursal extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
 	function modificarSucursal(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='cola.ft_sucursal_ime';
 		$this->transaccion='COLA_sucur_MOD';
 		$this->tipo_procedimiento='IME';
-				
+
 		//Define los parametros para la funcion
 		$this->setParametro('id_sucursal','id_sucursal','int4');
 		$this->setParametro('id_depto','id_depto','int4');
@@ -81,6 +86,9 @@ class MODSucursal extends MODbase{
 		$this->setParametro('mensaje_imp','mensaje_imp','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('servidor_remoto','servidor_remoto','varchar');
+		/*Aumentando el campo para relacionar con la sucursal del sistema de ventas (Ismael Valdivia 11/12/2019)*/
+		$this->setParametro('id_sucursal_venta','id_sucursal_venta','int4');
+		/********************************************************************************************************/
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -89,13 +97,13 @@ class MODSucursal extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
 	function eliminarSucursal(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='cola.ft_sucursal_ime';
 		$this->transaccion='COLA_sucur_ELI';
 		$this->tipo_procedimiento='IME';
-				
+
 		//Define los parametros para la funcion
 		$this->setParametro('id_sucursal','id_sucursal','int4');
 
@@ -106,6 +114,6 @@ class MODSucursal extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
 }
 ?>

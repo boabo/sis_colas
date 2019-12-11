@@ -99,8 +99,9 @@ header("content-type: text/javascript; charset=UTF-8");
                         mode: 'remote',
                         pageSize: 15,
                         queryDelay: 1000,
-                        anchor: '100%',
+                        anchor: '80%',
                         gwidth: 150,
+                        listWidth:'450',
                         minChars: 2,
                         renderer: function (value, p, record) {
                             return String.format('{0}', record.data['nombre_dep']);
@@ -145,6 +146,57 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid: true,
                     form: true
                 },
+
+                {
+                    config: {
+                        name: 'id_sucursal_venta',
+                        fieldLabel: 'Sucursal de Venta',
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_ventas_facturacion/control/Sucursal/listarSucursal',
+                            id: 'id_sucursal_venta',
+                            root: 'datos',
+                            sortInfo: {
+                                field: 'nombre',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_sucursal', 'nombre', 'lugar','codigo'],
+                            remoteSort: true,
+                            baseParams: {par_filtro: 'suc.nombre#suc.lugar#suc.codigo'}
+                        }),
+                        valueField: 'id_sucursal_venta',
+                        displayField: 'nombre_sucursal',
+                        gdisplayField: 'nombre_sucursal',
+                        hiddenName: 'id_sucursal_venta',
+                        forceSelection: true,
+                        tpl: new Ext.XTemplate([
+                            '<tpl for=".">',
+                            '<div class="x-combo-list-item">',
+                            '<p><b>Nombre Sucursal:</b><span style="color: blue; font-weight:bold;"> {nombre}</span></p></p>',
+                            '<p><b>Lugar:</b> <span style="color: green; font-weight:bold;">{lugar}</span></p>',
+                            '</div></tpl>'
+                          ]),
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender: true,
+                        mode: 'remote',
+                        pageSize: 15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        listWidth:'450',
+                        gwidth: 200,
+                        minChars: 2,
+
+                    },
+                    type: 'ComboBox',
+                    id_grupo: 0,
+                    filters: {pfiltro: 'suc.nombre', type: 'string'},
+                    grid: true,
+                    form: true
+                },
+
                 {
                     config: {
                         name: 'estado_reg',
@@ -280,6 +332,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'usr_reg', type: 'string'},
                 {name: 'usr_mod', type: 'string'},
                 {name: 'nombre_dep', type: 'string'},
+                {name: 'id_sucursal_venta', type: 'numeric'},
+                {name: 'nombre_sucursal', type: 'string'},
+
 
             ],
             sortInfo: {
@@ -315,7 +370,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
             },
 
-           
+
 
             tabeast: [
 
@@ -337,5 +392,3 @@ header("content-type: text/javascript; charset=UTF-8");
         }
     )
 </script>
-		
-		

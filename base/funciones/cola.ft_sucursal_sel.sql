@@ -69,11 +69,18 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         dep.nombre	as nombre_dep,
-                        sucur.servidor_remoto
+                        sucur.servidor_remoto,
+
+            			/*Aumentando para relacionar con la sucursal de ventas (Ismael Valdivia)*/
+                        sucur.id_sucursal_venta,
+                        vesu.nombre as nombre_sucursal
+                        /************************************************************************/
+
 						from cola.tsucursal sucur
 						inner join segu.tusuario usu1 on usu1.id_usuario = sucur.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sucur.id_usuario_mod
                         inner join param.tdepto dep on dep.id_depto = sucur.id_depto
+                        left join vef.tsucursal vesu on vesu.id_sucursal = sucur.id_sucursal_venta
 				         ';
 
 			--Definicion de la respuesta
@@ -97,7 +104,12 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         dep.nombre	as nombre_dep,
-                        sucur.servidor_remoto
+                        sucur.servidor_remoto,
+
+            			/*Aumentando para relacionar con la sucursal de ventas (Ismael Valdivia)*/
+                        sucur.id_sucursal_venta
+                        /************************************************************************/
+
 						from cola.tsucursal sucur
 						inner join segu.tusuario usu1 on usu1.id_usuario = sucur.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sucur.id_usuario_mod
