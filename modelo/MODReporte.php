@@ -352,6 +352,9 @@ class MODReporte extends MODbase{
 			$this->setRemote($this->arreglo['servidor_remoto']);
 		}
 
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
+
         //Definicion de la lista del resultado del query
         $this->captura('usuario','varchar');
         $this->captura('servicio','varchar');
@@ -360,6 +363,7 @@ class MODReporte extends MODbase{
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
+        //var_dump('llega', $this->respuesta);exit;
         //Devuelve la respuesta
         return $this->respuesta;
     }

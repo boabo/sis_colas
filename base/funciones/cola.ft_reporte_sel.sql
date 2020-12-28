@@ -958,20 +958,36 @@ BEGIN
     	begin
 
     		--Sentencia de la consulta
-			v_consulta:='select
+			/*v_consulta:='select
 
             u.desc_persona::varchar as usuario,
             s.nombre as servicio,
             count(f.id_ficha)::integer as cantidad
-            from cola.vficha f
 
+            from cola.vficha f
             inner join cola.vficha_estado e on e.id_ficha = f.id_ficha  and e.estado_reg = ''activo'' and  estado = ''finalizado''
             inner join segu.vusuario u on u.id_usuario = e.id_usuario_atencion
             inner join cola.tservicio s on s.id_servicio = ANY(e.id_servicio)
             where ' ||v_parametros.filtro || '
             group by u.desc_persona,s.nombre
             order by u.desc_persona,s.nombre
-               ';
+               ';*/
+
+            --28-12-2020 (may) modificacion reporte porque no mostraba una fecha segun el filtro
+            v_consulta:='select
+
+            u.desc_persona::varchar as usuario,
+            s.nombre as servicio,
+            count(f.id_ficha)::integer as cantidad
+
+            from cola.vficha f
+            inner join cola.vficha_estado e on e.id_ficha = f.id_ficha  and e.estado_reg = ''activo'' and  estado = ''finalizado''
+            inner join segu.vusuario u on u.id_usuario = e.id_usuario_atencion
+            inner join cola.tservicio s on s.id_servicio = ANY(e.id_servicio)
+            where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||'''
+            group by u.desc_persona,s.nombre
+            order by u.desc_persona,s.nombre
+               ';   
 
 			return v_consulta;
 
