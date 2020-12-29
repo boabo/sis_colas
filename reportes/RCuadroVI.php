@@ -119,27 +119,30 @@ class RCuadroVI
 
         $this->docexcel->getActiveSheet()->setCellValue('A3','Intervalo');
         $fila = 4;
+
         foreach ($usuarios as $value) {
             $this->docexcel->getActiveSheet()->setCellValue("A$fila",$value);
             $fila++;
         }
+
         $this->docexcel->getActiveSheet()->getStyle("A3:A$fila")->applyFromArray($this->styleTitulos0);
         $columna = 1;
+
         foreach ($servicios as $value) {
             $this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$columna] .'3',$value);
             $columna++;
         }
         $this->docexcel->getActiveSheet()->getStyle('B3:' . $this->equivalencias[$columna] . '3')->applyFromArray($this->styleTitulos0);
 		$puntero = 0;
-		 
+
         for ($i = 0 ; $i < count($usuarios) ; $i++) {
         	for ($j = 0 ; $j < count($servicios) ; $j++) {
-        		if ($datos[$puntero]['usuario'] == $usuarios[$i] && $datos[$puntero]['servicio'] == $servicios[$j]) {
+        		//if ($datos[$puntero]['usuario'] == $usuarios[$i] && $datos[$puntero]['servicio'] == $servicios[$j]) {
         			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] .($i + 4),$datos[$puntero]['cantidad']);
         			$puntero++;
-				} else {	
-        			$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');	
-        		}
+				//} else {
+        		//	$this->docexcel->getActiveSheet()->setCellValue($this->equivalencias[$j+1] . ($i + 4),'0');
+        		//}
         	}
         }
 
