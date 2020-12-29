@@ -987,7 +987,7 @@ BEGIN
             where f.fecha_reg between '''||v_parametros.fecha_ini ||''' and '''||v_parametros.fecha_fin||'''
             group by u.desc_persona,s.nombre
             order by u.desc_persona,s.nombre
-               ';   
+               ';
 
 			return v_consulta;
 
