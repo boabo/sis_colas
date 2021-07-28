@@ -15,7 +15,7 @@ body{
     position: absolute;
     left: 1px;
     top: 133px;
-    background: url('../img/logos.png') top left no-repeat;  
+    /*background: url('../img/logos.png') top left no-repeat;  */
     width: 55px;
     height: 935px;
 }
