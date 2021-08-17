@@ -228,3 +228,8 @@ ALTER TABLE cola.tusuario_sucursal
   ADD CONSTRAINT tusuario_sucursal_idx
     UNIQUE (id_sucursal, id_usuario) NOT DEFERRABLE;
 /***********************************F-DEP-IRVA-COLA-0-14/08/2019****************************************/
+
+/***********************************I-DEP-FFP-COLA-0-17/08/2021****************************************/
+select pxp.f_insert_testructura_gui ('RECOGRL', 'REPCOL');
+
+/***********************************F-DEP-FFP-COLA-0-17/08/2021****************************************/

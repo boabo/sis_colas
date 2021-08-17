@@ -457,6 +457,42 @@ class MODFicha extends MODbase
         //Devuelve la respuesta
         return $this->respuesta;
     }
+
+    function generarReporteGrl(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='cola.ft_reporte_sel';
+        $this->transaccion='COLA_REPGRLC_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        if ( isset($this->arreglo['servidor_remoto'])) {
+            $this->setRemote($this->arreglo['servidor_remoto']);
+        }
+
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_ficha','int4');
+        $this->captura('id_sucursal','int4');
+        $this->captura('sucursal','varchar');
+        $this->captura('agente','text');
+        $this->captura('servicio','varchar');
+        $this->captura('fecha','date');
+        $this->captura('fecha_inicio_espera','timestamp');
+        $this->captura('fecha_ini_atencion','timestamp');
+        $this->captura('fecha_fin_atencion','timestamp');
+        $this->captura('estado','varchar');
+        $this->captura('duracion','numeric');
+        $this->captura('tiempo_de_espera','numeric');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //var_dump('llega', $this->respuesta);exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 }
 
 ?>

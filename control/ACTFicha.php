@@ -6,6 +6,7 @@
 *@date 21-06-2016 10:11:23
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
+require_once(dirname(__FILE__).'/../reportes/RFichaReporteGeneralXls.php');
 
 class ACTFicha extends ACTbase{    
 			
@@ -213,6 +214,44 @@ class ACTFicha extends ACTbase{
 		$this->res=$this->objFunc->reporteTiempoAtencionUsuario($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+    function generarReporteGrl() {
+        $nombreArchivo = uniqid('reporteGrlCountersXLS'.md5(session_id())).'.xls';
+
+
+        $this->objFunc=$this->create('MODFicha');
+        $this->res=$this->objFunc->generarReporteGrl($this->objParam);
+
+        if ($this->res->getTipo() != 'EXITO') {
+
+            $this->res->imprimirRespuesta($this->res->generarJson());
+            exit;
+        }
+
+        $dataForReport = $this->res->getDatos();
+
+
+        //Parametros básicos
+        $tamano = 'LETTER';
+        $orientacion = 'L';
+        $titulo = 'Detalle Dep.';
+
+        $this->objParam->addParametro('orientacion',$orientacion);
+        $this->objParam->addParametro('tamano',$tamano);
+        $this->objParam->addParametro('titulo_archivo',$titulo);
+        $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
+
+        $reporte = new RFichaReporteGeneralXls($this->objParam);
+        $reporte->setMaster($dataForReport);
+        $reporte->setData($dataForReport);
+        $reporte->generarReporte();
+
+        $this->mensajeExito=new Mensaje();
+        $this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado','Se generó con éxito el reporte: '.$nombreArchivo,'control');
+        $this->mensajeExito->setArchivoGenerado($nombreArchivo);
+        $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+    }
+
 }
 
 ?>

@@ -199,3 +199,10 @@ select pxp.f_insert_tgui ('Video', 'videos', 'VIDEO', 'si', 9, 'sis_colas/vista/
 
 /***********************************F-DAT-FFP-COLA-0-10/08/2017****************************************/
 
+
+/***********************************I-DAT-FFP-COLA-0-17/08/2021****************************************/
+
+select pxp.f_insert_tgui ('Reporte Grl', 'reporte Grl', 'RECOGRL', 'si', 1, 'sis_colas/vista/reportes/FormReporteGrl.php', 3, '', 'FormReporteGrl', 'COLA');
+
+/***********************************F-DAT-FFP-COLA-0-17/08/2021****************************************/
+
