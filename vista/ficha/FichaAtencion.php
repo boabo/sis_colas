@@ -148,7 +148,8 @@ Phx.vista.FichaAtencion = {
                     'Atencion',
                     {
                         width:800,
-                        height:'90%'
+                        height:'90%',
+                        auxNoClose: true,
                     },
                     datos,
                     this.idContenedor,

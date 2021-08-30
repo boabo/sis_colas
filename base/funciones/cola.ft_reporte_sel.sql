@@ -1007,103 +1007,106 @@ BEGIN
 
     	begin
 
-    		v_consulta:= '
-    		with ficha as (
+    	    v_consulta:= '
+    	    with ficha as (
     select * from cola.tficha_historico tfh
     where tfh.fecha_reg::date between '''||v_parametros.fecha_ini ||'''::date and '''||v_parametros.fecha_fin||'''::date
 ),
      espera as (
+         select tfe.*
+         from ficha tfh
+                  inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
+                  inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
+         where tfe.estado = ''espera''
+     ), en_atencion as (
     select tfe.*
     from ficha tfh
-    inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
-    inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
-    where tfe.estado = ''espera''
-), en_atencion as (
-    select tfe.*
-    from ficha tfh
-    inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
-    inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
+             inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
+             inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
     where tfe.estado = ''en_atencion''
 ), finalizado as (
-     select tfe.*
+    select tfe.*
     from ficha tfh
-    inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
-    inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
+             inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
     where tfe.estado = ''finalizado''
+), servicios as (
+   select f.id_ficha,string_agg(CAST(ts.nombre AS varchar), '','') as servicio
+    from finalizado f
+    inner join cola.tservicio ts on ts.id_servicio = any(f.id_servicio)
+    GROUP BY f.id_ficha
 ), no_show as (
-     select tfe.*
+    select tfe.*
     from ficha tfh
-    inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
-    inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
+             inner join cola.tficha_estado_historico tfe on tfe.id_ficha = tfh.id_ficha
     where tfe.estado = ''no_show''
 ), se_atendio as (
     select tfh.id_ficha,tsuc.id_sucursal, tsuc.nombre as sucursal,
-        vp.nombre_completo1 as agente,
-        ts.nombre as servicio,
-        tfh.fecha_reg::date as fecha,
-        e.fecha_hora_inicio as fecha_inicio_espera,
-        ea.fecha_hora_inicio as fecha_ini_atencion,
-        f.fecha_hora_fin as fecha_fin_atencion,
-         f.estado,
-        EXTRACT(EPOCH FROM (f.fecha_hora_fin-ea.fecha_hora_inicio))/60 ::integer as duracion,
-        EXTRACT(EPOCH FROM (ea.fecha_hora_inicio-e.fecha_hora_inicio))/60 ::integer as tiempo_de_espera
-from ficha tfh
-inner join espera e on e.id_ficha = tfh.id_ficha
-inner join en_atencion ea on ea.id_ficha = tfh.id_ficha
-inner join finalizado f on f.id_ficha = tfh.id_ficha
-inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
-inner join cola.tsucursal tsuc on tsuc.id_sucursal = tfh.id_sucursal
-inner join segu.tusuario tu on tu.id_usuario = ea.id_usuario_atencion
-inner join segu.vpersona2 vp on vp.id_persona = tu.id_persona
-order by tsuc.id_sucursal, tfh.fecha_reg ASC
-    ),
+           vp.nombre_completo1 as agente,
+           s.servicio::varchar,
+           tfh.fecha_reg::date as fecha,
+           e.fecha_hora_inicio as fecha_inicio_espera,
+           ea.fecha_hora_inicio as fecha_ini_atencion,
+           f.fecha_hora_fin as fecha_fin_atencion,
+           f.estado,
+           EXTRACT(EPOCH FROM (f.fecha_hora_fin-ea.fecha_hora_inicio))/60 ::integer as duracion,
+           EXTRACT(EPOCH FROM (ea.fecha_hora_inicio-e.fecha_hora_inicio))/60 ::integer as tiempo_de_espera
+    from ficha tfh
+             inner join espera e on e.id_ficha = tfh.id_ficha
+             inner join en_atencion ea on ea.id_ficha = tfh.id_ficha
+             inner join finalizado f on f.id_ficha = tfh.id_ficha
+        inner join servicios s on s.id_ficha = f.id_ficha
+             inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
+             inner join cola.tsucursal tsuc on tsuc.id_sucursal = tfh.id_sucursal
+             inner join segu.tusuario tu on tu.id_usuario = ea.id_usuario_atencion
+             inner join segu.vpersona2 vp on vp.id_persona = tu.id_persona
+    order by tsuc.id_sucursal, tfh.fecha_reg ASC
+),
      no_se_atendio as (
-    select tfh.id_ficha,tsuc.id_sucursal, tsuc.nombre as sucursal,
-        vp.nombre_completo1 as agente,
-        ts.nombre as servicio,
-        tfh.fecha_reg::date as fecha,
-        e.fecha_hora_inicio as fecha_inicio_espera,
-        ns.fecha_hora_inicio as fecha_ini_atencion,
-        ns.fecha_hora_fin as fecha_fin_atencion,
-         ns.estado,
-        0::numeric as duracion,
-        EXTRACT(EPOCH FROM (ns.fecha_hora_inicio-e.fecha_hora_inicio))/60 ::integer as tiempo_de_espera
-from ficha tfh
-inner join espera e on e.id_ficha = tfh.id_ficha
-inner join no_show ns on ns.id_ficha = tfh.id_ficha
-inner join cola.tservicio ts on ts.id_servicio = tfh.id_servicio
-inner join cola.tsucursal tsuc on tsuc.id_sucursal = tfh.id_sucursal
-inner join segu.tusuario tu on tu.id_usuario = ns.id_usuario_atencion
-inner join segu.vpersona2 vp on vp.id_persona = tu.id_persona
-order by tsuc.id_sucursal, tfh.fecha_reg ASC
-         ), todo as (
-          select * from se_atendio
-union all
-select * from no_se_atendio
-) select
-id_ficha,id_sucursal, sucursal,
-         agente,
-        servicio,
-         fecha,
-        fecha_inicio_espera,
-        fecha_ini_atencion,
-        fecha_fin_atencion,
-        estado,
-        duracion::numeric,
-        tiempo_de_espera::numeric
+         select tfh.id_ficha,tsuc.id_sucursal, tsuc.nombre as sucursal,
+                vp.nombre_completo1 as agente,
+                ''no se atendio no tiene servicio''::varchar as servicio,
+                tfh.fecha_reg::date as fecha,
+                e.fecha_hora_inicio as fecha_inicio_espera,
+                ns.fecha_hora_inicio as fecha_ini_atencion,
+                ns.fecha_hora_fin as fecha_fin_atencion,
+                ns.estado,
+                0 as duracion,
+                EXTRACT(EPOCH FROM (ns.fecha_hora_inicio-e.fecha_hora_inicio))/60 ::integer as tiempo_de_espera
+         from ficha tfh
+                  inner join espera e on e.id_ficha = tfh.id_ficha
+                  inner join no_show ns on ns.id_ficha = tfh.id_ficha
+                  inner join cola.tsucursal tsuc on tsuc.id_sucursal = tfh.id_sucursal
+                  inner join segu.tusuario tu on tu.id_usuario = ns.id_usuario_atencion
+                  inner join segu.vpersona2 vp on vp.id_persona = tu.id_persona
+         order by tsuc.id_sucursal, tfh.fecha_reg ASC
+     ), todo as (
+    select * from se_atendio
+    union all
+    select * from no_se_atendio
+)select
+      id_ficha,id_sucursal, sucursal,
+      agente,
+      servicio,
+      fecha,
+      fecha_inicio_espera,
+      fecha_ini_atencion,
+      fecha_fin_atencion,
+      estado,
+      duracion::numeric,
+      tiempo_de_espera::numeric
 from todo
 group by id_ficha, id_sucursal,sucursal,
-          agente,
-        servicio,
+         agente,
+         servicio,
          fecha,
-        fecha_inicio_espera,
-        fecha_ini_atencion,
-        fecha_fin_atencion,
-        estado,
-        duracion,
-        tiempo_de_espera
-order by id_sucursal, fecha
-    		';
+         fecha_inicio_espera,
+         fecha_ini_atencion,
+         fecha_fin_atencion,
+         estado,
+         duracion,
+         tiempo_de_espera
+order by id_sucursal, fecha';
+
 
 			return v_consulta;
 
